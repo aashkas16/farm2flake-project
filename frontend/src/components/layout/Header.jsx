@@ -96,7 +96,7 @@ export default function Header() {
 
     <>
 
-      <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
+      <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-[9999]">
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between">
 
