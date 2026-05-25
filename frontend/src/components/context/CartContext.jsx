@@ -1,22 +1,56 @@
 import {
+
   createContext,
   useContext,
-  useState
+  useState,
+  useEffect
+
 } from "react"
 
 const CartContext = createContext()
 
 export const CartProvider = ({ children }) => {
 
-  const [cartItems, setCartItems] = useState([])
+  // LOAD FROM LOCAL STORAGE
+  const [cartItems, setCartItems] =
+    useState(() => {
+
+      const savedCart = localStorage.getItem("cartItems")
+
+      return savedCart
+        ? JSON.parse(savedCart)
+        : []
+
+    })
+
+
+
+  // SAVE TO LOCAL STORAGE
+  useEffect(() => {
+
+    localStorage.setItem(
+
+      "cartItems",
+
+      JSON.stringify(cartItems)
+
+    )
+
+  }, [cartItems])
+
 
 
   // ADD TO CART
   const addToCart = (product) => {
 
     const exists = cartItems.find(
-      (item) => item.id === product.id
+
+      (item) =>
+        item.id === product.id
+
     )
+
+
 
     if (exists) {
 
@@ -25,10 +59,14 @@ export const CartProvider = ({ children }) => {
         cartItems.map((item) =>
 
           item.id === product.id
+
             ? {
+
                 ...item,
                 quantity: item.quantity + 1
+
               }
+
             : item
 
         )
@@ -38,16 +76,22 @@ export const CartProvider = ({ children }) => {
     } else {
 
       setCartItems([
+
         ...cartItems,
+
         {
+
           ...product,
           quantity: 1
+
         }
+
       ])
 
     }
 
   }
+
 
 
   // INCREASE QUANTITY
@@ -58,10 +102,14 @@ export const CartProvider = ({ children }) => {
       cartItems.map((item) =>
 
         item.id === id
+
           ? {
+
               ...item,
               quantity: item.quantity + 1
+
             }
+
           : item
 
       )
@@ -69,6 +117,7 @@ export const CartProvider = ({ children }) => {
     )
 
   }
+
 
 
   // DECREASE QUANTITY
@@ -79,13 +128,21 @@ export const CartProvider = ({ children }) => {
       cartItems.map((item) =>
 
         item.id === id
+
           ? {
+
               ...item,
+
               quantity:
+
                 item.quantity > 1
+
                   ? item.quantity - 1
+
                   : 1
+
             }
+
           : item
 
       )
@@ -95,18 +152,23 @@ export const CartProvider = ({ children }) => {
   }
 
 
+
   // REMOVE PRODUCT
   const removeFromCart = (id) => {
 
     setCartItems(
 
       cartItems.filter(
-        (item) => item.id !== id
+
+        (item) =>
+          item.id !== id
+
       )
 
     )
 
   }
+
 
 
   // CLEAR CART
@@ -116,41 +178,59 @@ export const CartProvider = ({ children }) => {
 
   }
 
+
+
+  // TOGGLE CART
   const toggleCart = (product) => {
 
-  const exists = cartItems.find(
-    (item) => item.id === product.id
-  )
+    const exists = cartItems.find(
 
-  if (exists) {
-
-    setCartItems(
-
-      cartItems.filter(
-        (item) => item.id !== product.id
-      )
+      (item) =>
+        item.id === product.id
 
     )
 
-  } else {
 
-    setCartItems([
-      ...cartItems,
-      {
-        ...product,
-        quantity: 1
-      }
-    ])
+
+    if (exists) {
+
+      setCartItems(
+
+        cartItems.filter(
+
+          (item) =>
+            item.id !== product.id
+
+        )
+
+      )
+
+    } else {
+
+      setCartItems([
+
+        ...cartItems,
+
+        {
+
+          ...product,
+          quantity: 1
+
+        }
+
+      ])
+
+    }
 
   }
 
-}
 
 
   return (
 
     <CartContext.Provider
       value={{
+
         cartItems,
         addToCart,
         increaseQuantity,
@@ -158,6 +238,7 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         toggleCart,
         clearCart
+
       }}
     >
 
@@ -168,6 +249,7 @@ export const CartProvider = ({ children }) => {
   )
 
 }
+
 
 
 // eslint-disable-next-line react-refresh/only-export-components

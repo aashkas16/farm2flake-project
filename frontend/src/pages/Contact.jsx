@@ -5,25 +5,33 @@ import { useState } from "react"
 import axios from "axios"
 
 import {
+
   Mail,
   Phone,
   MapPin,
   Clock
+
 } from "lucide-react"
 
 export default function Contact() {
 
-  const [name, setName] = useState("")
+  const [name, setName] =
+    useState("")
 
-  const [email, setEmail] = useState("")
+  const [email, setEmail] =
+    useState("")
 
-  const [phone, setPhone] = useState("")
+  const [phone, setPhone] =
+    useState("")
 
-  const [subject, setSubject] = useState("")
+  const [subject, setSubject] =
+    useState("")
 
-  const [message, setMessage] = useState("")
+  const [message, setMessage] =
+    useState("")
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] =
+    useState(false)
 
 
 
@@ -68,21 +76,15 @@ export default function Contact() {
 
 
       alert(
-
         "Query submitted successfully!"
-
       )
 
 
 
       setName("")
-
       setEmail("")
-
       setPhone("")
-
       setSubject("")
-
       setMessage("")
 
     } catch (error) {
@@ -92,9 +94,7 @@ export default function Contact() {
 
 
       alert(
-
         "Failed to submit query"
-
       )
 
     } finally {
@@ -109,12 +109,12 @@ export default function Contact() {
 
   return (
 
-    <section className="bg-[#fafaf7] min-h-screen py-14">
+    <section className="bg-[#fafaf7] min-h-screen py-10 md:py-14 overflow-hidden">
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-3 text-[15px] text-[#6b7280] mb-8">
+        {/* BREADCRUMB */}
+        <div className="flex items-center gap-3 text-[14px] sm:text-[15px] text-[#6b7280] mb-8 flex-wrap">
 
           <Link
             to="/"
@@ -125,7 +125,15 @@ export default function Contact() {
 
           </Link>
 
-          <span>›</span>
+
+
+          <span>
+
+            ›
+
+          </span>
+
+
 
           <span className="text-[#2d5a2d] font-semibold">
 
@@ -137,17 +145,18 @@ export default function Contact() {
 
 
 
-        {/* Main Box */}
-        <div className="bg-white rounded-[30px] border border-[#edf1e8] shadow-sm overflow-hidden">
+        {/* MAIN BOX */}
+        <div className="bg-white rounded-[24px] md:rounded-[30px] border border-[#edf1e8] shadow-sm overflow-hidden">
 
           <div className="grid grid-cols-1 lg:grid-cols-2">
 
             {/* LEFT */}
-            <div className="p-10 lg:p-14 border-r border-[#edf1e8]">
+            <div className="p-6 sm:p-8 md:p-10 lg:p-14 border-b lg:border-b-0 lg:border-r border-[#edf1e8]">
 
-              <h1 className="text-[48px] leading-[1.1] font-bold text-[#183818]">
+              <h1 className="text-[34px] sm:text-[42px] md:text-[48px] leading-[1.15] font-bold text-[#183818]">
 
                 We'd Love to Hear
+
                 <br />
 
                 From You!
@@ -156,7 +165,7 @@ export default function Contact() {
 
 
 
-              <p className="mt-6 text-[#667166] text-[17px] leading-[1.9] max-w-[500px]">
+              <p className="mt-5 md:mt-6 text-[#667166] text-[15px] sm:text-[17px] leading-7 sm:leading-[1.9] max-w-[500px]">
 
                 Have questions or feedback?
                 We’re here to help.
@@ -165,13 +174,13 @@ export default function Contact() {
 
 
 
-              {/* Contact Info */}
-              <div className="mt-12 space-y-10">
+              {/* CONTACT INFO */}
+              <div className="mt-10 md:mt-12 space-y-8 md:space-y-10">
 
-                {/* Email */}
-                <div className="flex items-start gap-5">
+                {/* EMAIL */}
+                <div className="flex items-start gap-4 sm:gap-5">
 
-                  <div className="w-12 h-12 rounded-full bg-[#edf7df] flex items-center justify-center text-[#2d5a2d]">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#edf7df] flex items-center justify-center text-[#2d5a2d] shrink-0">
 
                     <Mail size={22} />
 
@@ -181,13 +190,15 @@ export default function Contact() {
 
                   <div>
 
-                    <h3 className="font-bold text-[#1d1d1d] text-lg">
+                    <h3 className="font-bold text-[#1d1d1d] text-base sm:text-lg">
 
                       Email
 
                     </h3>
 
-                    <p className="text-[#667166] mt-2">
+
+
+                    <p className="text-[#667166] mt-2 text-sm sm:text-base break-all">
 
                       hello@farm2flake.com
 
@@ -199,10 +210,10 @@ export default function Contact() {
 
 
 
-                {/* Phone */}
-                <div className="flex items-start gap-5">
+                {/* PHONE */}
+                <div className="flex items-start gap-4 sm:gap-5">
 
-                  <div className="w-12 h-12 rounded-full bg-[#edf7df] flex items-center justify-center text-[#2d5a2d]">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#edf7df] flex items-center justify-center text-[#2d5a2d] shrink-0">
 
                     <Phone size={22} />
 
@@ -212,13 +223,15 @@ export default function Contact() {
 
                   <div>
 
-                    <h3 className="font-bold text-[#1d1d1d] text-lg">
+                    <h3 className="font-bold text-[#1d1d1d] text-base sm:text-lg">
 
                       Phone
 
                     </h3>
 
-                    <p className="text-[#667166] mt-2">
+
+
+                    <p className="text-[#667166] mt-2 text-sm sm:text-base">
 
                       +91 98765 43210
 
@@ -230,10 +243,10 @@ export default function Contact() {
 
 
 
-                {/* Address */}
-                <div className="flex items-start gap-5">
+                {/* ADDRESS */}
+                <div className="flex items-start gap-4 sm:gap-5">
 
-                  <div className="w-12 h-12 rounded-full bg-[#edf7df] flex items-center justify-center text-[#2d5a2d]">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#edf7df] flex items-center justify-center text-[#2d5a2d] shrink-0">
 
                     <MapPin size={22} />
 
@@ -243,13 +256,15 @@ export default function Contact() {
 
                   <div>
 
-                    <h3 className="font-bold text-[#1d1d1d] text-lg">
+                    <h3 className="font-bold text-[#1d1d1d] text-base sm:text-lg">
 
                       Address
 
                     </h3>
 
-                    <p className="text-[#667166] mt-2">
+
+
+                    <p className="text-[#667166] mt-2 text-sm sm:text-base">
 
                       Vadodara, Gujarat, India
 
@@ -261,10 +276,10 @@ export default function Contact() {
 
 
 
-                {/* Timing */}
-                <div className="flex items-start gap-5">
+                {/* HOURS */}
+                <div className="flex items-start gap-4 sm:gap-5">
 
-                  <div className="w-12 h-12 rounded-full bg-[#edf7df] flex items-center justify-center text-[#2d5a2d]">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#edf7df] flex items-center justify-center text-[#2d5a2d] shrink-0">
 
                     <Clock size={22} />
 
@@ -274,15 +289,21 @@ export default function Contact() {
 
                   <div>
 
-                    <h3 className="font-bold text-[#1d1d1d] text-lg">
+                    <h3 className="font-bold text-[#1d1d1d] text-base sm:text-lg">
 
                       Working Hours
 
                     </h3>
 
-                    <p className="text-[#667166] mt-2">
 
-                      Mon - Sat : 9AM - 7PM
+
+                    <p className="text-[#667166] mt-2 text-sm sm:text-base leading-7">
+
+                      Monday - Saturday
+
+                      <br />
+
+                      9:00 AM - 7:00 PM
 
                     </p>
 
@@ -296,10 +317,10 @@ export default function Contact() {
 
 
 
-            {/* RIGHT */}
-            <div className="p-10 lg:p-14">
+            {/* RIGHT FORM */}
+            <div className="p-6 sm:p-8 md:p-10 lg:p-14">
 
-              <h2 className="text-[36px] font-bold text-[#183818]">
+              <h2 className="text-[28px] sm:text-[34px] font-bold text-[#183818]">
 
                 Send Us a Message
 
@@ -307,9 +328,9 @@ export default function Contact() {
 
 
 
-              <p className="mt-4 text-[#667166] text-[16px] leading-[1.8]">
+              <p className="mt-4 text-[#667166] text-[15px] sm:text-[16px] leading-7">
 
-                Fill out the form below and our team will contact you shortly.
+                Fill out the form below and our team will get back to you shortly.
 
               </p>
 
@@ -318,151 +339,89 @@ export default function Contact() {
               {/* FORM */}
               <form
                 onSubmit={handleSubmit}
-                className="mt-10 space-y-7"
+                className="mt-8 space-y-5"
               >
 
-                {/* Name */}
-                <div>
-
-                  <label className="block text-[#1d1d1d] font-medium mb-3">
-
-                    Your Name
-
-                  </label>
-
-
-
-                  <input
-                    type="text"
-                    placeholder="Enter your name"
-                    value={name}
-                    onChange={(e) =>
-                      setName(e.target.value)
-                    }
-                    className="w-full border border-[#dce5d2] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d]"
-                  />
-
-                </div>
+                {/* NAME */}
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) =>
+                    setName(e.target.value)
+                  }
+                  className="w-full border border-[#dfe5d8] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d] text-sm sm:text-base"
+                />
 
 
 
-                {/* Email */}
-                <div>
-
-                  <label className="block text-[#1d1d1d] font-medium mb-3">
-
-                    Email Address
-
-                  </label>
-
-
-
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) =>
-                      setEmail(e.target.value)
-                    }
-                    className="w-full border border-[#dce5d2] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d]"
-                  />
-
-                </div>
+                {/* EMAIL */}
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) =>
+                    setEmail(e.target.value)
+                  }
+                  className="w-full border border-[#dfe5d8] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d] text-sm sm:text-base"
+                />
 
 
 
-                {/* Phone */}
-                <div>
-
-                  <label className="block text-[#1d1d1d] font-medium mb-3">
-
-                    Phone Number
-
-                  </label>
-
-
-
-                  <input
-                    type="tel"
-                    placeholder="Enter your phone"
-                    value={phone}
-                    onChange={(e) =>
-                      setPhone(e.target.value)
-                    }
-                    className="w-full border border-[#dce5d2] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d]"
-                  />
-
-                </div>
+                {/* PHONE */}
+                <input
+                  type="text"
+                  placeholder="Phone Number"
+                  value={phone}
+                  onChange={(e) =>
+                    setPhone(e.target.value)
+                  }
+                  className="w-full border border-[#dfe5d8] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d] text-sm sm:text-base"
+                />
 
 
 
-                {/* Subject */}
-                <div>
-
-                  <label className="block text-[#1d1d1d] font-medium mb-3">
-
-                    Subject
-
-                  </label>
-
-
-
-                  <input
-                    type="text"
-                    placeholder="Enter subject"
-                    value={subject}
-                    onChange={(e) =>
-                      setSubject(e.target.value)
-                    }
-                    className="w-full border border-[#dce5d2] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d]"
-                  />
-
-                </div>
+                {/* SUBJECT */}
+                <input
+                  type="text"
+                  placeholder="Subject"
+                  value={subject}
+                  onChange={(e) =>
+                    setSubject(e.target.value)
+                  }
+                  className="w-full border border-[#dfe5d8] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d] text-sm sm:text-base"
+                />
 
 
 
-                {/* Message */}
-                <div>
-
-                  <label className="block text-[#1d1d1d] font-medium mb-3">
-
-                    Your Message
-
-                  </label>
-
-
-
-                  <textarea
-                    rows="6"
-                    placeholder="Type your message..."
-                    value={message}
-                    onChange={(e) =>
-                      setMessage(e.target.value)
-                    }
-                    className="w-full border border-[#dce5d2] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d] resize-none"
-                  />
-
-                </div>
+                {/* MESSAGE */}
+                <textarea
+                  rows="6"
+                  placeholder="Write your message..."
+                  value={message}
+                  onChange={(e) =>
+                    setMessage(e.target.value)
+                  }
+                  className="w-full border border-[#dfe5d8] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d] text-sm sm:text-base resize-none"
+                />
 
 
 
-                {/* Button */}
+                {/* BUTTON */}
                 <button
                   type="submit"
                   disabled={!isFormValid || loading}
-                  className={`w-full py-4 rounded-xl font-semibold text-lg shadow-md transition
-
-                  ${
-                    isFormValid
-                      ? "bg-[#2d5a2d] hover:bg-[#1f451f] text-white"
-                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  }`}
+                  className="w-full bg-[#2d5a2d] hover:bg-[#1f431f] disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-4 rounded-xl font-semibold transition text-sm sm:text-base"
                 >
 
                   {
+
                     loading
-                      ? "Sending..."
-                      : "Send Message"
+
+                      ? "Submitting..."
+
+                      : "Submit Query"
+
                   }
 
                 </button>

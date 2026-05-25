@@ -1,5 +1,6 @@
-import heroBg from '../../assets/products/homepage.png'
-import { Link } from 'react-router-dom'
+import heroBg from "../../assets/products/homepage.png"
+
+import { Link } from "react-router-dom"
 
 export default function Hero() {
 
@@ -7,61 +8,88 @@ export default function Hero() {
 
     <section className="relative overflow-hidden">
 
-      {/* HERO SECTION */}
+      {/* HERO */}
       <section
-        className="relative min-h-[90vh] bg-cover bg-center flex items-center"
+        className="relative min-h-[85vh] md:min-h-[90vh] bg-cover bg-center flex items-center"
         style={{
-          backgroundImage: `url(${heroBg})`,
+
+          backgroundImage: `url(${heroBg})`
+
         }}
       >
 
-        {/* Overlay */}
+        {/* OVERLAY */}
         <div className="absolute inset-0 bg-[#f7f4ea]/20"></div>
 
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full">
 
-          <div className="max-w-3xl">
 
-            <h1 className="text-5xl md:text-6xl lg:text-5xl font-bold leading-tight text-[#0f172a]">
+        {/* CONTENT */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full">
+
+          <div className="max-w-3xl py-16 md:py-24">
+
+            {/* HEADING */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-5xl font-bold leading-[1.15] text-[#0f172a]">
 
               Turn Real Fruits
+
               <br />
 
               into Instant
+
               <br />
 
               Nutrition
 
             </h1>
 
-            <p className="mt-8 text-lg md:text-xl text-black leading-relaxed max-w-xl">
+
+
+            {/* DESCRIPTION */}
+            <p className="mt-6 md:mt-8 text-[16px] sm:text-lg md:text-xl text-black leading-relaxed max-w-xl">
 
               Transform your natural fruits & vegetables
-              <br />
 
               powders into instant nutrition.
-              <br />
+
+              <br className="hidden sm:block" />
 
               Pure ingredients, real benefits.
 
             </p>
 
-            {/* Buttons */}
-            <div className="mt-6 flex flex-wrap gap-5">
 
-              <Link to="/shop" className="bg-[#2d5a2d] hover:bg-green-800 transition text-white px-10 py-4 rounded-2xl font-semibold text-lg shadow-xl" onClick={() => window.scrollTo(0, 0)}>
+
+            {/* BUTTONS */}
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 sm:gap-5 w-full sm:w-auto">
+
+              {/* SHOP */}
+              <Link
+                to="/shop"
+                onClick={() =>
+                  window.scrollTo(0, 0)
+                }
+                className="bg-[#2d5a2d] hover:bg-green-800 transition text-white px-6 sm:px-10 py-4 rounded-2xl font-semibold text-[15px] sm:text-lg shadow-xl text-center"
+              >
 
                 Shop Now
 
               </Link>
 
-              <Link to="/share-experience"
-    className="bg-[#2d5a2d] hover:bg-green-800 transition text-white px-10 py-4 rounded-2xl font-semibold text-lg shadow-xl" onClick={() => window.scrollTo(0, 0)}>
 
-    Share Your Experience
 
-  </Link>
+              {/* EXPERIENCE */}
+              <Link
+                to="/share-experience"
+                onClick={() =>
+                  window.scrollTo(0, 0)
+                }
+                className="bg-[#2d5a2d] hover:bg-green-800 transition text-white px-6 sm:px-10 py-4 rounded-2xl font-semibold text-[15px] sm:text-lg shadow-xl text-center"
+              >
+
+                Share Your Experience
+
+              </Link>
 
             </div>
 
@@ -74,4 +102,5 @@ export default function Hero() {
     </section>
 
   )
+
 }

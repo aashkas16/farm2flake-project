@@ -1,29 +1,74 @@
 import {
+
   createContext,
   useContext,
-  useState
+  useState,
+  useEffect
+
 } from "react"
 
 const WishlistContext = createContext()
 
 export const WishlistProvider = ({ children }) => {
 
-  const [wishlistItems, setWishlistItems] = useState([])
+  // LOAD FROM LOCAL STORAGE
+  const [wishlistItems, setWishlistItems] =
+    useState(() => {
+
+      const savedWishlist =
+
+        localStorage.getItem(
+          "wishlistItems"
+        )
+
+
+
+      return savedWishlist
+
+        ? JSON.parse(savedWishlist)
+
+        : []
+
+    })
+
+
+
+  // SAVE TO LOCAL STORAGE
+  useEffect(() => {
+
+    localStorage.setItem(
+
+      "wishlistItems",
+
+      JSON.stringify(wishlistItems)
+
+    )
+
+  }, [wishlistItems])
+
 
 
   // TOGGLE WISHLIST
   const toggleWishlist = (product) => {
 
     const exists = wishlistItems.find(
-      (item) => item.id === product.id
+
+      (item) =>
+        item.id === product.id
+
     )
+
+
 
     if (exists) {
 
       setWishlistItems(
 
         wishlistItems.filter(
-          (item) => item.id !== product.id
+
+          (item) =>
+            item.id !== product.id
+
         )
 
       )
@@ -31,13 +76,16 @@ export const WishlistProvider = ({ children }) => {
     } else {
 
       setWishlistItems([
+
         ...wishlistItems,
         product
+
       ])
 
     }
 
   }
+
 
 
   // CLEAR WISHLIST
@@ -48,13 +96,16 @@ export const WishlistProvider = ({ children }) => {
   }
 
 
+
   return (
 
     <WishlistContext.Provider
       value={{
+
         wishlistItems,
         toggleWishlist,
         clearWishlist
+
       }}
     >
 
@@ -65,6 +116,7 @@ export const WishlistProvider = ({ children }) => {
   )
 
 }
+
 
 
 // eslint-disable-next-line react-refresh/only-export-components

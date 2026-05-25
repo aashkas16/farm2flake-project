@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
 import { useEffect, useState } from "react"
 
 import { useNavigate } from "react-router-dom"
@@ -6,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { CheckCircle2 } from "lucide-react"
 
 import { useCart } from "../components/context/CartContext"
+
 import { useWishlist } from "../components/context/WishlistContext"
 
 import { useTrial } from "../components/context/TrialContext"
@@ -14,23 +16,33 @@ export default function OrderSuccess() {
 
   const navigate = useNavigate()
 
-  const [seconds, setSeconds] = useState(6)
+  const [seconds, setSeconds] =
+    useState(6)
 
-  const { clearCart } = useCart()
 
-  const { clearWishlist } = useWishlist()
 
-  const { clearTrialItems } = useTrial()
+  const { clearCart } =
+    useCart()
+
+  const { clearWishlist } =
+    useWishlist()
+
+  const { clearTrialItems } =
+    useTrial()
+
 
 
   // CLEAR ONLY ONCE
   useEffect(() => {
 
     clearCart()
+
     clearWishlist()
+
     clearTrialItems()
 
   }, [])
+
 
 
   // COUNTDOWN
@@ -46,31 +58,40 @@ export default function OrderSuccess() {
 
     }
 
+
+
     const timer = setTimeout(() => {
 
-      setSeconds((prev) => prev - 1)
+      setSeconds(
+
+        (prev) => prev - 1
+
+      )
 
     }, 1000)
+
+
 
     return () => clearTimeout(timer)
 
   }, [seconds])
 
 
+
   return (
 
-    <section className="min-h-screen bg-[#fafaf7] flex items-center justify-center px-6">
+    <section className="min-h-screen bg-[#fafaf7] flex items-center justify-center px-4 sm:px-6 py-10 overflow-hidden">
 
-      <div className="bg-white border border-[#edf1e8] rounded-[32px] p-14 max-w-2xl w-full text-center shadow-sm">
+      <div className="bg-white border border-[#edf1e8] rounded-[24px] sm:rounded-[32px] p-6 sm:p-10 md:p-14 max-w-2xl w-full text-center shadow-sm">
 
         {/* ICON */}
         <div className="flex justify-center">
 
-          <div className="w-28 h-28 rounded-full bg-[#edf7df] flex items-center justify-center">
+          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#edf7df] flex items-center justify-center">
 
             <CheckCircle2
-              size={70}
-              className="text-[#2d5a2d]"
+              size={55}
+              className="text-[#2d5a2d] sm:w-[70px] sm:h-[70px]"
             />
 
           </div>
@@ -78,36 +99,40 @@ export default function OrderSuccess() {
         </div>
 
 
+
         {/* TITLE */}
-        <h1 className="mt-10 text-5xl font-bold text-[#183818]">
+        <h1 className="mt-8 sm:mt-10 text-[32px] sm:text-4xl md:text-5xl leading-tight font-bold text-[#183818]">
 
           Order Placed Successfully
 
         </h1>
 
 
+
         {/* TEXT */}
-        <p className="mt-6 text-[#667166] text-lg leading-[1.9]">
+        <p className="mt-5 sm:mt-6 text-[#667166] text-[15px] sm:text-lg leading-7 sm:leading-[1.9]">
 
           Thank you for shopping with Farm2Flake.
 
-          <br />
+          <br className="hidden sm:block" />
 
           Your order has been received and is being processed.
 
         </p>
 
 
+
         {/* ORDER ID */}
-        <div className="mt-8 inline-flex items-center bg-[#f5f8f2] px-6 py-3 rounded-full text-[#2d5a2d] font-semibold">
+        <div className="mt-8 inline-flex items-center justify-center bg-[#f5f8f2] px-5 sm:px-6 py-3 rounded-full text-[#2d5a2d] font-semibold text-sm sm:text-base break-all max-w-full">
 
           Order ID : #F2F2026
 
         </div>
 
 
+
         {/* REDIRECT */}
-        <p className="mt-10 text-[#8b928b] text-sm">
+        <p className="mt-8 sm:mt-10 text-[#8b928b] text-sm sm:text-base leading-7">
 
           Redirecting to homepage in{" "}
 
@@ -122,6 +147,7 @@ export default function OrderSuccess() {
         </p>
 
 
+
         {/* BUTTON */}
         <button
           onClick={() => {
@@ -131,7 +157,7 @@ export default function OrderSuccess() {
             window.scrollTo(0, 0)
 
           }}
-          className="mt-8 bg-[#2d5a2d] hover:bg-[#1f431f] transition text-white px-8 py-4 rounded-xl font-semibold"
+          className="mt-8 w-full sm:w-auto bg-[#2d5a2d] hover:bg-[#1f431f] transition text-white px-7 sm:px-8 py-4 rounded-xl font-semibold text-sm sm:text-base"
         >
 
           Continue Shopping
