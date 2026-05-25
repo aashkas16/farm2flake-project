@@ -72,7 +72,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-3 sm:px-5 h-[72px] flex items-center justify-between">
 
         {/* LEFT SIDE */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 min-w-0">
 
           {/* MOBILE MENU */}
           <button
@@ -99,7 +99,7 @@ export default function Header() {
           {/* LOGO */}
           <div className="leading-none">
 
-            <h1 className="text-[18px] sm:text-[26px] md:text-[34px] font-bold text-[#275227]">
+            <h1 className="text-[14px] sm:text-[26px] md:text-[34px] font-bold text-[#275227] truncate">
 
               <Link to="/">
 
@@ -145,7 +145,7 @@ export default function Header() {
 
 
         {/* RIGHT ICONS */}
-        <div className="flex items-center gap-3 sm:gap-5 text-[#1f1f1f]">
+       <div className="flex items-center gap-2 sm:gap-4 text-[#1f1f1f] shrink-0">
 
           {/* SEARCH */}
           <button className="hover:text-[#2d5a2d] transition">
