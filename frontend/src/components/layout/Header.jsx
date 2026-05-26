@@ -3,24 +3,28 @@ import { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 
 import {
-  Heart,
   ShoppingCart,
   Menu,
   X
 } from "lucide-react"
 
 import { useWishlist } from "../context/WishlistContext"
+
 import { useCart } from "../context/CartContext"
 
 export default function Header() {
 
-  const { wishlistItems } = useWishlist()
+  const { wishlistItems } =
+    useWishlist()
 
-  const { cartItems } = useCart()
+  const { cartItems } =
+    useCart()
 
-  const [mobileMenu, setMobileMenu] = useState(false)
+  const [mobileMenu, setMobileMenu] =
+    useState(false)
 
-  const location = useLocation()
+  const location =
+    useLocation()
 
   useEffect(() => {
 
@@ -68,19 +72,21 @@ export default function Header() {
       {/* HEADER */}
       <header className="w-full sticky top-0 z-[9999] bg-white/92 backdrop-blur-xl border-b border-black/[0.04]">
 
-        <div className="max-w-7xl mx-auto h-[70px] md:h-[76px] px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto h-[68px] md:h-[76px] px-4 sm:px-6 lg:px-8 flex items-center justify-between">
 
           {/* LEFT */}
-          <div className="flex items-center gap-3 min-w-0">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
 
             {/* MOBILE MENU */}
             <button
-              onClick={() => setMobileMenu(true)}
-              className="lg:hidden w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#f5f5f2] transition"
+              onClick={() =>
+                setMobileMenu(true)
+              }
+              className="lg:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#f5f5f2] transition shrink-0"
             >
 
               <Menu
-                size={22}
+                size={20}
                 strokeWidth={2.3}
                 className="text-[#111827]"
               />
@@ -93,13 +99,13 @@ export default function Header() {
               className="leading-none min-w-0"
             >
 
-              <h1 className="text-[30px] sm:text-[28px] md:text-[34px] font-extrabold tracking-[-1.8px] text-[#275227] leading-none truncate">
+              <h1 className="text-[22px] sm:text-[28px] md:text-[34px] font-extrabold tracking-[-1px] text-[#275227] leading-none truncate">
 
                 Farm2Flake
 
               </h1>
 
-              <p className="text-[10px] sm:text-[11px] text-[#6b7280] mt-1 tracking-[0.3px]">
+              <p className="text-[10px] sm:text-[11px] text-[#6b7280] mt-1 tracking-[0.3px] truncate">
 
                 Rich Fruits. Real Goodness.
 
@@ -141,41 +147,21 @@ export default function Header() {
           </nav>
 
           {/* RIGHT */}
-          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-0 shrink-0">
 
-            {/* WISHLIST */}
+            {/* CART */}
             <Link
-              to="/wishlist"
-              className="hidden sm:flex relative w-10 h-10 rounded-full items-center justify-center hover:bg-[#f5f5f2] transition"
+              to="/cart"
+              className="relative w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#f5f5f2] transition"
             >
 
-              <Heart
+              <ShoppingCart
                 size={20}
                 strokeWidth={2.2}
                 className="text-[#111827]"
               />
 
-              <span className="absolute top-[5px] right-[5px] bg-[#79b84a] text-white text-[9px] min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center font-bold">
-
-                {wishlistItems.length}
-
-              </span>
-
-            </Link>
-
-            {/* CART */}
-            <Link
-              to="/cart"
-              className="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#f5f5f2] transition"
-            >
-
-              <ShoppingCart
-                size={21}
-                strokeWidth={2.2}
-                className="text-[#111827]"
-              />
-
-              <span className="absolute top-[5px] right-[5px] bg-[#79b84a] text-white text-[9px] min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center font-bold">
+              <span className="absolute top-[3px] right-[2px] bg-[#79b84a] text-white text-[8px] min-w-[15px] h-[15px] px-1 rounded-full flex items-center justify-center font-bold">
 
                 {cartItems.length}
 
@@ -224,11 +210,11 @@ export default function Header() {
         >
 
           {/* TOP */}
-          <div className="h-[76px] px-5 border-b border-[#eef2e7] flex items-center justify-between">
+          <div className="h-[74px] px-5 border-b border-[#eef2e7] flex items-center justify-between">
 
             <div>
 
-              <h2 className="text-[26px] font-extrabold tracking-[-1px] text-[#275227] leading-none">
+              <h2 className="text-[24px] font-extrabold tracking-[-1px] text-[#275227] leading-none">
 
                 Farm2Flake
 
@@ -244,12 +230,14 @@ export default function Header() {
 
             {/* CLOSE */}
             <button
-              onClick={() => setMobileMenu(false)}
-              className="w-10 h-10 rounded-full hover:bg-[#f5f5f2] flex items-center justify-center transition"
+              onClick={() =>
+                setMobileMenu(false)
+              }
+              className="w-9 h-9 rounded-full hover:bg-[#f5f5f2] flex items-center justify-center transition"
             >
 
               <X
-                size={22}
+                size={21}
                 className="text-[#111827]"
               />
 
@@ -288,7 +276,7 @@ export default function Header() {
 
             ))}
 
-            {/* MOBILE WISHLIST */}
+            {/* WISHLIST */}
             <Link
               to="/wishlist"
               className="
@@ -308,7 +296,7 @@ export default function Header() {
               "
             >
 
-              WISHLIST
+              WISHLIST ({wishlistItems.length})
 
             </Link>
 
@@ -350,7 +338,9 @@ export default function Header() {
         {/* BACKDROP */}
         <div
           className="w-full h-full"
-          onClick={() => setMobileMenu(false)}
+          onClick={() =>
+            setMobileMenu(false)
+          }
         />
 
       </div>
