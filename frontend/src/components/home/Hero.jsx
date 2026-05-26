@@ -11,12 +11,16 @@ export default function Hero() {
       <section
         className="
           relative
+
           min-h-[72vh]
           sm:min-h-[82vh]
           md:min-h-[90vh]
+
           flex items-center
+
           bg-cover
           bg-no-repeat
+
           bg-[72%_center]
           sm:bg-center
         "
@@ -26,18 +30,21 @@ export default function Hero() {
       >
 
         {/* OVERLAY */}
-        <div className="
-          absolute inset-0
+        <div
+          className="
+            absolute inset-0
 
-          bg-gradient-to-r
-          from-[#f7f4ea]/[0.97]
-          via-[#f7f4ea]/[0.88]
-          to-[#f7f4ea]/[0.38]
+            bg-gradient-to-r
 
-          sm:from-[#f7f4ea]/[0.82]
-          sm:via-[#f7f4ea]/[0.50]
-          sm:to-transparent
-        " />
+            from-[#f7f4ea]/[0.97]
+            via-[#f7f4ea]/[0.88]
+            to-[#f7f4ea]/[0.38]
+
+            sm:from-[#f7f4ea]/[0.82]
+            sm:via-[#f7f4ea]/[0.50]
+            sm:to-transparent
+          "
+        />
 
         {/* CONTENT */}
         <div className="relative z-10 w-full">
@@ -46,57 +53,83 @@ export default function Hero() {
 
             <div className="max-w-[320px] sm:max-w-2xl pt-14 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-24">
 
-              {/* SUBTEXT */}
-              <p className="
-                text-[11px]
-                sm:text-sm
-                uppercase
-                tracking-[2.5px]
-                text-[#5f7a5f]
-                font-semibold
-                mb-5
-              ">
+              {/* LABEL */}
+              <p
+                className="
+                  text-[11px]
+                  sm:text-sm
+
+                  uppercase
+
+                  tracking-[2.5px]
+
+                  text-[#5f7a5f]
+
+                  font-semibold
+
+                  mb-5
+                "
+              >
 
                 Natural Freeze Dried Nutrition
 
               </p>
 
               {/* HEADING */}
-              <h1 className="
-                text-[42px]
-                leading-[0.95]
-                tracking-[-2.4px]
-                font-extrabold
-                text-[#0f172a]
+              <h1
+                className="
+                  text-[42px]
 
-                sm:text-5xl
-                md:text-6xl
-                lg:text-[62px]
-                lg:leading-[1]
-              ">
+                  leading-[0.95]
+
+                  tracking-[-2.4px]
+
+                  font-extrabold
+
+                  text-[#0f172a]
+
+                  sm:text-5xl
+                  md:text-6xl
+                  lg:text-[62px]
+
+                  lg:leading-[1]
+                "
+              >
 
                 Turn Real
+
                 <br />
+
                 Fruits
+
                 <br />
+
                 into Instant
+
                 <br />
+
                 Nutrition
 
               </h1>
 
               {/* DESCRIPTION */}
-              <p className="
-                mt-6
-                sm:mt-7
-                text-[15px]
-                sm:text-lg
-                leading-7
-                sm:leading-8
-                text-[#1f2937]
-                max-w-[290px]
-                sm:max-w-xl
-              ">
+              <p
+                className="
+                  mt-6
+                  sm:mt-7
+
+                  text-[15px]
+                  sm:text-lg
+
+                  leading-7
+                  sm:leading-8
+
+                  text-[#1f2937]
+
+                  max-w-[290px]
+                  sm:max-w-xl
+                "
+              >
 
                 Transform your natural fruits &
                 vegetables powders into instant
@@ -106,12 +139,20 @@ export default function Hero() {
               </p>
 
               {/* BUTTONS */}
-              <div className="
-                mt-8
-                flex flex-col sm:flex-row
-                gap-3 sm:gap-5
-                w-full sm:w-auto
-              ">
+              <div
+                className="
+                  mt-8
+
+                  flex flex-col
+                  sm:flex-row
+
+                  gap-3
+                  sm:gap-5
+
+                  w-full
+                  sm:w-auto
+                "
+              >
 
                 {/* SHOP NOW */}
                 <Link
@@ -123,17 +164,21 @@ export default function Hero() {
                     h-[54px]
                     sm:h-[58px]
 
-                    px-6 sm:px-9
+                    px-6
+                    sm:px-9
 
                     rounded-xl
 
                     bg-[#2d5a2d]
                     hover:bg-[#234723]
 
-                    transition-all duration-300
+                    transition-all
+                    duration-300
 
                     text-white
+
                     font-semibold
+
                     text-[15px]
                     sm:text-base
 
@@ -157,20 +202,26 @@ export default function Hero() {
                     h-[54px]
                     sm:h-[58px]
 
-                    px-6 sm:px-9
+                    px-6
+                    sm:px-9
 
                     rounded-xl
 
                     border border-[#d7dfcf]
+
                     bg-white/75
+
                     backdrop-blur-sm
 
                     hover:bg-white
 
-                    transition-all duration-300
+                    transition-all
+                    duration-300
 
                     text-[#183818]
+
                     font-semibold
+
                     text-[15px]
                     sm:text-base
 
@@ -193,6 +244,5 @@ export default function Hero() {
       </section>
 
     </section>
-
   )
 }
