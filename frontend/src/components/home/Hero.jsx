@@ -8,88 +8,181 @@ export default function Hero() {
 
     <section className="relative overflow-hidden">
 
-      {/* HERO */}
       <section
-        className="relative min-h-[85vh] md:min-h-[90vh] bg-cover bg-center flex items-center"
+        className="
+          relative
+          min-h-[72vh]
+          sm:min-h-[82vh]
+          md:min-h-[90vh]
+          flex items-center
+          bg-cover
+          bg-no-repeat
+          bg-[72%_center]
+          sm:bg-center
+        "
         style={{
-
           backgroundImage: `url(${heroBg})`
-
         }}
       >
 
         {/* OVERLAY */}
-        <div className="absolute inset-0 bg-[#f7f4ea]/20"></div>
+        <div className="
+          absolute inset-0
 
+          bg-gradient-to-r
+          from-[#f7f4ea]/[0.97]
+          via-[#f7f4ea]/[0.88]
+          to-[#f7f4ea]/[0.38]
 
+          sm:from-[#f7f4ea]/[0.82]
+          sm:via-[#f7f4ea]/[0.50]
+          sm:to-transparent
+        " />
 
         {/* CONTENT */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full">
+        <div className="relative z-10 w-full">
 
-          <div className="max-w-3xl py-16 md:py-24">
+          <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
 
-            {/* HEADING */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-5xl font-bold leading-[1.15] text-[#0f172a]">
+            <div className="max-w-[320px] sm:max-w-2xl pt-14 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-24">
 
-              Turn Real Fruits
+              {/* SUBTEXT */}
+              <p className="
+                text-[11px]
+                sm:text-sm
+                uppercase
+                tracking-[2.5px]
+                text-[#5f7a5f]
+                font-semibold
+                mb-5
+              ">
 
-              <br />
+                Natural Freeze Dried Nutrition
 
-              into Instant
+              </p>
 
-              <br />
+              {/* HEADING */}
+              <h1 className="
+                text-[42px]
+                leading-[0.95]
+                tracking-[-2.4px]
+                font-extrabold
+                text-[#0f172a]
 
-              Nutrition
+                sm:text-5xl
+                md:text-6xl
+                lg:text-[62px]
+                lg:leading-[1]
+              ">
 
-            </h1>
+                Turn Real
+                <br />
+                Fruits
+                <br />
+                into Instant
+                <br />
+                Nutrition
 
+              </h1>
 
+              {/* DESCRIPTION */}
+              <p className="
+                mt-6
+                sm:mt-7
+                text-[15px]
+                sm:text-lg
+                leading-7
+                sm:leading-8
+                text-[#1f2937]
+                max-w-[290px]
+                sm:max-w-xl
+              ">
 
-            {/* DESCRIPTION */}
-            <p className="mt-6 md:mt-8 text-[16px] sm:text-lg md:text-xl text-black leading-relaxed max-w-xl">
+                Transform your natural fruits &
+                vegetables powders into instant
+                nutrition. Pure ingredients,
+                real benefits.
 
-              Transform your natural fruits & vegetables
+              </p>
 
-              powders into instant nutrition.
+              {/* BUTTONS */}
+              <div className="
+                mt-8
+                flex flex-col sm:flex-row
+                gap-3 sm:gap-5
+                w-full sm:w-auto
+              ">
 
-              <br className="hidden sm:block" />
+                {/* SHOP NOW */}
+                <Link
+                  to="/shop"
+                  onClick={() =>
+                    window.scrollTo(0, 0)
+                  }
+                  className="
+                    h-[54px]
+                    sm:h-[58px]
 
-              Pure ingredients, real benefits.
+                    px-6 sm:px-9
 
-            </p>
+                    rounded-xl
 
+                    bg-[#2d5a2d]
+                    hover:bg-[#234723]
 
+                    transition-all duration-300
 
-            {/* BUTTONS */}
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 sm:gap-5 w-full sm:w-auto">
+                    text-white
+                    font-semibold
+                    text-[15px]
+                    sm:text-base
 
-              {/* SHOP */}
-              <Link
-                to="/shop"
-                onClick={() =>
-                  window.scrollTo(0, 0)
-                }
-                className="bg-[#2d5a2d] hover:bg-green-800 transition text-white px-6 sm:px-10 py-4 rounded-2xl font-semibold text-[15px] sm:text-lg shadow-xl text-center"
-              >
+                    flex items-center justify-center
 
-                Shop Now
+                    shadow-[0_10px_30px_rgba(45,90,45,0.18)]
+                  "
+                >
 
-              </Link>
+                  Shop Now
 
+                </Link>
 
+                {/* EXPERIENCE */}
+                <Link
+                  to="/share-experience"
+                  onClick={() =>
+                    window.scrollTo(0, 0)
+                  }
+                  className="
+                    h-[54px]
+                    sm:h-[58px]
 
-              {/* EXPERIENCE */}
-              <Link
-                to="/share-experience"
-                onClick={() =>
-                  window.scrollTo(0, 0)
-                }
-                className="bg-[#2d5a2d] hover:bg-green-800 transition text-white px-6 sm:px-10 py-4 rounded-2xl font-semibold text-[15px] sm:text-lg shadow-xl text-center"
-              >
+                    px-6 sm:px-9
 
-                Share Your Experience
+                    rounded-xl
 
-              </Link>
+                    border border-[#d7dfcf]
+                    bg-white/75
+                    backdrop-blur-sm
+
+                    hover:bg-white
+
+                    transition-all duration-300
+
+                    text-[#183818]
+                    font-semibold
+                    text-[15px]
+                    sm:text-base
+
+                    flex items-center justify-center
+                  "
+                >
+
+                  Share Experience
+
+                </Link>
+
+              </div>
 
             </div>
 
@@ -102,5 +195,4 @@ export default function Hero() {
     </section>
 
   )
-
 }
