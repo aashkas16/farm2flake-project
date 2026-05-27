@@ -149,7 +149,7 @@ export default function BestSellers() {
                 <div className="bg-white rounded-2xl overflow-hidden">
 
                   <img
-                    src={`https://farm2flake-backend.onrender.com/${product.image}`}
+                    src={product.image}
                     alt={product.name}
                     className="w-full h-[220px] sm:h-[200px] lg:h-[180px] object-contain"
                   />

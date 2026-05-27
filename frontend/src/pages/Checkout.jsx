@@ -360,7 +360,7 @@ ${productText}
                       <div className="bg-[#f8f8f5] rounded-xl overflow-hidden shrink-0">
 
                         <img
-                          src={`https://farm2flake-backend.onrender.com/${product.image}`}
+                          src={product.image}
                           alt={product.name}
                           className="w-[65px] h-[65px] sm:w-[75px] sm:h-[75px] object-contain p-2"
                         />

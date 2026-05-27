@@ -200,7 +200,7 @@ export default function Products() {
                     <div className="flex items-center gap-4">
 
                       <img
-                        src={`https://farm2flake-backend.onrender.com/${product.image}`}
+                        src={product.image}
                         alt={product.name}
                         className="w-16 h-16 rounded-xl object-cover border border-[#edf1e8]"
                       />

@@ -182,7 +182,7 @@ export default function Cart() {
                         <div className="bg-[#f8f8f5] rounded-xl overflow-hidden w-full sm:w-[120px] flex items-center justify-center">
 
                           <img
-                           src={`https://farm2flake-backend.onrender.com/${product.image}`}
+                           src={product.image}
                             alt={product.name}
                             className="w-[110px] h-[110px] object-contain p-2"
                           />
@@ -299,7 +299,7 @@ export default function Cart() {
                           <div className="bg-[#f8f8f5] rounded-xl overflow-hidden">
 
                             <img
-                              src={`https://farm2flake-backend.onrender.com/${product.image}`}
+                              src={product.image}
                               alt={product.name}
                               className="w-[90px] h-[90px] object-contain p-2"
                             />
