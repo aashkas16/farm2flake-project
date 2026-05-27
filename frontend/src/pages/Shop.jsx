@@ -530,7 +530,7 @@ export default function Shop() {
 
 
                     <img
-                      src={product.image}
+                      src={`https://farm2flake-backend.onrender.com${product.image}`}
                       alt={product.name}
                       className="w-full h-[180px] sm:h-[220px] object-contain"
                     />

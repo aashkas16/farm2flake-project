@@ -125,7 +125,7 @@ export default function Blog() {
               <div className="overflow-hidden">
 
                 <img
-                  src={blog.image}
+                  src={`https://farm2flake-backend.onrender.com${blog.image}`}
                   alt={blog.title}
                   className="w-full h-[220px] sm:h-[240px] object-cover hover:scale-105 transition duration-500"
                 />
