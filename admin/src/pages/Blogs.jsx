@@ -197,7 +197,7 @@ export default function Blogs() {
             <div className="col-span-4 flex items-center gap-4">
 
               <img
-                src={`https://farm2flake-backend.onrender.com${blog.image}`}
+                src={`https://farm2flake-backend.onrender.com/${blog.image}`}
                 alt={blog.title}
                 className="w-[70px] h-[55px] rounded-xl object-cover"
               />

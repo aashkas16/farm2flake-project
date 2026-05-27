@@ -173,7 +173,7 @@ export default function Wishlist() {
                   <div className="bg-[#f8f8f5] rounded-[20px] sm:rounded-[22px] overflow-hidden">
 
                     <img
-                      src={`https://farm2flake-backend.onrender.com${product.image || product.image_url}`}
+                      src={`https://farm2flake-backend.onrender.com/${product.image || product.image_url}`}
                       alt={product.name}
                       className="w-full h-[220px] sm:h-[230px] object-contain p-4"
                     />

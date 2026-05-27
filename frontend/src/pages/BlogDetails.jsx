@@ -143,7 +143,7 @@ export default function BlogDetails() {
         <div className="mt-8 sm:mt-12 rounded-[24px] sm:rounded-[30px] shadow-lg overflow-hidden">
 
           <img
-             src={`https://farm2flake-backend.onrender.com${blog.image}`}
+             src={`https://farm2flake-backend.onrender.com/${blog.image}`}
             alt={blog.title}
             className="w-full h-[240px] sm:h-[380px] md:h-[500px] object-cover"
           />
@@ -211,7 +211,7 @@ export default function BlogDetails() {
                 <div className="overflow-hidden">
 
                   <img
-                    src={`https://farm2flake-backend.onrender.com${item.image}`}
+                    src={`https://farm2flake-backend.onrender.com/${item.image}`}
                     alt={item.title}
                     className="w-full h-[220px] sm:h-[260px] object-cover hover:scale-105 transition duration-500"
                   />
