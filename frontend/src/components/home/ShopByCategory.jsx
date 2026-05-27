@@ -25,7 +25,7 @@ export default function ShopByCategory() {
 
       bg: "bg-[#fdeceb]",
 
-      link: "/shop?category=Fruit"
+      link: "/shop?category=Fruit Powders"
 
     },
 
@@ -44,7 +44,7 @@ export default function ShopByCategory() {
 
       bg: "bg-[#edf6df]",
 
-      link: "/shop?category=Vegetable"
+      link: "/shop?category=Vegetable Powders"
 
     },
 
@@ -63,7 +63,7 @@ export default function ShopByCategory() {
 
       bg: "bg-[#fff2cf]",
 
-      link: "/shop?category=Superfood"
+      link: "/shop?category=Herbs Powders"
 
     },
 

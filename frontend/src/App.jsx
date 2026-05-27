@@ -21,33 +21,64 @@ import ShareExperience from "./pages/ShareExperience"
 
 import WhatsappBot from "./components/whatsapp/WhatsappBot"
 
+import { useEffect, useState } from "react"
+import Preloader from "./components/ui/Preloader"
+
 function App() {
-  return (
+
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+
+  const timer = setTimeout(() => {
+
+    setLoading(false)
+
+  }, 4500)
+
+  return () => clearTimeout(timer)
+
+  }, [])
+
+ return (
+
+  <>
+
+    <Preloader loading={loading} />
+
     <BrowserRouter>
+
       <Header />
+
       <Routes>
 
-  <Route path="/" element={<Home />} />
-  <Route path="/share-experience" element={<ShareExperience />} />
-  <Route path="/trial-selection" element={<TrialSelection />} />
-  <Route path="/trial-review" element={<TrialReview />} />
-  <Route path="/order-success" element={<OrderSuccess />} />
-  <Route path="/checkout" element={<Checkout />} />
-  <Route path="/cart" element={<Cart />} />
-  <Route path="/shop" element={<Shop />} />
-  <Route path="/about" element={<About />} />
-  <Route path="/faq" element={<FAQ />} />
-  <Route path="/blog" element={<Blog />} />
-  <Route path="/trial" element={<Trial />} />
-  <Route path="/contact" element={<Contact />} />
-    <Route path="/blog/:id" element={<BlogDetails />} />
-  <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/share-experience" element={<ShareExperience />} />
+        <Route path="/trial-selection" element={<TrialSelection />} />
+        <Route path="/trial-review" element={<TrialReview />} />
+        <Route path="/order-success" element={<OrderSuccess />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/trial" element={<Trial />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/blog/:id" element={<BlogDetails />} />
+        <Route path="/wishlist" element={<Wishlist />} />
 
-</Routes>
+      </Routes>
+
       <WhatsappBot />
+
       <Footer />
+
     </BrowserRouter>
-  );
+
+  </>
+
+)
 }
 
-export default App;
+export default App

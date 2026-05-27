@@ -10,65 +10,91 @@ import RealIngredients from "../components/home/RealIngredients"
 
 import Testimonials from "../components/home/Testimonials"
 
+import Reveal from "../animations/Reveal"
+
 function Home() {
 
   return (
 
     <div className="bg-white overflow-x-hidden">
 
-      {/* HERO */}
-      <section className="w-full">
+  {/* HERO */}
+  <section className="w-full">
 
-        <Hero />
+    <Reveal>
 
-      </section>
+      <Hero />
 
+    </Reveal>
 
-
-      {/* HOW IT WORKS */}
-      <section className="w-full">
-
-        <HowItWorks />
-
-      </section>
+  </section>
 
 
 
-      {/* SHOP CATEGORY */}
-      <section className="w-full px-4 sm:px-6 lg:px-0">
+  {/* HOW IT WORKS */}
+  <section className="w-full">
 
-        <ShopByCategory />
+    <Reveal delay={0.1}>
 
-      </section>
+      <HowItWorks />
 
+    </Reveal>
 
-
-      {/* BEST SELLERS */}
-      <section className="w-full px-4 sm:px-6 lg:px-0">
-
-        <BestSellers />
-
-      </section>
+  </section>
 
 
 
-      {/* INGREDIENTS */}
-      <section className="w-full px-4 sm:px-6 lg:px-0">
+  {/* SHOP CATEGORY */}
+  <section className="w-full px-4 sm:px-6 lg:px-0">
 
-        <RealIngredients />
+    <Reveal delay={0.15}>
 
-      </section>
+      <ShopByCategory />
+
+    </Reveal>
+
+  </section>
 
 
 
-      {/* TESTIMONIALS */}
-      <section className="w-full px-4 sm:px-6 lg:px-0 pb-6">
+  {/* BEST SELLERS */}
+  <section className="w-full px-4 sm:px-6 lg:px-0">
 
-        <Testimonials />
+    <Reveal delay={0.2}>
 
-      </section>
+      <BestSellers />
 
-    </div>
+    </Reveal>
+
+  </section>
+
+
+
+  {/* INGREDIENTS */}
+  <section className="w-full px-4 sm:px-6 lg:px-0">
+
+    <Reveal delay={0.25}>
+
+      <RealIngredients />
+
+    </Reveal>
+
+  </section>
+
+
+
+  {/* TESTIMONIALS */}
+  <section className="w-full px-4 sm:px-6 lg:px-0 pb-6">
+
+    <Reveal delay={0.3}>
+
+      <Testimonials />
+
+    </Reveal>
+
+  </section>
+
+</div>
 
   )
 
