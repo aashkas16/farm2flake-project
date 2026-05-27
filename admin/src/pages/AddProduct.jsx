@@ -62,7 +62,7 @@ export default function AddProduct() {
 
       const response = await axios.post(
 
-        "http://localhost:5000/api/upload-blog-image",
+        "https://farm2flake-backend.onrender.com/api/upload-blog-image",
 
         formData,
 
@@ -104,7 +104,7 @@ export default function AddProduct() {
 
 
       await axios.post(
-        "http://localhost:5000/api/products",
+        "https://farm2flake-backend.onrender.com/api/products",
 
         {
 

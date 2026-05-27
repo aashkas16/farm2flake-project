@@ -31,7 +31,7 @@ export default function AdminManagement() {
       const response =
         await axios.get(
 
-          "http://localhost:5000/api/admins"
+          "https://farm2flake-backend.onrender.com/api/admins"
 
         )
 
@@ -64,7 +64,7 @@ export default function AdminManagement() {
 
       await axios.post(
 
-        "http://localhost:5000/api/admins",
+        "https://farm2flake-backend.onrender.com/api/admins",
 
         {
 
@@ -107,7 +107,7 @@ export default function AdminManagement() {
 
       await axios.delete(
 
-        `http://localhost:5000/api/admins/${id}`
+        `https://farm2flake-backend.onrender.com/api/admins/${id}`
 
       )
 

@@ -19,7 +19,7 @@ export default function Reviews() {
     try {
 
       const response = await axios.get(
-        "http://localhost:5000/api/admin-reviews"
+        "https://farm2flake-backend.onrender.com/api/admin-reviews"
       )
 
 
@@ -50,7 +50,7 @@ export default function Reviews() {
     try {
 
       await axios.put(
-        `http://localhost:5000/api/reviews/${id}/approve`
+        `https://farm2flake-backend.onrender.com/api/reviews/${id}/approve`
       )
 
 
@@ -86,7 +86,7 @@ export default function Reviews() {
     try {
 
       await axios.delete(
-        `http://localhost:5000/api/reviews/${id}`
+        `https://farm2flake-backend.onrender.com/api/reviews/${id}`
       )
 
 

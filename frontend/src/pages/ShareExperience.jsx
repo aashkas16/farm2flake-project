@@ -38,7 +38,7 @@ export default function ShareExperience() {
 
       await axios.post(
 
-        "http://localhost:5000/api/reviews",
+        "https://farm2flake-backend.onrender.com/api/reviews",
 
         {
 

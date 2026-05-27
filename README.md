@@ -51,7 +51,7 @@ npm install
 npm start
 ```
 
-The backend server will run on `http://localhost:5000`
+The backend server will run on `https://farm2flake-backend.onrender.com`
 
 ### 3. Frontend Setup
 

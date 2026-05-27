@@ -76,7 +76,7 @@ export default function Shop() {
       const response =
         await axios.get(
 
-          "http://localhost:5000/api/products"
+          "https://farm2flake-backend.onrender.com/api/products"
 
         )
 

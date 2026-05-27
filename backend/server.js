@@ -271,7 +271,7 @@ app.post(
 
         imageUrl:
 
-        `http://localhost:5000/uploads/blogs/${req.file.filename}`
+        `https://farm2flake-backend.onrender.com/uploads/blogs/${req.file.filename}`
 
       })
 

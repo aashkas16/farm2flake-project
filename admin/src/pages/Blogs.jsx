@@ -25,7 +25,7 @@ export default function Blogs() {
     try {
 
       const response = await axios.get(
-        "http://localhost:5000/api/blogs"
+        "https://farm2flake-backend.onrender.com/api/blogs"
       )
 
       setBlogs(response.data)
@@ -60,7 +60,7 @@ export default function Blogs() {
     try {
 
       await axios.delete(
-        `http://localhost:5000/api/blogs/${id}`
+        `https://farm2flake-backend.onrender.com/api/blogs/${id}`
       )
 
       fetchBlogs()

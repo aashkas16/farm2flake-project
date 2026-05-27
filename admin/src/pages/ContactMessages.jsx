@@ -16,7 +16,7 @@ export default function ContactMessages() {
     try {
 
       const response = await axios.get(
-        "http://localhost:5000/api/contact-messages"
+        "https://farm2flake-backend.onrender.com/api/contact-messages"
       )
 
 
@@ -51,7 +51,7 @@ export default function ContactMessages() {
 
       await axios.put(
 
-        `http://localhost:5000/api/contact-messages/${id}`,
+        `https://farm2flake-backend.onrender.com/api/contact-messages/${id}`,
 
         {
 

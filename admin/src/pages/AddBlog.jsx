@@ -41,7 +41,7 @@ const uploadImage = async (e) => {
 
     const response = await axios.post(
 
-      "http://localhost:5000/api/upload-blog-image",
+      "https://farm2flake-backend.onrender.com/api/upload-blog-image",
 
       formData,
 
@@ -81,7 +81,7 @@ const uploadImage = async (e) => {
 
       await axios.post(
 
-        "http://localhost:5000/api/blogs",
+        "https://farm2flake-backend.onrender.com/api/blogs",
 
         {
           title,

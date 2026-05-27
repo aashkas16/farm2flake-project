@@ -24,7 +24,7 @@ export default function BlogDetails() {
       const response =
         await axios.get(
 
-          "http://localhost:5000/api/blogs"
+          "https://farm2flake-backend.onrender.com/api/blogs"
 
         )
 

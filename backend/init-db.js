@@ -233,7 +233,7 @@ VALUES
   'Natural banana powder rich in energy and fiber.',
   'Banana Powder is made from premium bananas using dehydration technology to preserve nutrients and flavor naturally.',
   'Energy,Digestion,Immunity',
-  'http://localhost:5000/uploads/products/banana.jpeg',
+  'https://farm2flake-backend.onrender.com/uploads/products/banana.jpeg',
   128,
   TRUE,
   'published'
@@ -249,7 +249,7 @@ VALUES
   'Rich in antioxidants and natural detox support.',
   'Beetroot Powder supports healthy blood flow and natural stamina.',
   'Detox,Immunity',
-  'http://localhost:5000/uploads/products/beetroot.jpeg',
+  'https://farm2flake-backend.onrender.com/uploads/products/beetroot.jpeg',
   96,
   TRUE,
   'published'
@@ -265,7 +265,7 @@ VALUES
   'Vitamin C rich superfood powder.',
   'Amla Powder supports immunity, digestion, skin and hair health naturally.',
   'Immunity,Antioxidants',
-  'http://localhost:5000/uploads/products/amla.jpeg',
+  'https://farm2flake-backend.onrender.com/uploads/products/amla.jpeg',
   88,
   TRUE,
   'published'
@@ -281,7 +281,7 @@ VALUES
   'Naturally sweet and nutrient rich fruit powder.',
   'Guava Powder contains natural fiber and antioxidants for healthy digestion.',
   'Gut,Immunity',
-  'http://localhost:5000/uploads/products/guava.jpeg',
+  'https://farm2flake-backend.onrender.com/uploads/products/guava.jpeg',
   72,
   FALSE,
   'published'
@@ -297,7 +297,7 @@ VALUES
   'Healthy vegetable powder packed with nutrients.',
   'Carrot Powder supports eye health and daily nutrition.',
   'Detox,Antioxidants',
-  'http://localhost:5000/uploads/products/carrot.jpeg',
+  'https://farm2flake-backend.onrender.com/uploads/products/carrot.jpeg',
   64,
   FALSE,
   'published'

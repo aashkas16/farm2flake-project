@@ -48,19 +48,19 @@ export default function Dashboard() {
       ] = await Promise.all([
 
         axios.get(
-          "http://localhost:5000/api/products"
+          "https://farm2flake-backend.onrender.com/api/products"
         ),
 
         axios.get(
-          "http://localhost:5000/api/blogs"
+          "https://farm2flake-backend.onrender.com/api/blogs"
         ),
 
         axios.get(
-          "http://localhost:5000/api/admin-reviews"
+          "https://farm2flake-backend.onrender.com/api/admin-reviews"
         ),
 
         axios.get(
-          "http://localhost:5000/api/orders"
+          "https://farm2flake-backend.onrender.com/api/orders"
         )
 
       ])

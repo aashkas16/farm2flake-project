@@ -39,7 +39,7 @@ export default function BestSellers() {
       const response =
         await axios.get(
 
-          "http://localhost:5000/api/best-sellers"
+          "https://farm2flake-backend.onrender.com/api/best-sellers"
 
         )
 

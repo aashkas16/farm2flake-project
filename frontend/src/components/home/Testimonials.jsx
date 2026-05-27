@@ -19,7 +19,7 @@ export default function Testimonials() {
       const response =
         await axios.get(
 
-          "http://localhost:5000/api/reviews"
+          "https://farm2flake-backend.onrender.com/api/reviews"
 
         )
 

@@ -59,7 +59,7 @@ export default function Contact() {
 
       await axios.post(
 
-        "http://localhost:5000/api/contact",
+        "https://farm2flake-backend.onrender.com/api/contact",
 
         {
 

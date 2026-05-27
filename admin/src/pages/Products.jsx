@@ -22,7 +22,7 @@ export default function Products() {
     try {
 
       const response = await axios.get(
-        "http://localhost:5000/api/products"
+        "https://farm2flake-backend.onrender.com/api/products"
       )
 
 
@@ -67,7 +67,7 @@ export default function Products() {
     try {
 
       await axios.delete(
-        `http://localhost:5000/api/products/${id}`
+        `https://farm2flake-backend.onrender.com/api/products/${id}`
       )
 
 

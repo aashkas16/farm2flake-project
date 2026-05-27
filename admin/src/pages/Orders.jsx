@@ -20,7 +20,7 @@ export default function Orders() {
     try {
 
       const response = await axios.get(
-        "http://localhost:5000/api/orders"
+        "https://farm2flake-backend.onrender.com/api/orders"
       )
 
 
@@ -55,7 +55,7 @@ export default function Orders() {
 
       await axios.put(
 
-        `http://localhost:5000/api/orders/${id}`,
+        `https://farm2flake-backend.onrender.com/api/orders/${id}`,
 
         {
 
