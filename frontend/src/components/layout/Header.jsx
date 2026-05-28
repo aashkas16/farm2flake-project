@@ -33,7 +33,7 @@ export default function Header() {
     useLocation()
 
   const [scrolled, setScrolled] =
-  useState(false)
+    useState(false)
 
   useEffect(() => {
 
@@ -43,24 +43,24 @@ export default function Header() {
 
   useEffect(() => {
 
-  const handleScroll = () => {
+    const handleScroll = () => {
 
-    setScrolled(window.scrollY > 20)
+      setScrolled(window.scrollY > 20)
 
-  }
+    }
 
-  window.addEventListener(
-    "scroll",
-    handleScroll
-  )
-
-  return () =>
-    window.removeEventListener(
+    window.addEventListener(
       "scroll",
       handleScroll
     )
 
-}, [])
+    return () =>
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      )
+
+  }, [])
 
   const navLinks = [
 
@@ -100,30 +100,29 @@ export default function Header() {
 
     <>
       {/* HEADER */}
-      <motion.header initial="hidden"
+      <motion.header
+        initial="hidden"
+        animate="visible"
+        variants={navbarAnimation}
+        className={`
 
-animate="visible"
+          w-full
+          sticky top-0
+          z-[9999]
 
-variants={navbarAnimation}
+          transition-all duration-500
 
-className={`
+          ${
 
-w-full
+            scrolled
 
-sticky top-0
+              ? "bg-white/85 backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.06)] border-b border-black/[0.04]"
 
-z-[9999]
+              : "bg-transparent border-transparent"
 
-transition-all duration-500
-
-${
-  scrolled
-
-    ? "bg-white/85 backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.06)] border-b border-black/[0.04]"
-
-    : "bg-transparent border-transparent"
-}
-`}>
+          }
+        `}
+      >
 
         <div className="max-w-7xl mx-auto h-[68px] md:h-[76px] px-4 sm:px-6 lg:px-8 flex items-center justify-between">
 
@@ -135,11 +134,25 @@ ${
               onClick={() =>
                 setMobileMenu(true)
               }
-              className="lg:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#f5f5f2] transition shrink-0"
+              className="
+                lg:hidden
+
+                w-10 h-10
+
+                rounded-full
+
+                flex items-center justify-center
+
+                hover:bg-white/60
+
+                transition-all duration-300
+
+                shrink-0
+              "
             >
 
               <Menu
-                size={20}
+                size={22}
                 strokeWidth={2.3}
                 className="text-[#111827]"
               />
@@ -205,16 +218,28 @@ ${
             {/* CART */}
             <Link
               to="/cart"
-              className="relative w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#f5f5f2] transition"
+              className="
+                relative
+
+                w-10 h-10
+
+                rounded-full
+
+                flex items-center justify-center
+
+                hover:bg-white/60
+
+                transition-all duration-300
+              "
             >
 
               <ShoppingCart
-                size={20}
+                size={21}
                 strokeWidth={2.2}
                 className="text-[#111827]"
               />
 
-              <span className="absolute top-[3px] right-[2px] bg-[#79b84a] text-white text-[8px] min-w-[15px] h-[15px] px-1 rounded-full flex items-center justify-center font-bold">
+              <span className="absolute top-[4px] right-[3px] bg-[#79b84a] text-white text-[8px] min-w-[15px] h-[15px] px-1 rounded-full flex items-center justify-center font-bold">
 
                 {cartItems.length}
 
@@ -229,243 +254,298 @@ ${
       </motion.header>
 
       {/* MOBILE MENU OVERLAY */}
-       <AnimatePresence>
+      <AnimatePresence>
 
-  {mobileMenu && (
+        {mobileMenu && (
 
-    <motion.div
-
-      initial={{ opacity: 0 }}
-
-      animate={{ opacity: 1 }}
-
-      exit={{ opacity: 0 }}
-
-      transition={{ duration: 0.25 }}
-
-      className="
-fixed inset-0 z-[10000] lg:hidden
-
-bg-black/45
-backdrop-blur-md
-
-supports-[backdrop-filter]:bg-black/35
-"
-
-      //className="fixed inset-0 z-[10000] lg:hidden bg-black/40 backdrop-blur-sm"
-
-    >
-
-      {/* DRAWER */}
-      <motion.div
-
-        initial={{ x: "-100%" }}
-
-        animate={{ x: 0 }}
-
-        exit={{ x: "-100%" }}
-
-        transition={{
-          type: "spring",
-          damping: 26,
-          stiffness: 260
-        }}
-
-        className="
-          absolute top-0 left-0 h-full w-[84%]
-          max-w-[340px]
-        bg-white/75
-backdrop-blur-2xl
-supports-[backdrop-filter]:bg-white/60
-border-r border-white/30
-          shadow-[0_10px_40px_rgba(0,0,0,0.12)]
-          flex flex-col
-        "
-
-      >
-
-        {/* TOP */}
-        <div className="h-[74px] px-5 border-b border-[#eef2e7] flex items-center justify-between">
-
-          <div>
-
-            <h2 className="text-[24px] font-extrabold tracking-[-1px] text-[#275227] leading-none">
-
-              Farm2Flake
-
-            </h2>
-
-            <p className="text-[10px] text-[#6b7280] mt-1">
-
-              Rich Fruits. Real Goodness.
-
-            </p>
-
-          </div>
-
-          {/* CLOSE */}
-          <button
-            onClick={() =>
-              setMobileMenu(false)
-            }
-            className="w-9 h-9 rounded-full hover:bg-[#f5f5f2] flex items-center justify-center transition"
-          >
-
-            <X
-              size={21}
-              className="text-[#111827]"
-            />
-
-          </button>
-
-        </div>
-
-        {/* NAVIGATION */}
-        <motion.div
-
-          initial="hidden"
-
-          animate="visible"
-
-          variants={{
-            visible: {
-              transition: {
-                staggerChildren: 0.08
-              }
-            }
-          }}
-
-          className="flex flex-col px-6 py-6 gap-1"
-
-        >
-
-          {navLinks.map((item) => (
-
-            <motion.div
-
-              key={item.name}
-
-              variants={{
-                hidden: {
-                  opacity: 0,
-                  x: -20
-                },
-
-                visible: {
-                  opacity: 1,
-                  x: 0
-                }
-              }}
-
-            >
-
-              <Link
-                to={item.path}
-                className="
-                  py-4
-                  rounded-xl
-                  px-4
-                hover:bg-white/60
-                  active:scale-[0.98]
-                  border-b
-                  border-[#f1f3ed]
-                  text-[15px]
-                  font-semibold
-                  tracking-[0.4px]
-                  text-[#1f2937]
-                  hover:text-[#2d5a2d]
-                  transition
-                "
-              >
-
-                {item.name}
-
-              </Link>
-
-            </motion.div>
-
-          ))}
-
-          {/* WISHLIST */}
           <motion.div
 
-            variants={{
-              hidden: {
-                opacity: 0,
-                x: -20
-              },
+            initial={{ opacity: 0 }}
 
-              visible: {
-                opacity: 1,
-                x: 0
-              }
-            }}
+            animate={{ opacity: 1 }}
 
-          >
+            exit={{ opacity: 0 }}
 
-            <Link
-              to="/wishlist"
-              className="
-                py-5
-                border-b
-                border-[#f1f3ed]
-                text-[15px]
-                font-semibold
-                tracking-[0.4px]
-                text-[#1f2937]
-                hover:text-[#2d5a2d]
-                transition
-              "
-            >
+            transition={{ duration: 0.25 }}
 
-              WISHLIST ({wishlistItems.length})
-
-            </Link>
-
-          </motion.div>
-
-        </motion.div>
-
-        {/* BOTTOM BUTTON */}
-        <div className="mt-auto p-5 border-t border-[#eef2e7]">
-
-          <Link
-            to="/shop"
             className="
-              w-full
-              h-[54px]
-              rounded-xl
-              bg-[#2d5a2d]
-              hover:bg-[#234723]
-              transition
-              text-white
-              font-semibold
-              flex items-center justify-center
-              shadow-[0_10px_30px_rgba(45,90,45,0.15)]
+              fixed inset-0 z-[10000] lg:hidden
+
+              bg-black/45
+              backdrop-blur-md
+
+              supports-[backdrop-filter]:bg-black/35
             "
           >
 
-            Shop Products
+            {/* DRAWER */}
+            <motion.div
 
-          </Link>
+              initial={{ x: "-100%" }}
 
-        </div>
+              animate={{ x: 0 }}
 
-      </motion.div>
+              exit={{ x: "-100%" }}
 
-      {/* BACKDROP */}
-      <div
-        className="w-full h-full"
-        onClick={() =>
-          setMobileMenu(false)
-        }
-      />
+              transition={{
+                type: "spring",
+                damping: 26,
+                stiffness: 260
+              }}
 
-    </motion.div>
+              className="
+                absolute top-0 left-0 h-full w-[88%]
+                max-w-[360px]
 
-  )}
+                bg-white/55
+                backdrop-blur-[24px]
 
-</AnimatePresence>
+                supports-[backdrop-filter]:bg-white/45
+
+                border-r border-white/20
+
+                shadow-[0_10px_50px_rgba(0,0,0,0.10)]
+
+                flex flex-col
+              "
+            >
+
+              {/* TOP */}
+              <div className="h-[82px] px-6 border-b border-white/20 flex items-center justify-between">
+
+                <div>
+
+                  <h2 className="text-[25px] font-extrabold tracking-[-1px] text-[#275227] leading-none">
+
+                    Farm2Flake
+
+                  </h2>
+
+                  <p className="text-[10px] text-[#6b7280] mt-1">
+
+                    Rich Fruits. Real Goodness.
+
+                  </p>
+
+                </div>
+
+                {/* CLOSE */}
+                <button
+                  onClick={() =>
+                    setMobileMenu(false)
+                  }
+                  className="
+                    w-10 h-10
+
+                    rounded-full
+
+                    bg-white/30
+
+                    hover:bg-white/50
+
+                    backdrop-blur-xl
+
+                    flex items-center justify-center
+
+                    transition-all duration-300
+                  "
+                >
+
+                  <X
+                    size={22}
+                    className="text-[#111827]"
+                  />
+
+                </button>
+
+              </div>
+
+              {/* NAVIGATION */}
+              <motion.div
+
+                initial="hidden"
+
+                animate="visible"
+
+                variants={{
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.08
+                    }
+                  }
+                }}
+
+                className="flex flex-col px-6 py-8 gap-4"
+              >
+
+                {navLinks.map((item) => (
+
+                  <motion.div
+
+                    key={item.name}
+
+                    variants={{
+                      hidden: {
+                        opacity: 0,
+                        x: -20
+                      },
+
+                      visible: {
+                        opacity: 1,
+                        x: 0
+                      }
+                    }}
+                  >
+
+                    <Link
+                      to={item.path}
+                      className="
+                        w-full
+
+                        px-5
+                        py-[18px]
+
+                        rounded-2xl
+
+                        bg-white/28
+                        backdrop-blur-xl
+
+                        border border-white/20
+
+                        text-[16px]
+                        font-semibold
+
+                        tracking-[0.5px]
+
+                        text-[#1f2937]
+
+                        flex items-center
+
+                        hover:bg-white/45
+
+                        transition-all
+                        duration-300
+
+                        active:scale-[0.98]
+
+                        shadow-[0_8px_30px_rgba(255,255,255,0.08)]
+                      "
+                    >
+
+                      {item.name}
+
+                    </Link>
+
+                  </motion.div>
+
+                ))}
+
+                {/* WISHLIST */}
+                <motion.div
+
+                  variants={{
+                    hidden: {
+                      opacity: 0,
+                      x: -20
+                    },
+
+                    visible: {
+                      opacity: 1,
+                      x: 0
+                    }
+                  }}
+                >
+
+                  <Link
+                    to="/wishlist"
+                    className="
+                      w-full
+
+                      px-5
+                      py-[18px]
+
+                      rounded-2xl
+
+                      bg-white/28
+                      backdrop-blur-xl
+
+                      border border-white/20
+
+                      text-[16px]
+                      font-semibold
+
+                      tracking-[0.5px]
+
+                      text-[#1f2937]
+
+                      flex items-center
+
+                      hover:bg-white/45
+
+                      transition-all
+                      duration-300
+
+                      active:scale-[0.98]
+
+                      shadow-[0_8px_30px_rgba(255,255,255,0.08)]
+                    "
+                  >
+
+                    WISHLIST ({wishlistItems.length})
+
+                  </Link>
+
+                </motion.div>
+
+              </motion.div>
+
+              {/* BOTTOM BUTTON */}
+              <div className="mt-auto p-6 border-t border-white/20">
+
+                <Link
+                  to="/shop"
+                  className="
+                    w-full
+                    h-[58px]
+
+                    rounded-2xl
+
+                    bg-[#2d5a2d]
+                    hover:bg-[#234723]
+
+                    transition-all duration-300
+
+                    text-white
+                    font-semibold
+                    text-[16px]
+
+                    flex items-center justify-center
+
+                    shadow-[0_10px_30px_rgba(45,90,45,0.15)]
+                  "
+                >
+
+                  Shop Products
+
+                </Link>
+
+              </div>
+
+            </motion.div>
+
+            {/* BACKDROP */}
+            <div
+              className="w-full h-full"
+              onClick={() =>
+                setMobileMenu(false)
+              }
+            />
+
+          </motion.div>
+
+        )}
+
+      </AnimatePresence>
     </>
   )
 }
