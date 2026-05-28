@@ -10,6 +10,7 @@ import { ShieldCheck } from "lucide-react"
 
 import { useCart } from "../components/context/CartContext"
 
+
 export default function Checkout() {
 
   const location = useLocation()
@@ -22,7 +23,7 @@ export default function Checkout() {
 
       .get("type") === "trial"
 
-
+  const [loading, setLoading] = useState(false)
 
   const { trialItems } = useTrial()
 
@@ -94,7 +95,11 @@ export default function Checkout() {
 
   const handlePlaceOrder = async () => {
 
-    try {
+  if (loading) return
+
+  setLoading(true)
+
+  try {
 
       // SAVE ORDER
       const response =
@@ -171,15 +176,16 @@ ${productText}
       // WHATSAPP URL
       const whatsappUrl =
 
-        `https://wa.me/916359225925?text=${encodeURIComponent(message)}`
+        `https://wa.me/919428428672?text=${encodeURIComponent(message)}`
 
 
 
       // OPEN WHATSAPP
-      window.open(
-        whatsappUrl,
-        "_blank"
-      )
+      window.location.href = whatsappUrl
+      //window.open(
+        //whatsappUrl,
+        //"_blank"
+      //)
 
 
 
@@ -189,17 +195,17 @@ ${productText}
 
 
       // SUCCESS
-      alert(
+      //alert(
 
-        `Order placed successfully!\n\nOrder ID: ${orderId}`
+        //`Order placed successfully!\n\nOrder ID: ${orderId}`
 
-      )
+      //)
 
 
 
       // REDIRECT
-      window.location.href =
-        "/order-success"
+      //window.location.href =
+        //"/order-success"
 
     } catch (error) {
 
@@ -431,13 +437,13 @@ ${productText}
                   {/* PLACE ORDER BUTTON */}
                   <button
                     onClick={handlePlaceOrder}
-                    disabled={!isFormValid}
+                    disabled={!isFormValid || loading}
                     className="w-full mt-4 flex items-center justify-center gap-2 bg-[#2d5a2d] hover:bg-[#1e3d1e] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 px-5 rounded-xl transition duration-200 text-sm sm:text-base"
                   >
 
                     <ShieldCheck className="w-5 h-5" />
 
-                    Place Order via WhatsApp
+                    {loading ? "Processing Order..." : "Place Order via WhatsApp"}
 
                   </button>
 

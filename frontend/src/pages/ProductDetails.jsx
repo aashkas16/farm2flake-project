@@ -111,6 +111,16 @@ export default function ProductDetails() {
     )
   }
 
+  const basePrice = Number(product.price)
+
+const sizePrices = {
+  "100g": basePrice,
+  "250g": Math.round(basePrice * 2.2),
+  "500g": Math.round(basePrice * 4.5),
+}
+
+const finalPrice = sizePrices[selectedSize]
+
   // BUNDLE MATHS
   const currentPrice = parseFloat(product.price)
   const sug0Price = suggestedProducts[0] ? parseFloat(suggestedProducts[0].price) : 0
@@ -300,7 +310,7 @@ export default function ProductDetails() {
             <div className="mt-5 py-4 border-y border-gray-100 flex flex-col sm:flex-row sm:items-center gap-2">
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl sm:text-4xl font-extrabold text-[#1c2b1d]">
-                  ₹{product.price}
+                  ₹{finalPrice}
                 </span>
                 <span className="text-gray-400 text-xs sm:text-sm">(Inclusive of all taxes)</span>
               </div>

@@ -924,21 +924,25 @@ const emailProducts = products.map(
 
 
 // SEND EMAIL
-await sendInvoiceEmail(
-
-  orderData,
-
-  emailProducts
-
-)
-
-
-
+// RETURN RESPONSE IMMEDIATELY
 res.json({
 
   success: true,
 
   orderId
+
+})
+
+// SEND EMAIL IN BACKGROUND
+sendInvoiceEmail(
+
+  orderData,
+
+  emailProducts
+
+).catch((err) => {
+
+  console.log("Email Error:", err)
 
 })
 
