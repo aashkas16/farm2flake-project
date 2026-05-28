@@ -220,7 +220,7 @@ export default function Footer() {
         {/* BOTTOM */}
         <div className="border-t border-[#2d5c2d] mt-8 pt-4 text-gray-300 text-[13px] sm:text-sm text-center">
 
-          © 2024 Farm2Flake. All Rights Reserved.
+          © 2026 Farm2Flake. All Rights Reserved.
 
         </div>
 

@@ -10,6 +10,7 @@ import Trial from "./pages/trial";
 import BlogDetails from "./pages/BlogDetails"
 import Contact from "./pages/Contact"
 import Wishlist from "./pages/Wishlist"
+import ProductDetails from "./pages/ProductDetails"
 import Cart from "./pages/Cart"
 import Checkout from "./pages/Checkout"
 import OrderSuccess from "./pages/OrderSuccess";
@@ -67,6 +68,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
 
       </Routes>
 

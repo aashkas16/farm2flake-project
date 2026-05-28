@@ -172,11 +172,13 @@ export default function Wishlist() {
 
                   <div className="bg-[#f8f8f5] rounded-[20px] sm:rounded-[22px] overflow-hidden">
 
-                    <img
-                      src={product.image || product.image_url}
-                      alt={product.name}
-                      className="w-full h-[220px] sm:h-[230px] object-contain p-4"
-                    />
+                    <Link to={`/product/${product.id}`}>
+                      <img
+                        src={product.image || product.image_url}
+                        alt={product.name}
+                        className="w-full h-[220px] sm:h-[230px] object-contain p-4 hover:scale-102 transition duration-200 cursor-pointer"
+                      />
+                    </Link>
 
                   </div>
 
@@ -187,9 +189,11 @@ export default function Wishlist() {
                 {/* CONTENT */}
                 <div className="px-4 sm:px-5 pb-5">
 
-                  <h2 className="text-[20px] sm:text-[22px] font-bold text-[#183818] leading-snug line-clamp-2 min-h-[58px]">
+                  <h2 className="text-[20px] sm:text-[22px] font-bold text-[#183818] leading-snug line-clamp-2 min-h-[58px] hover:text-[#2f7c1f] transition">
 
-                    {product.name}
+                    <Link to={`/product/${product.id}`}>
+                      {product.name}
+                    </Link>
 
                   </h2>
 

@@ -6,6 +6,8 @@ import { useWishlist } from "../context/WishlistContext"
 
 import { useCart } from "../context/CartContext"
 
+import { Link } from "react-router-dom"
+
 export default function BestSellers() {
 
   const [products, setProducts] =
@@ -148,11 +150,13 @@ export default function BestSellers() {
                 {/* PRODUCT IMAGE */}
                 <div className="bg-white rounded-2xl overflow-hidden">
 
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-[220px] sm:h-[200px] lg:h-[180px] object-contain"
-                  />
+                  <Link to={`/product/${product.id}`}>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-[220px] sm:h-[200px] lg:h-[180px] object-contain hover:scale-102 transition duration-200 cursor-pointer"
+                    />
+                  </Link>
 
                 </div>
 
@@ -163,9 +167,11 @@ export default function BestSellers() {
               {/* CONTENT */}
               <div className="px-4 pb-5 pt-2">
 
-                <h3 className="text-[18px] font-bold text-[#1c2b1d] leading-tight min-h-[48px]">
+                <h3 className="text-[18px] font-bold text-[#1c2b1d] leading-tight min-h-[48px] hover:text-[#2f7c1f] transition">
 
-                  {product.name}
+                  <Link to={`/product/${product.id}`}>
+                    {product.name}
+                  </Link>
 
                 </h3>
 

@@ -491,15 +491,16 @@ app.post('/api/reviews', async (req, res) => {
 
       name,
       rating,
-      review
+      review,
+      product_id
 
     } = req.body
 
-
+    if (!product_id) {
+      return res.status(400).json({ error: 'product_id is required' });
+    }
 
     const connection = await pool.getConnection()
-
-
 
     const [result] = await connection.query(
 
@@ -507,18 +508,20 @@ app.post('/api/reviews', async (req, res) => {
 
       INSERT INTO reviews (
 
+        product_id,
         name,
         rating,
         review
 
       )
 
-      VALUES (?, ?, ?)
+      VALUES (?, ?, ?, ?)
 
       `,
 
       [
 
+        product_id,
         name,
         rating,
         review
@@ -527,11 +530,7 @@ app.post('/api/reviews', async (req, res) => {
 
     )
 
-
-
     connection.release()
-
-
 
     res.json({
 
@@ -552,16 +551,54 @@ app.post('/api/reviews', async (req, res) => {
 
 })
 
+// GET APPROVED REVIEWS FOR SPECIFIC PRODUCT
+app.get('/api/reviews/product/:productId', async (req, res) => {
 
+  try {
 
-// GET APPROVED REVIEWS
+    const { productId } = req.params
+    const connection = await pool.getConnection()
+
+    const [reviews] = await connection.query(
+
+      `
+
+      SELECT *
+
+      FROM reviews
+
+      WHERE product_id = ? AND status = 'approved'
+
+      ORDER BY created_at DESC
+
+      `,
+
+      [productId]
+
+    )
+
+    connection.release()
+
+    res.json(reviews)
+
+  } catch (error) {
+
+    console.log(error)
+
+    res.status(500).json({
+      error: 'Failed to fetch reviews for product'
+    })
+
+  }
+
+})
+
+// GET APPROVED REVIEWS (GLOBAL)
 app.get('/api/reviews', async (req, res) => {
 
   try {
 
     const connection = await pool.getConnection()
-
-
 
     const [reviews] = await connection.query(
 
@@ -579,8 +616,6 @@ app.get('/api/reviews', async (req, res) => {
 
     )
 
-
-
     connection.release()
 
     res.json(reviews)
@@ -597,7 +632,7 @@ app.get('/api/reviews', async (req, res) => {
 
 })
 
-// ADMIN GET ALL REVIEWS
+// ADMIN GET ALL REVIEWS WITH PRODUCT NAME
 app.get('/api/admin-reviews', async (req, res) => {
 
   try {
@@ -608,17 +643,17 @@ app.get('/api/admin-reviews', async (req, res) => {
 
       `
 
-      SELECT *
+      SELECT r.*, p.name AS product_name
 
-      FROM reviews
+      FROM reviews r
 
-      ORDER BY created_at DESC
+      LEFT JOIN products p ON r.product_id = p.id
+
+      ORDER BY r.created_at DESC
 
       `
 
     )
-
-
 
     connection.release()
 
@@ -636,38 +671,49 @@ app.get('/api/admin-reviews', async (req, res) => {
 
 })
 
-
-
-// APPROVE REVIEW
+// APPROVE REVIEW AND INCREMENT PRODUCT REVIEWS COUNT
 app.put('/api/reviews/:id/approve', async (req, res) => {
 
   try {
 
     const connection = await pool.getConnection()
 
-
-
-    await connection.query(
-
-      `
-
-      UPDATE reviews
-
-      SET status = 'approved'
-
-      WHERE id = ?
-
-      `,
-
+    // Get current review to fetch product_id
+    const [reviews] = await connection.query(
+      'SELECT * FROM reviews WHERE id = ?',
       [req.params.id]
-
     )
 
+    if (reviews.length > 0) {
+      const reviewObj = reviews[0];
+      
+      // Update review status to approved
+      await connection.query(
 
+        `
+
+        UPDATE reviews
+
+        SET status = 'approved'
+
+        WHERE id = ?
+
+        `,
+
+        [req.params.id]
+
+      )
+
+      // Only increment product review count if it wasn't approved already
+      if (reviewObj.status !== 'approved') {
+        await connection.query(
+          `UPDATE products SET reviews = reviews + 1 WHERE id = ?`,
+          [reviewObj.product_id]
+        )
+      }
+    }
 
     connection.release()
-
-
 
     res.json({
       success: true

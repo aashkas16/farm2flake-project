@@ -84,6 +84,8 @@ await connection.query(`
 
     id INT AUTO_INCREMENT PRIMARY KEY,
 
+    product_id INT NOT NULL,
+
     name VARCHAR(255) NOT NULL,
 
     rating INT NOT NULL,
@@ -92,7 +94,9 @@ await connection.query(`
 
     status ENUM('pending', 'approved') DEFAULT 'pending',
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 
   )
 

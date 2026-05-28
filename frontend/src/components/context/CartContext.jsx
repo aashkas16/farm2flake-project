@@ -41,7 +41,7 @@ export const CartProvider = ({ children }) => {
 
 
   // ADD TO CART
-  const addToCart = (product) => {
+  const addToCart = (product, quantity = 1) => {
 
     const exists = cartItems.find(
 
@@ -63,7 +63,7 @@ export const CartProvider = ({ children }) => {
             ? {
 
                 ...item,
-                quantity: item.quantity + 1
+                quantity: item.quantity + quantity
 
               }
 
@@ -82,7 +82,7 @@ export const CartProvider = ({ children }) => {
         {
 
           ...product,
-          quantity: 1
+          quantity: quantity
 
         }
 

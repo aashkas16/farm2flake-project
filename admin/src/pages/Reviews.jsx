@@ -145,6 +145,12 @@ export default function Reviews() {
 
                 <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
 
+                  Product
+
+                </th>
+
+                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+
                   Rating
 
                 </th>
@@ -186,6 +192,15 @@ export default function Reviews() {
                   <td className="px-6 py-5 font-semibold text-[#111827]">
 
                     {review.name}
+
+                  </td>
+
+
+
+                  {/* PRODUCT NAME */}
+                  <td className="px-6 py-5 text-[#374151] font-medium">
+
+                    {review.product_name || "Unknown Product"}
 
                   </td>
 

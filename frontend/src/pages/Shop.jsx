@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 
 import {
   
-  useLocation
+  useLocation,
+  Link
 } from "react-router-dom"
 
 import {
@@ -529,11 +530,13 @@ export default function Shop() {
 
 
 
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-[180px] sm:h-[220px] object-contain"
-                    />
+                    <Link to={`/product/${product.id}`}>
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-[180px] sm:h-[220px] object-contain hover:scale-102 transition duration-200 cursor-pointer"
+                      />
+                    </Link>
 
                   </div>
 
@@ -542,9 +545,11 @@ export default function Shop() {
                   {/* CONTENT */}
                   <div className="p-5 text-center">
 
-                    <h3 className="font-bold text-[17px] sm:text-[18px] text-[#1f1f1f] leading-snug min-h-[52px]">
+                    <h3 className="font-bold text-[17px] sm:text-[18px] text-[#1f1f1f] leading-snug min-h-[52px] hover:text-[#2f7c1f] transition">
 
-                      {product.name}
+                      <Link to={`/product/${product.id}`}>
+                        {product.name}
+                      </Link>
 
                     </h3>
 
