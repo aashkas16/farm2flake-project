@@ -4,48 +4,41 @@ export default function Footer() {
 
   return (
 
-    <footer className="bg-gradient-to-r from-[#022d02] via-[#0b4d0b] to-[#022d02] text-white pt-14 pb-6 overflow-hidden">
+    <footer className="bg-gradient-to-r from-[#022d02] via-[#0b4d0b] to-[#022d02] text-white pt-10 sm:pt-14 pb-5 overflow-hidden">
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6">
 
         {/* MAIN FOOTER */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1.5fr] gap-10 items-start">
+        <div className="grid grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1.5fr] gap-x-6 gap-y-8 items-start">
 
-          {/* LEFT */}
-          <div>
+          {/* BRAND */}
+          <div className="col-span-2 lg:col-span-1 text-center sm:text-left">
 
-            <h2 className="text-[28px] sm:text-[30px] font-bold leading-none text-center sm:text-left">
+            <h2 className="text-[24px] sm:text-[30px] font-bold leading-none">
 
               Farm2Flake
 
             </h2>
 
-
-
-            <p className="text-gray-200 text-[15px] leading-8 mt-5 max-w-[260px] text-center sm:text-left mx-auto sm:mx-0">
+            <p className="text-gray-200 text-[14px] sm:text-[15px] leading-7 mt-4 max-w-[280px] mx-auto sm:mx-0">
 
               We bring you the best of nature in every spoon.
-
               Rich Fruits. Real Goodness.
 
             </p>
 
           </div>
 
-
-
           {/* QUICK LINKS */}
-          <div className="text-center sm:text-left">
+          <div className="text-left">
 
-            <h3 className="font-bold text-[18px] mb-5">
+            <h3 className="font-bold text-[16px] sm:text-[18px] mb-4">
 
               Quick Links
 
             </h3>
 
-
-
-            <ul className="space-y-4 text-[15px] text-gray-100">
+            <ul className="space-y-2.5 text-[14px] sm:text-[15px] text-gray-100">
 
               <li>
 
@@ -62,8 +55,6 @@ export default function Footer() {
                 </Link>
 
               </li>
-
-
 
               <li>
 
@@ -85,20 +76,16 @@ export default function Footer() {
 
           </div>
 
-
-
           {/* CUSTOMER CARE */}
-          <div className="text-center sm:text-left">
+          <div className="text-left">
 
-            <h3 className="font-bold text-[18px] mb-5">
+            <h3 className="font-bold text-[16px] sm:text-[18px] mb-4">
 
               Customer Care
 
             </h3>
 
-
-
-            <ul className="space-y-4 text-[15px] text-gray-100">
+            <ul className="space-y-2.5 text-[14px] sm:text-[15px] text-gray-100">
 
               <li>
 
@@ -116,8 +103,6 @@ export default function Footer() {
 
               </li>
 
-
-
               <li>
 
                 <Link
@@ -133,8 +118,6 @@ export default function Footer() {
                 </Link>
 
               </li>
-
-
 
               <li>
 
@@ -156,20 +139,16 @@ export default function Footer() {
 
           </div>
 
-
-
           {/* LEGAL */}
-          <div className="text-center sm:text-left">
+          <div className="text-left">
 
-            <h3 className="font-bold text-[18px] mb-5">
+            <h3 className="font-bold text-[16px] sm:text-[18px] mb-4">
 
               Legal
 
             </h3>
 
-
-
-            <ul className="space-y-4 text-[15px] text-gray-100">
+            <ul className="space-y-2.5 text-[14px] sm:text-[15px] text-gray-100">
 
               <li>
 
@@ -183,8 +162,6 @@ export default function Footer() {
                 </Link>
 
               </li>
-
-
 
               <li>
 
@@ -203,39 +180,30 @@ export default function Footer() {
 
           </div>
 
-
-
           {/* NEWSLETTER */}
-          <div className="w-full text-center sm:text-left">
+          <div className="col-span-2 lg:col-span-1 w-full text-left">
 
-            <h3 className="font-bold text-[18px] mb-5">
+            <h3 className="font-bold text-[16px] sm:text-[18px] mb-4">
 
               Stay Connected
 
             </h3>
 
-
-
-            <p className="text-[15px] text-gray-100 leading-7">
+            <p className="text-[14px] sm:text-[15px] text-gray-100 leading-7">
 
               Subscribe to get updates on
-
               new products & offers.
 
             </p>
 
-
-
             {/* INPUT */}
-            <div className="mt-6 flex items-center bg-[#3b6b24] rounded-xl overflow-hidden w-full">
+            <div className="mt-5 flex items-center bg-white/10 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden w-full">
 
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="bg-transparent px-4 sm:px-5 py-3 w-full outline-none text-sm placeholder:text-gray-300"
+                className="bg-transparent px-4 py-3 w-full outline-none text-sm placeholder:text-gray-300"
               />
-
-
 
               <button className="bg-[#6aae3c] hover:bg-[#7bc248] px-5 py-3 transition flex items-center justify-center">
 
@@ -249,10 +217,8 @@ export default function Footer() {
 
         </div>
 
-
-
         {/* BOTTOM */}
-        <div className="border-t border-[#2d5c2d] mt-10 pt-5 text-gray-300 text-sm text-center">
+        <div className="border-t border-[#2d5c2d] mt-8 pt-4 text-gray-300 text-[13px] sm:text-sm text-center">
 
           © 2024 Farm2Flake. All Rights Reserved.
 

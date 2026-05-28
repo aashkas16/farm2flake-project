@@ -243,7 +243,16 @@ ${
 
       transition={{ duration: 0.25 }}
 
-      className="fixed inset-0 z-[10000] lg:hidden bg-black/40 backdrop-blur-sm"
+      className="
+fixed inset-0 z-[10000] lg:hidden
+
+bg-black/45
+backdrop-blur-md
+
+supports-[backdrop-filter]:bg-black/35
+"
+
+      //className="fixed inset-0 z-[10000] lg:hidden bg-black/40 backdrop-blur-sm"
 
     >
 
@@ -265,7 +274,10 @@ ${
         className="
           absolute top-0 left-0 h-full w-[84%]
           max-w-[340px]
-          bg-white
+        bg-white/75
+backdrop-blur-2xl
+supports-[backdrop-filter]:bg-white/60
+border-r border-white/30
           shadow-[0_10px_40px_rgba(0,0,0,0.12)]
           flex flex-col
         "
@@ -323,7 +335,7 @@ ${
             }
           }}
 
-          className="flex flex-col px-5 py-4"
+          className="flex flex-col px-6 py-6 gap-1"
 
         >
 
@@ -350,7 +362,11 @@ ${
               <Link
                 to={item.path}
                 className="
-                  py-5
+                  py-4
+                  rounded-xl
+                  px-4
+                hover:bg-white/60
+                  active:scale-[0.98]
                   border-b
                   border-[#f1f3ed]
                   text-[15px]
