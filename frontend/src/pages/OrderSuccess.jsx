@@ -29,7 +29,19 @@ export default function OrderSuccess() {
 
   const { clearTrialItems } =
     useTrial()
+    
 
+   useEffect(() => {
+
+  const timer = setTimeout(() => {
+
+    window.location.href = "/"
+
+  }, 2500)
+
+  return () => clearTimeout(timer)
+
+}, [])
 
 
   // CLEAR ONLY ONCE
@@ -58,7 +70,7 @@ export default function OrderSuccess() {
 
     }
 
-
+   
 
     const timer = setTimeout(() => {
 

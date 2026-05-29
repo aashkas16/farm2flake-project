@@ -141,11 +141,14 @@ export default function Checkout() {
       // PRODUCT TEXT
       const productText = products.map(
 
-        (item) =>
+  (item) =>
 
-          `• ${item.name}\nQty: ${item.quantity}\nPrice: ₹${item.price * item.quantity}`
+    `• ${item.name}
+Size: ${item.size || "100g"}
+Qty: ${item.quantity}
+Price: ₹${item.price * item.quantity}`
 
-      ).join("\n\n")
+).join("\n\n")
 
 
 
@@ -176,12 +179,27 @@ ${productText}
       // WHATSAPP URL
       const whatsappUrl =
 
-        `https://wa.me/919428428672?text=${encodeURIComponent(message)}`
+        `https://wa.me/916359225925?text=${encodeURIComponent(message)}`
 
 
+      // CLEAR CART
+localStorage.removeItem("cartItems")
+
+// OPEN WHATSAPP IN NEW TAB
+window.open(
+  whatsappUrl,
+  "_blank"
+)
+
+// REDIRECT TO SUCCESS PAGE
+setTimeout(() => {
+
+  window.location.href = "/order-success"
+
+}, 1200)
 
       // OPEN WHATSAPP
-      window.location.href = whatsappUrl
+      //window.location.href = whatsappUrl
       //window.open(
         //whatsappUrl,
         //"_blank"

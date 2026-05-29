@@ -35,7 +35,7 @@ function App() {
 
     setLoading(false)
 
-  }, 4500)
+  }, 2500)
 
   return () => clearTimeout(timer)
 

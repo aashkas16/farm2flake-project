@@ -200,7 +200,7 @@ export default function Contact() {
 
                     <p className="text-[#667166] mt-2 text-sm sm:text-base break-all">
 
-                      hello@farm2flake.com
+                      farm2flake@gmail.com
 
                     </p>
 
@@ -233,7 +233,7 @@ export default function Contact() {
 
                     <p className="text-[#667166] mt-2 text-sm sm:text-base">
 
-                      +91 98765 43210
+                      +91 8866177704
 
                     </p>
 

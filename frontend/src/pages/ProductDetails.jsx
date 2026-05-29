@@ -15,13 +15,18 @@ import {
   Award,
   Sparkles
 } from "lucide-react"
+
 import { useCart } from "../components/context/CartContext"
 import { useWishlist } from "../components/context/WishlistContext"
 
 export default function ProductDetails() {
+
   const { id } = useParams()
+
   const navigate = useNavigate()
+
   const { cartItems, addToCart } = useCart()
+
   const { wishlistItems, toggleWishlist } = useWishlist()
 
   // STATE
@@ -31,7 +36,7 @@ export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1)
   const [selectedSize, setSelectedSize] = useState("100g")
   const [activeTab, setActiveTab] = useState("description")
-  
+
   // REVIEWS STATE
   const [reviews, setReviews] = useState([])
   const [reviewName, setReviewName] = useState("")
@@ -43,173 +48,382 @@ export default function ProductDetails() {
 
   // BUNDLE STATE
   const [suggestedProducts, setSuggestedProducts] = useState([])
-  const [selectedBundleItems, setSelectedBundleItems] = useState([true, true, true]) // item 0, item 1, current product
+  const [selectedBundleItems, setSelectedBundleItems] = useState([true, true, true])
 
   // FETCH PRODUCT & DATA
   const fetchProductData = async () => {
+
     setLoading(true)
+
     try {
-      // 1. Fetch current product
-      const res = await axios.get(`https://farm2flake-backend.onrender.com/api/products/${id}`)
+
+      // PRODUCT
+      const res = await axios.get(
+
+        `https://farm2flake-backend.onrender.com/api/products/${id}`
+
+      )
+
       setProduct(res.data)
+
       setActiveImage(res.data.image)
+
       setSelectedSize(res.data.size || "100g")
 
-      // 2. Fetch approved reviews for this product
-      const reviewsRes = await axios.get(`https://farm2flake-backend.onrender.com/api/reviews/product/${id}`)
+      // REVIEWS
+      const reviewsRes = await axios.get(
+
+        `https://farm2flake-backend.onrender.com/api/reviews/product/${id}`
+
+      )
+
       setReviews(reviewsRes.data)
 
-      // 3. Fetch other products for suggestion bundle
-      const allProductsRes = await axios.get(`https://farm2flake-backend.onrender.com/api/products`)
-      const otherProducts = allProductsRes.data.filter(p => p.id !== parseInt(id))
-      
-      // Select 2 random other products for the bundle
-      const selectedSuggestions = otherProducts.sort(() => 0.5 - Math.random()).slice(0, 2)
+      // OTHER PRODUCTS
+      const allProductsRes = await axios.get(
+
+        `https://farm2flake-backend.onrender.com/api/products`
+
+      )
+
+      const otherProducts = allProductsRes.data.filter(
+
+        p => p.id !== parseInt(id)
+
+      )
+
+      const selectedSuggestions = otherProducts
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 2)
+
       setSuggestedProducts(selectedSuggestions)
-      
+
     } catch (err) {
+
       console.error("Error loading product data:", err)
+
     } finally {
+
       setLoading(false)
+
     }
+
   }
 
   useEffect(() => {
+
     fetchProductData()
-    // Scroll to top when product ID changes
+
     window.scrollTo(0, 0)
+
     setQuantity(1)
+
     setReviewMessage("")
+
     setReviewError("")
+
     setReviewName("")
+
     setReviewText("")
+
     setReviewRating(5)
+
   }, [id])
 
   if (loading) {
+
     return (
+
       <div className="min-h-screen bg-[#f8f8f5] flex items-center justify-center">
+
         <div className="flex flex-col items-center gap-4">
+
           <div className="w-12 h-12 border-4 border-[#2f7c1f] border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-500 font-semibold">Loading FarmyTales goodness...</p>
+
+          <p className="text-gray-500 font-semibold">
+
+            Loading FarmyTales goodness...
+
+          </p>
+
         </div>
+
       </div>
+
     )
+
   }
 
   if (!product) {
+
     return (
+
       <div className="min-h-screen bg-[#f8f8f5] flex flex-col items-center justify-center p-6 text-center">
-        <h2 className="text-3xl font-bold text-[#1c2b1d] mb-4">Product Not Found</h2>
-        <p className="text-gray-500 mb-8 max-w-md">We couldn't find the nutrition product you are looking for. It may have been removed or renamed.</p>
+
+        <h2 className="text-3xl font-bold text-[#1c2b1d] mb-4">
+
+          Product Not Found
+
+        </h2>
+
+        <p className="text-gray-500 mb-8 max-w-md">
+
+          We couldn't find the nutrition product you are looking for.
+
+        </p>
+
         <Link to="/shop">
+
           <button className="bg-[#2f7c1f] text-white px-8 py-4 rounded-2xl font-bold hover:bg-[#256718] transition duration-300">
+
             Back to Shop
+
           </button>
+
         </Link>
+
       </div>
+
     )
+
   }
 
+  // DYNAMIC PRICING
   const basePrice = Number(product.price)
 
-const sizePrices = {
-  "100g": basePrice,
-  "250g": Math.round(basePrice * 2.2),
-  "500g": Math.round(basePrice * 4.5),
-}
+  const sizePrices = {
 
-const finalPrice = sizePrices[selectedSize]
+    "100g": basePrice,
+
+    "250g": Math.round(basePrice * 2.2),
+
+    "500g": Math.round(basePrice * 4.5),
+
+  }
+
+  const finalPrice = sizePrices[selectedSize]
 
   // BUNDLE MATHS
-  const currentPrice = parseFloat(product.price)
-  const sug0Price = suggestedProducts[0] ? parseFloat(suggestedProducts[0].price) : 0
-  const sug1Price = suggestedProducts[1] ? parseFloat(suggestedProducts[1].price) : 0
+  const currentPrice = finalPrice
+
+  const sug0Price = suggestedProducts[0]
+    ? parseFloat(suggestedProducts[0].price)
+    : 0
+
+  const sug1Price = suggestedProducts[1]
+    ? parseFloat(suggestedProducts[1].price)
+    : 0
 
   let originalBundleTotal = 0
-  if (selectedBundleItems[2]) originalBundleTotal += currentPrice
-  if (selectedBundleItems[0] && suggestedProducts[0]) originalBundleTotal += sug0Price
-  if (selectedBundleItems[1] && suggestedProducts[1]) originalBundleTotal += sug1Price
 
-  // Apply a 12% discount for bundling
-  const discountedBundleTotal = Math.round(originalBundleTotal * 0.88)
+  if (selectedBundleItems[2]) {
+    originalBundleTotal += currentPrice
+  }
 
+  if (selectedBundleItems[0] && suggestedProducts[0]) {
+    originalBundleTotal += sug0Price
+  }
+
+  if (selectedBundleItems[1] && suggestedProducts[1]) {
+    originalBundleTotal += sug1Price
+  }
+
+  // DISCOUNT
+  const discountedBundleTotal = Math.round(
+
+    originalBundleTotal * 0.88
+
+  )
+
+  // ADD BUNDLE
   const handleAddBundleToCart = () => {
+
     let addedCount = 0
+
     if (selectedBundleItems[2]) {
-      addToCart(product, 1)
+
+      addToCart({
+
+        ...product,
+
+        size: selectedSize,
+        price: finalPrice,
+        quantity: 1
+
+      })
+
       addedCount++
+
     }
+
     if (selectedBundleItems[0] && suggestedProducts[0]) {
-      addToCart(suggestedProducts[0], 1)
+
+      addToCart({
+
+        ...suggestedProducts[0],
+
+        size: suggestedProducts[0].size || "100g",
+        quantity: 1
+
+      })
+
       addedCount++
+
     }
+
     if (selectedBundleItems[1] && suggestedProducts[1]) {
-      addToCart(suggestedProducts[1], 1)
+
+      addToCart({
+
+        ...suggestedProducts[1],
+
+        size: suggestedProducts[1].size || "100g",
+        quantity: 1
+
+      })
+
       addedCount++
+
     }
-    
+
     if (addedCount > 0) {
-      alert(`Successfully added ${addedCount} bundle products to your Cart!`)
+
+      alert(
+
+        `Successfully added ${addedCount} bundle products to your Cart!`
+
+      )
+
     }
+
   }
 
   // SUBMIT REVIEW
   const handleReviewSubmit = async (e) => {
+
     e.preventDefault()
+
     if (!reviewName.trim() || !reviewText.trim()) {
+
       setReviewError("Please fill out all fields.")
+
       return
+
     }
 
     setReviewLoading(true)
+
     setReviewError("")
+
     setReviewMessage("")
 
     try {
-      const res = await axios.post("https://farm2flake-backend.onrender.com/api/reviews", {
-        product_id: product.id,
-        name: reviewName,
-        rating: reviewRating,
-        review: reviewText
-      })
+
+      const res = await axios.post(
+
+        "https://farm2flake-backend.onrender.com/api/reviews",
+
+        {
+
+          product_id: product.id,
+
+          name: reviewName,
+
+          rating: reviewRating,
+
+          review: reviewText
+
+        }
+
+      )
 
       if (res.data.success) {
-        setReviewMessage("Thank you! Your review has been submitted successfully. It will display on this page as soon as it is approved by our team.")
+
+        setReviewMessage(
+
+          "Thank you! Your review has been submitted successfully."
+
+        )
+
         setReviewName("")
+
         setReviewText("")
+
         setReviewRating(5)
+
       } else {
-        setReviewError("Something went wrong. Please try again.")
+
+        setReviewError(
+
+          "Something went wrong. Please try again."
+
+        )
+
       }
+
     } catch (err) {
+
       console.error("Error submitting review:", err)
-      setReviewError("Failed to submit review. Please try again later.")
+
+      setReviewError(
+
+        "Failed to submit review. Please try again later."
+
+      )
+
     } finally {
+
       setReviewLoading(false)
+
     }
+
   }
 
+  // BUY NOW
   const handleBuyNow = () => {
-    addToCart(product, quantity)
+
+    addToCart({
+
+      ...product,
+
+      size: selectedSize,
+      price: finalPrice,
+      quantity
+
+    })
+
     navigate("/cart")
+
   }
 
-  // Thumbnails (simulate multiple views)
+  // GALLERY
   const thumbnails = [
+
     product.image,
-    product.image, // fallback copies to display gallery
+    product.image,
     product.image,
     product.image
+
   ]
 
-  const isWishlisted = wishlistItems.some(item => item.id === product.id)
-  
-  // Tagline matching the powder category
-  const dynamicTagline = product.category === "Fruit Powders" 
-    ? "100% Real Fruit" 
-    : product.category === "Vegetable Powders" 
-      ? "100% Organic Veggies" 
+  // WISHLIST
+  const isWishlisted = wishlistItems.some(
+
+    item => item.id === product.id
+
+  )
+
+  // TAGLINE
+  const dynamicTagline =
+
+    product.category === "Fruit Powders"
+
+      ? "100% Real Fruit"
+
+      : product.category === "Vegetable Powders"
+
+      ? "100% Organic Veggies"
+
       : "100% Pure Herbs"
 
   return (

@@ -523,14 +523,14 @@ export default function Cart() {
 
           {[
             {
-              icon: "🔒",
-              title: "100% Secure Payment"
-            },
+             icon: "🚚",
+              title: "Pan India Delivery"
+       },
 
             {
-              icon: "↩️",
-              title: "Easy Returns"
-            },
+              icon: "🌱",
+              title: "100% Natural Ingredients"
+        },
 
             {
               icon: "✅",

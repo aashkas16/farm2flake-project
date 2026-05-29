@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom"
 
 import {
   ShoppingCart,
+  Heart,
   Menu,
   X
 } from "lucide-react"
@@ -214,6 +215,26 @@ export default function Header() {
 
           {/* RIGHT */}
           <div className="flex items-center gap-0 shrink-0">
+
+            {/* WISHLIST */}
+<Link
+  to="/wishlist"
+  className="relative w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#f5f5f2] transition"
+>
+
+  <Heart
+    size={20}
+    strokeWidth={2.2}
+    className="text-[#111827]"
+  />
+
+  <span className="absolute top-[3px] right-[2px] bg-[#79b84a] text-white text-[8px] min-w-[15px] h-[15px] px-1 rounded-full flex items-center justify-center font-bold">
+
+    {wishlistItems.length}
+
+  </span>
+
+</Link>
 
             {/* CART */}
             <Link

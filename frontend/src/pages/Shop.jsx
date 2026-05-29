@@ -478,15 +478,15 @@ export default function Shop() {
                   {/* IMAGE */}
                   <div className="relative bg-[#fafaf7] p-5">
 
-                    {product.is_best_seller && (
+                    {Number(product.is_best_seller) === 1 && (
 
-                      <span className="absolute top-4 left-4 bg-[#3c9b2d] text-white text-[11px] px-3 py-1 rounded-full font-bold">
+  <span className="absolute top-4 left-4 bg-[#3c9b2d] text-white text-[11px] px-3 py-1 rounded-full font-bold">
 
-                        BEST SELLER
+    BEST SELLER
 
-                      </span>
+  </span>
 
-                    )}
+)}
 
 
 
