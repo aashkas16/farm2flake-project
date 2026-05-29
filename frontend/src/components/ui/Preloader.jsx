@@ -120,7 +120,7 @@ export default function Preloader({ loading }) {
                   x: "100%"
                 }}
                 transition={{
-                  duration: 2,
+                  duration: 1,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
