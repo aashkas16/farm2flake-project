@@ -131,11 +131,11 @@ const uploadImage = async (e) => {
     <div>
 
       {/* TOP */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
 
         <div>
 
-          <h1 className="text-4xl font-bold text-[#111827]">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#111827]">
 
             Add New Blog
 
@@ -153,9 +153,9 @@ const uploadImage = async (e) => {
 
 
       {/* FORM */}
-      <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] p-8">
+      <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] p-5 sm:p-8">
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8">
 
           {/* LEFT */}
           <div className="space-y-6">
@@ -260,7 +260,7 @@ const uploadImage = async (e) => {
               </label>
 
               <textarea
-                rows="10"
+                rows="8"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Write full blog content..."
@@ -323,7 +323,7 @@ const uploadImage = async (e) => {
         <img
           src={image}
           alt="preview"
-          className="mt-6 w-full h-[260px] object-cover rounded-2xl border border-[#edf1e8]"
+          className="mt-6 w-full h-[220px] sm:h-[260px] object-cover rounded-2xl border border-[#edf1e8]"
         />
 
       )
@@ -339,12 +339,20 @@ const uploadImage = async (e) => {
 
 
         {/* BUTTONS */}
-        <div className="flex items-center justify-end gap-4 mt-10 border-t border-[#edf1e8] pt-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 sm:gap-4 mt-10 border-t border-[#edf1e8] pt-8">
 
           <button
             onClick={() => saveBlog("draft")}
             disabled={loading}
-            className="h-[50px] px-7 rounded-xl border border-[#dbe3ea] font-semibold text-[#111827]"
+            className="
+w-full sm:w-auto
+h-[50px]
+px-7
+rounded-xl
+border border-[#dbe3ea]
+font-semibold
+text-[#111827]
+"
           >
 
             Save Draft
@@ -355,8 +363,18 @@ const uploadImage = async (e) => {
           <button
             onClick={() => saveBlog("published")}
             disabled={loading}
-            className="h-[50px] px-8 rounded-xl bg-[#ff7a00] hover:bg-[#e96f00] transition text-white font-semibold flex items-center gap-3"
-          >
+            className="
+w-full sm:w-auto
+h-[50px]
+px-8
+rounded-xl
+bg-[#ff7a00]
+hover:bg-[#e96f00]
+transition
+text-white
+font-semibold
+flex items-center justify-center gap-3
+" >
 
             <Save size={18} />
 

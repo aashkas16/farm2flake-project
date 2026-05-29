@@ -8,8 +8,6 @@ export default function Login() {
 
   const navigate = useNavigate()
 
-
-
   const [email, setEmail] = useState("")
 
   const [password, setPassword] = useState("")
@@ -18,14 +16,10 @@ export default function Login() {
 
   const [error, setError] = useState("")
 
-
-
   // LOGIN
   const handleLogin = async (e) => {
 
     e.preventDefault()
-
-
 
     try {
 
@@ -33,49 +27,30 @@ export default function Login() {
 
       setError("")
 
-
-
       const response =
         await axios.post(
 
           "https://farm2flake-backend.onrender.com/api/admin/login",
 
           {
-
             email,
-
             password
-
           }
 
         )
 
-
-
       // SAVE SESSION
       sessionStorage.setItem(
-
         "token",
-
         response.data.token
-
       )
-
-
 
       sessionStorage.setItem(
-
         "admin",
-
         JSON.stringify(
-
           response.data.admin
-
         )
-
       )
-
-
 
       navigate("/")
 
@@ -83,12 +58,8 @@ export default function Login() {
 
       console.log(error)
 
-
-
       setError(
-
         "Invalid email or password"
-
       )
 
     } finally {
@@ -99,32 +70,26 @@ export default function Login() {
 
   }
 
-
-
   return (
 
-    <div className="min-h-screen bg-[#f4f7fb] flex items-center justify-center px-6">
+    <div className="min-h-screen bg-[#f4f7fb] flex items-center justify-center px-4 sm:px-6 py-6">
 
-      <div className="w-full max-w-[460px] bg-white rounded-[32px] p-10 border border-[#edf1e8] shadow-sm">
+      <div className="w-full max-w-[460px] bg-white rounded-[24px] sm:rounded-[32px] p-6 sm:p-10 border border-[#edf1e8] shadow-sm">
 
         {/* TOP */}
         <div className="text-center">
 
-          <div className="w-16 h-16 rounded-2xl bg-[#ff7a00] text-white text-2xl font-bold flex items-center justify-center mx-auto">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#ff7a00] text-white text-xl sm:text-2xl font-bold flex items-center justify-center mx-auto">
 
             F
 
           </div>
 
-
-
-          <h1 className="text-4xl font-bold text-[#111827] mt-6">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#111827] mt-5 sm:mt-6">
 
             Admin Login
 
           </h1>
-
-
 
           <p className="text-[#6b7280] mt-3">
 
@@ -134,12 +99,10 @@ export default function Login() {
 
         </div>
 
-
-
         {/* FORM */}
         <form
           onSubmit={handleLogin}
-          className="mt-10 space-y-6"
+          className="mt-8 sm:mt-10 space-y-5 sm:space-y-6"
         >
 
           {/* EMAIL */}
@@ -151,8 +114,6 @@ export default function Login() {
 
             </label>
 
-
-
             <input
               type="email"
               placeholder="Enter email"
@@ -160,12 +121,10 @@ export default function Login() {
               onChange={(e) =>
                 setEmail(e.target.value)
               }
-              className="w-full border border-[#dbe3ea] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d]"
+              className="w-full border border-[#dbe3ea] rounded-xl px-4 sm:px-5 py-4 outline-none focus:border-[#2d5a2d]"
             />
 
           </div>
-
-
 
           {/* PASSWORD */}
           <div>
@@ -176,8 +135,6 @@ export default function Login() {
 
             </label>
 
-
-
             <input
               type="password"
               placeholder="Enter password"
@@ -185,12 +142,10 @@ export default function Login() {
               onChange={(e) =>
                 setPassword(e.target.value)
               }
-              className="w-full border border-[#dbe3ea] rounded-xl px-5 py-4 outline-none focus:border-[#2d5a2d]"
+              className="w-full border border-[#dbe3ea] rounded-xl px-4 sm:px-5 py-4 outline-none focus:border-[#2d5a2d]"
             />
 
           </div>
-
-
 
           {/* ERROR */}
           {error && (
@@ -203,31 +158,21 @@ export default function Login() {
 
           )}
 
-
-
           {/* BUTTON */}
           <button
             type="submit"
             disabled={
-
               !email ||
-
               !password ||
-
               loading
-
             }
-            className="w-full bg-[#2d5a2d] hover:bg-[#1f431f] transition text-white py-4 rounded-xl font-semibold disabled:bg-gray-300"
+            className="w-full bg-[#2d5a2d] hover:bg-[#1f431f] transition text-white py-4 rounded-xl font-semibold disabled:bg-gray-300 active:scale-[0.98]"
           >
 
             {
-
               loading
-
                 ? "Logging in..."
-
                 : "Login"
-
             }
 
           </button>

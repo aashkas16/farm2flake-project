@@ -15,11 +15,9 @@ export default function AdminManagement() {
 
 
   const currentAdmin =
-    JSON.parse(
-
-      sessionStorage.getItem("admin")
-
-    )
+  JSON.parse(
+    sessionStorage.getItem("admin") || "{}"
+  )
 
 
 
@@ -103,7 +101,14 @@ export default function AdminManagement() {
   // DELETE ADMIN
   const deleteAdmin = async (id) => {
 
-    try {
+  const confirmDelete =
+    window.confirm(
+      "Are you sure you want to delete this admin?"
+    )
+
+  if (!confirmDelete) return
+
+  try {
 
       await axios.delete(
 
@@ -128,7 +133,7 @@ export default function AdminManagement() {
   // STAFF BLOCK
   if (
 
-    currentAdmin.role !==
+    currentAdmin?.role !==
 
     "super_admin"
 
@@ -178,9 +183,9 @@ export default function AdminManagement() {
 
 
       {/* CREATE */}
-      <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] p-8">
+      <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] p-5 sm:p-8">
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
 
           <input
             type="email"
@@ -241,7 +246,8 @@ export default function AdminManagement() {
             !password
 
           }
-          className="mt-6 bg-[#2d5a2d] hover:bg-[#1f431f] transition text-white px-8 py-4 rounded-xl font-semibold disabled:bg-gray-300"
+          className="mt-6 w-full sm:w-auto bg-[#2d5a2d] hover:bg-[#1f431f] transition text-white px-8 py-4 rounded-xl font-semibold disabled:bg-gray-300"
+          //className="mt-6 bg-[#2d5a2d] hover:bg-[#1f431f] transition text-white px-8 py-4 rounded-xl font-semibold disabled:bg-gray-300"
         >
 
           Create Admin
@@ -256,6 +262,8 @@ export default function AdminManagement() {
       <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] overflow-hidden">
 
         <div className="overflow-x-auto">
+
+          <div className="min-w-[700px]">
 
           <table className="w-full">
 
@@ -370,6 +378,8 @@ export default function AdminManagement() {
 
           </table>
 
+          </div>
+
         </div>
 
       </div>
@@ -379,3 +389,4 @@ export default function AdminManagement() {
   )
 
 }
+

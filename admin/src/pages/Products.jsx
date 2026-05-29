@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react"
-
 import axios from "axios"
 
 import {
-  Pencil,
   Trash2,
   Plus
 } from "lucide-react"
@@ -12,20 +10,23 @@ import { Link } from "react-router-dom"
 
 export default function Products() {
 
-  const [products, setProducts] = useState([])
+  const [products, setProducts] =
+    useState([])
 
-
+  const [loading, setLoading] =
+    useState(true)
 
   // FETCH PRODUCTS
   const fetchProducts = async () => {
 
     try {
 
-      const response = await axios.get(
-        "https://farm2flake-backend.onrender.com/api/products"
-      )
+      const response =
+        await axios.get(
 
+          "https://farm2flake-backend.onrender.com/api/products"
 
+        )
 
       setProducts(response.data)
 
@@ -33,20 +34,19 @@ export default function Products() {
 
       console.log(error)
 
+    } finally {
+
+      setLoading(false)
+
     }
 
   }
 
-
-
   useEffect(() => {
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchProducts()
 
   }, [])
-
-
 
   // DELETE PRODUCT
   const deleteProduct = async (id) => {
@@ -58,19 +58,15 @@ export default function Products() {
 
       )
 
-
-
     if (!confirmDelete) return
-
-
 
     try {
 
       await axios.delete(
+
         `https://farm2flake-backend.onrender.com/api/products/${id}`
+
       )
-
-
 
       fetchProducts()
 
@@ -84,18 +80,17 @@ export default function Products() {
 
   }
 
-
-
   return (
 
     <div>
 
-      {/* TOP */}
-      <div className="flex items-center justify-between">
+      {/* TOP SECTION */}
+
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
         <div>
 
-          <h1 className="text-4xl font-bold text-[#111827]">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#111827]">
 
             Products
 
@@ -109,11 +104,29 @@ export default function Products() {
 
         </div>
 
-
-
         <Link
           to="/add-product"
-          className="h-[52px] px-7 rounded-xl bg-[#ff7a00] hover:bg-[#e96f00] transition text-white font-semibold flex items-center gap-3"
+          className="
+            h-[52px]
+
+            px-6
+
+            rounded-xl
+
+            bg-[#ff7a00]
+
+            hover:bg-[#e96f00]
+
+            transition
+
+            text-white
+
+            font-semibold
+
+            flex items-center justify-center gap-3
+
+            w-full sm:w-auto
+          "
         >
 
           <Plus size={18} />
@@ -124,211 +137,464 @@ export default function Products() {
 
       </div>
 
+      {/* LOADING */}
 
+      {loading && (
 
-      {/* TABLE */}
-      <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] overflow-hidden">
+        <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] p-8 text-center text-[#6b7280]">
 
-        <div className="overflow-x-auto">
+          Loading products...
 
-          <table className="w-full">
+        </div>
 
-            <thead className="bg-[#f8faf8] border-b border-[#edf1e8]">
+      )}
 
-              <tr>
+      {/* EMPTY STATE */}
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+      {!loading && products.length === 0 && (
 
-                  Product
+        <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] p-12 text-center">
 
-                </th>
+          <h3 className="text-xl font-semibold text-[#111827]">
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+            No Products Found
 
-                  Category
+          </h3>
 
-                </th>
+          <p className="text-[#6b7280] mt-2">
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+            Add your first product to get started.
 
-                  Price
+          </p>
 
-                </th>
+        </div>
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+      )}
 
-                  Size
+      {/* MOBILE CARDS */}
 
-                </th>
+      {!loading && products.length > 0 && (
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+        <div className="md:hidden mt-6 space-y-4">
 
-                  Stock
+          {products.map((product) => (
 
-                </th>
+            <div
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+              key={product.id}
 
-                  Status
+              className="
+                bg-white
 
-                </th>
+                rounded-3xl
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+                border border-[#edf1e8]
 
-                  Actions
+                p-4
 
-                </th>
+                shadow-sm
+              "
+            >
 
-              </tr>
+              <img
+                src={product.image}
+                alt={product.name}
+                className="
+                  w-full
 
-            </thead>
+                  h-[220px]
 
+                  object-cover
 
+                  rounded-2xl
 
-            <tbody>
+                  border border-[#edf1e8]
+                "
+              />
 
-              {products.map((product) => (
+              <div className="mt-4">
 
-                <tr
-                  key={product.id}
-                  className="border-b border-[#edf1e8]"
-                >
+                <h3 className="text-lg font-bold text-[#111827]">
 
-                  {/* PRODUCT */}
-                  <td className="px-6 py-5">
+                  {product.name}
 
-                    <div className="flex items-center gap-4">
+                </h3>
 
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-16 h-16 rounded-xl object-cover border border-[#edf1e8]"
-                      />
+                <p className="text-sm text-[#6b7280] mt-2 leading-relaxed">
 
+                  {product.short_description}
 
+                </p>
 
-                      <div>
+                <div className="grid grid-cols-2 gap-4 mt-5">
 
-                        <h3 className="font-semibold text-[#111827]">
+                  <div>
 
-                          {product.name}
+                    <span className="text-xs text-[#6b7280] uppercase">
 
-                        </h3>
-
-
-
-                        <p className="text-sm text-[#6b7280] mt-1">
-
-                          {product.short_description?.slice(0, 40)}...
-
-                        </p>
-
-                      </div>
-
-                    </div>
-
-                  </td>
-
-
-
-                  {/* CATEGORY */}
-                  <td className="px-6 py-5 text-[#374151]">
-
-                    {product.category}
-
-                  </td>
-
-
-
-                  {/* PRICE */}
-                  <td className="px-6 py-5 font-semibold text-[#111827]">
-
-                    ₹{product.price}
-
-                  </td>
-
-
-
-                  {/* SIZE */}
-                  <td className="px-6 py-5 text-[#374151]">
-
-                    {product.size}
-
-                  </td>
-
-
-
-                  {/* STOCK */}
-                  <td className="px-6 py-5 text-[#374151]">
-
-                    {product.stock}
-
-                  </td>
-
-
-
-                  {/* STATUS */}
-                  <td className="px-6 py-5">
-
-                    <span
-                      className={`px-4 py-2 rounded-full text-xs font-semibold
-
-                      ${
-                        product.status === "published"
-                          ? "bg-[#e8f7e8] text-[#1e7a1e]"
-                          : "bg-[#fff4e8] text-[#ff7a00]"
-                      }`}
-                    >
-
-                      {product.status}
+                      Category
 
                     </span>
 
-                  </td>
+                    <p className="font-semibold text-[#111827] mt-1">
 
+                      {product.category}
 
+                    </p>
 
-                  {/* ACTIONS */}
-                  <td className="px-6 py-5">
+                  </div>
 
-                    <div className="flex items-center gap-3">
+                  <div>
 
-                      <button
-                        className="w-10 h-10 rounded-lg border border-[#dbe3ea] flex items-center justify-center hover:bg-[#f8faf8]"
+                    <span className="text-xs text-[#6b7280] uppercase">
+
+                      Price
+
+                    </span>
+
+                    <p className="font-semibold text-[#111827] mt-1">
+
+                      ₹{product.price}
+
+                    </p>
+
+                  </div>
+
+                  <div>
+
+                    <span className="text-xs text-[#6b7280] uppercase">
+
+                      Size
+
+                    </span>
+
+                    <p className="font-semibold text-[#111827] mt-1">
+
+                      {product.size}
+
+                    </p>
+
+                  </div>
+
+                  <div>
+
+                    <span className="text-xs text-[#6b7280] uppercase">
+
+                      Stock
+
+                    </span>
+
+                    <p className="font-semibold text-[#111827] mt-1">
+
+                      {product.stock}
+
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <div className="mt-5">
+
+                  <span
+
+                    className={`
+
+                      px-4 py-2
+
+                      rounded-full
+
+                      text-xs
+
+                      font-semibold
+
+                      ${
+                        product.status === "published"
+
+                          ? "bg-[#e8f7e8] text-[#1e7a1e]"
+
+                          : "bg-[#fff4e8] text-[#ff7a00]"
+                      }
+
+                    `}
+                  >
+
+                    {product.status}
+
+                  </span>
+
+                </div>
+
+                <button
+
+                  onClick={() =>
+                    deleteProduct(product.id)
+                  }
+
+                  className="
+                    mt-5
+
+                    w-full
+
+                    h-[48px]
+
+                    rounded-xl
+
+                    border border-[#ffd6d6]
+
+                    text-red-500
+
+                    flex items-center justify-center gap-2
+
+                    hover:bg-[#fff5f5]
+
+                    transition
+                  "
+                >
+
+                  <Trash2 size={18} />
+
+                  Delete Product
+
+                </button>
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      )}
+
+            {/* DESKTOP TABLE */}
+
+      {!loading && products.length > 0 && (
+
+        <div className="hidden md:block mt-8 bg-white rounded-[28px] border border-[#edf1e8] overflow-hidden">
+
+          <div className="overflow-x-auto">
+
+            <table className="w-full">
+
+              <thead className="bg-[#f8faf8] border-b border-[#edf1e8]">
+
+                <tr>
+
+                  <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+
+                    Product
+
+                  </th>
+
+                  <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+
+                    Category
+
+                  </th>
+
+                  <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+
+                    Price
+
+                  </th>
+
+                  <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+
+                    Size
+
+                  </th>
+
+                  <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+
+                    Stock
+
+                  </th>
+
+                  <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+
+                    Status
+
+                  </th>
+
+                  <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+
+                    Actions
+
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                {products.map((product) => (
+
+                  <tr
+
+                    key={product.id}
+
+                    className="border-b border-[#edf1e8]"
+
+                  >
+
+                    {/* PRODUCT */}
+
+                    <td className="px-6 py-5">
+
+                      <div className="flex items-center gap-4">
+
+                        <img
+
+                          src={product.image}
+
+                          alt={product.name}
+
+                          className="
+                            w-16 h-16
+
+                            rounded-xl
+
+                            object-cover
+
+                            border border-[#edf1e8]
+                          "
+
+                        />
+
+                        <div>
+
+                          <h3 className="font-semibold text-[#111827]">
+
+                            {product.name}
+
+                          </h3>
+
+                          <p className="text-sm text-[#6b7280] mt-1">
+
+                            {product.short_description?.slice(0, 40)}...
+
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                    </td>
+
+                    {/* CATEGORY */}
+
+                    <td className="px-6 py-5 text-[#374151]">
+
+                      {product.category}
+
+                    </td>
+
+                    {/* PRICE */}
+
+                    <td className="px-6 py-5 font-semibold text-[#111827]">
+
+                      ₹{product.price}
+
+                    </td>
+
+                    {/* SIZE */}
+
+                    <td className="px-6 py-5 text-[#374151]">
+
+                      {product.size}
+
+                    </td>
+
+                    {/* STOCK */}
+
+                    <td className="px-6 py-5 text-[#374151]">
+
+                      {product.stock}
+
+                    </td>
+
+                    {/* STATUS */}
+
+                    <td className="px-6 py-5">
+
+                      <span
+
+                        className={`
+
+                          px-4 py-2
+
+                          rounded-full
+
+                          text-xs
+
+                          font-semibold
+
+                          ${
+                            product.status === "published"
+
+                              ? "bg-[#e8f7e8] text-[#1e7a1e]"
+
+                              : "bg-[#fff4e8] text-[#ff7a00]"
+                          }
+
+                        `}
                       >
 
-                        <Pencil size={18} />
+                        {product.status}
 
-                      </button>
+                      </span>
 
+                    </td>
 
+                    {/* ACTION */}
+
+                    <td className="px-6 py-5">
 
                       <button
+
                         onClick={() =>
                           deleteProduct(product.id)
                         }
-                        className="w-10 h-10 rounded-lg border border-[#ffd6d6] text-red-500 flex items-center justify-center hover:bg-[#fff5f5]"
+
+                        className="
+                          w-10 h-10
+
+                          rounded-lg
+
+                          border border-[#ffd6d6]
+
+                          text-red-500
+
+                          flex items-center justify-center
+
+                          hover:bg-[#fff5f5]
+
+                          transition
+                        "
                       >
 
                         <Trash2 size={18} />
 
                       </button>
 
-                    </div>
+                    </td>
 
-                  </td>
+                  </tr>
 
-                </tr>
+                ))}
 
-              ))}
+              </tbody>
 
-            </tbody>
+            </table>
 
-          </table>
+          </div>
 
         </div>
 
-      </div>
+      )}
 
     </div>
 

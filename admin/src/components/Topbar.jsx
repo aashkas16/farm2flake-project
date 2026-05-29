@@ -1,39 +1,123 @@
 import {
   Bell,
-  Search
+  Search,
+  Menu
 } from "lucide-react"
 
-export default function Topbar() {
+import { useLocation } from "react-router-dom"
+
+export default function Topbar({
+
+  setMobileOpen
+
+}) {
+
+  const location =
+    useLocation()
+
+  const titles = {
+
+    "/": "Dashboard",
+
+    "/products": "Products",
+
+    "/add-product": "Add Product",
+
+    "/orders": "Orders",
+
+    "/blogs": "Blogs",
+
+    "/add-blog": "Add Blog",
+
+    "/reviews": "Reviews",
+
+    "/contacts": "Contacts",
+
+    "/admin-management": "Admins"
+
+  }
+
+  const pageTitle =
+    titles[location.pathname] ||
+    "Dashboard"
 
   return (
 
-    <header className="h-[78px] bg-white border-b border-[#e8edf3] px-6 flex items-center justify-between flex-shrink-0">
+    <header
+      className="
+        h-[72px]
+        lg:h-[78px]
+
+        bg-white
+
+        border-b border-[#e8edf3]
+
+        px-4
+        sm:px-6
+
+        flex items-center justify-between
+
+        flex-shrink-0
+      "
+    >
 
       {/* LEFT */}
-      <div>
 
-        <h1 className="text-[28px] font-bold text-[#111827]">
+      <div className="flex items-center gap-3">
 
-          Dashboard
+        <button
 
-        </h1>
+          onClick={() =>
+            setMobileOpen(true)
+          }
 
-        <p className="text-[13px] text-[#6b7280] mt-1">
+          className="
+            lg:hidden
 
-          Welcome back, Admin
+            w-10 h-10
 
-        </p>
+            rounded-xl
+
+            bg-[#f5f7fb]
+
+            flex items-center justify-center
+          "
+        >
+
+          <Menu size={20} />
+
+        </button>
+
+        <div>
+
+          <h1 className="text-[22px] lg:text-[28px] font-bold text-[#111827]">
+
+            {pageTitle}
+
+          </h1>
+
+          <p className="hidden sm:block text-[13px] text-[#6b7280] mt-1">
+
+            Welcome back, Admin
+
+          </p>
+
+        </div>
 
       </div>
 
-
       {/* RIGHT */}
-      <div className="flex items-center gap-4">
+
+      <div className="flex items-center gap-3">
 
         {/* SEARCH */}
-        <div className="w-[260px] h-[42px] bg-[#f5f7fb] rounded-xl px-4 flex items-center gap-2">
 
-          <Search size={16} color="#6b7280" />
+        <div className="hidden lg:flex w-[260px] h-[42px] bg-[#f5f7fb] rounded-xl px-4 items-center gap-2">
+
+          <Search
+            size={16}
+            color="#6b7280"
+          />
 
           <input
             type="text"
@@ -43,16 +127,16 @@ export default function Topbar() {
 
         </div>
 
-
         {/* BELL */}
+
         <button className="w-[42px] h-[42px] rounded-xl bg-[#f5f7fb] flex items-center justify-center">
 
           <Bell size={18} />
 
         </button>
 
-
         {/* PROFILE */}
+
         <div className="h-[42px] bg-[#f5f7fb] rounded-xl px-3 flex items-center gap-3">
 
           <div className="w-8 h-8 rounded-full bg-[#183818] text-white flex items-center justify-center text-sm font-bold">
@@ -61,7 +145,7 @@ export default function Topbar() {
 
           </div>
 
-          <div>
+          <div className="hidden sm:block">
 
             <h3 className="text-[13px] font-semibold text-[#111827] leading-none">
 

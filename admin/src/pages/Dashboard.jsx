@@ -177,7 +177,7 @@ const orderStatusData = [
 
         <div>
 
-          <h1 className="text-4xl font-bold text-[#183818]">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#183818]">
 
             Dashboard Overview
 
@@ -196,7 +196,7 @@ const orderStatusData = [
 
 
       {/* CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-7 mt-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-7 mt-8 sm:mt-10">
 
         <DashboardCard
           title="Total Products"
@@ -236,7 +236,7 @@ const orderStatusData = [
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-10">
 
         {/* RECENT PRODUCTS */}
-        <div className="bg-white rounded-[28px] p-8 border border-[#edf1e8]">
+        <div className="bg-white rounded-[28px] p-5 sm:p-8 border border-[#edf1e8]">
 
           <h2 className="text-2xl font-bold text-[#183818]">
 
@@ -294,7 +294,7 @@ const orderStatusData = [
 
 
         {/* LATEST REVIEWS */}
-        <div className="bg-white rounded-[28px] p-8 border border-[#edf1e8]">
+        <div className="bg-white rounded-[28px] p-5 sm:p-8 border border-[#edf1e8]">
 
           <h2 className="text-2xl font-bold text-[#183818]">
 
@@ -356,9 +356,9 @@ const orderStatusData = [
 
 
       {/* RECENT ORDERS */}
-      <div className="mt-10 bg-white rounded-[28px] p-8 border border-[#edf1e8]">
+      <div className="mt-10 bg-white rounded-[28px] p-5 sm:p-8 border border-[#edf1e8]">
 
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
 
           <h2 className="text-2xl font-bold text-[#183818]">
 
@@ -380,6 +380,7 @@ const orderStatusData = [
 
 
         <div className="mt-8 overflow-x-auto">
+  <div className="min-w-[650px]">
 
           <table className="w-full">
 
@@ -479,6 +480,7 @@ const orderStatusData = [
             </tbody>
 
           </table>
+          </div>
 
         </div>
 
@@ -488,7 +490,7 @@ const orderStatusData = [
 <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-10">
 
   {/* REVENUE CHART */}
-  <div className="bg-white rounded-[28px] p-8 border border-[#edf1e8]">
+  <div className="bg-white rounded-[28px] p-5 sm:p-8 border border-[#edf1e8]">
 
     <h2 className="text-2xl font-bold text-[#183818] mb-8">
 
@@ -498,7 +500,7 @@ const orderStatusData = [
 
 
 
-    <div className="h-[320px]">
+    <div className="h-[260px] sm:h-[320px]">
 
       <ResponsiveContainer width="100%" height="100%">
 
@@ -527,7 +529,7 @@ const orderStatusData = [
 
 
   {/* ORDER STATUS */}
-  <div className="bg-white rounded-[28px] p-8 border border-[#edf1e8]">
+  <div className="bg-white rounded-[28px] p-5 sm:p-8 border border-[#edf1e8]">
 
     <h2 className="text-2xl font-bold text-[#183818] mb-8">
 
@@ -537,7 +539,7 @@ const orderStatusData = [
 
 
 
-    <div className="h-[320px]">
+    <div className="h-[260px] sm:h-[320px]">
 
       <ResponsiveContainer width="100%" height="100%">
 

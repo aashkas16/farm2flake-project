@@ -1060,6 +1060,83 @@ app.put('/api/orders/:id', async (req, res) => {
 
 })
 
+// DELETE ORDER
+app.delete('/api/orders/:id', async (req, res) => {
+
+  try {
+
+    const connection =
+      await pool.getConnection()
+
+    // Get order_id first
+    const [orders] =
+      await connection.query(
+
+        `
+        SELECT order_id
+        FROM orders
+        WHERE id = ?
+        `,
+
+        [req.params.id]
+
+      )
+
+    if (orders.length === 0) {
+
+      connection.release()
+
+      return res.status(404).json({
+        error: "Order not found"
+      })
+
+    }
+
+    const orderId =
+      orders[0].order_id
+
+    // Delete order items first
+    await connection.query(
+
+      `
+      DELETE FROM order_items
+      WHERE order_id = ?
+      `,
+
+      [orderId]
+
+    )
+
+    // Delete order
+    await connection.query(
+
+      `
+      DELETE FROM orders
+      WHERE id = ?
+      `,
+
+      [req.params.id]
+
+    )
+
+    connection.release()
+
+    res.json({
+      success: true
+    })
+
+  } catch (error) {
+
+    console.log(error)
+
+    res.status(500).json({
+      error: "Failed to delete order"
+    })
+
+  }
+
+})
+
 // CREATE CONTACT MESSAGE
 app.post('/api/contact', async (req, res) => {
 

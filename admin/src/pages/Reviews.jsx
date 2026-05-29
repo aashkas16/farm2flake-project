@@ -3,301 +3,432 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 
 import {
-  Check,
-  Trash2
+Check,
+Trash2
 } from "lucide-react"
 
 export default function Reviews() {
 
-  const [reviews, setReviews] = useState([])
+const [reviews, setReviews] =
+useState([])
 
+const [loading, setLoading] =
+useState(true)
 
+// FETCH REVIEWS
+const fetchReviews = async () => {
 
-  // FETCH REVIEWS
-  const fetchReviews = async () => {
+try {
 
-    try {
+  const response =
+    await axios.get(
+      "https://farm2flake-backend.onrender.com/api/admin-reviews"
+    )
 
-      const response = await axios.get(
-        "https://farm2flake-backend.onrender.com/api/admin-reviews"
-      )
+  setReviews(response.data)
 
+} catch (error) {
 
+  console.log(error)
 
-      setReviews(response.data)
+} finally {
 
-    } catch (error) {
+  setLoading(false)
 
-      console.log(error)
+}
 
+}
+
+useEffect(() => {
+
+fetchReviews()
+
+}, [])
+
+// APPROVE REVIEW
+const approveReview = async (id) => {
+
+try {
+
+  await axios.put(
+    `https://farm2flake-backend.onrender.com/api/reviews/${id}/approve`
+  )
+
+  fetchReviews()
+
+} catch (error) {
+
+  console.log(error)
+
+}
+
+}
+
+// DELETE REVIEW
+const deleteReview = async (id) => {
+
+const confirmDelete =
+  window.confirm(
+    "Delete this review?"
+  )
+
+if (!confirmDelete) return
+
+try {
+
+  await axios.delete(
+    `https://farm2flake-backend.onrender.com/api/reviews/${id}`
+  )
+
+  fetchReviews()
+
+} catch (error) {
+
+  console.log(error)
+
+}
+
+}
+
+return (
+
+<div>
+
+  {/* TOP */}
+  <div>
+
+    <h1 className="text-3xl sm:text-4xl font-bold text-[#111827]">
+
+      Customer Reviews
+
+    </h1>
+
+    <p className="text-[#6b7280] mt-2">
+
+      Approve or manage customer experiences.
+
+    </p>
+
+  </div>
+
+  {/* LOADING */}
+  {loading && (
+
+    <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] p-8 text-center text-[#6b7280]">
+
+      Loading reviews...
+
+    </div>
+
+  )}
+
+  {/* EMPTY */}
+  {!loading && reviews.length === 0 && (
+
+    <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] p-10 text-center">
+
+      <h3 className="text-xl font-semibold text-[#111827]">
+
+        No Reviews Found
+
+      </h3>
+
+      <p className="text-[#6b7280] mt-2">
+
+        Customer reviews will appear here.
+
+      </p>
+
+    </div>
+
+  )}
+
+  {/* MOBILE CARDS */}
+  {!loading && reviews.length > 0 && (
+
+    <div className="md:hidden mt-6 space-y-4">
+
+      {reviews.map((review) => (
+
+        <div
+
+          key={review.id}
+
+          className="
+            bg-white
+            rounded-3xl
+            border border-[#edf1e8]
+            p-5
+            shadow-sm
+          "
+
+        >
+
+          <div className="flex items-start justify-between gap-3">
+
+            <div>
+
+              <h3 className="font-bold text-[#111827] text-lg">
+
+                {review.name}
+
+              </h3>
+
+              <p className="text-sm text-[#6b7280] mt-1">
+
+                {review.product_name || "Unknown Product"}
+
+              </p>
+
+            </div>
+
+            <span
+  className={`
+    px-4 py-2
+    rounded-full
+    text-xs
+    font-semibold
+
+    ${
+      review.status === "approved"
+        ? "bg-[#e8f7e8] text-[#1e7a1e]"
+        : "bg-[#fff4e8] text-[#ff7a00]"
     }
+  `}
+>
+  {review.status}
+</span>
 
-  }
+          </div>
 
+          <div className="mt-4 text-lg">
 
+            {"⭐".repeat(review.rating)}
 
-  useEffect(() => {
+          </div>
 
-    fetchReviews()
+          <p className="mt-4 text-[#374151] leading-relaxed">
 
-  }, [])
+            {review.review}
 
+          </p>
 
+          <div className="flex gap-3 mt-5">
 
-  // APPROVE REVIEW
-  const approveReview = async (id) => {
+            {
+              review.status !== "approved" && (
 
-    try {
+                <button
 
-      await axios.put(
-        `https://farm2flake-backend.onrender.com/api/reviews/${id}/approve`
-      )
+                  onClick={() =>
+                    approveReview(review.id)
+                  }
 
+                  className="
+                    flex-1
+                    h-[48px]
+                    rounded-xl
+                    border border-[#d6f5d6]
+                    text-green-600
+                    hover:bg-[#f3fff3]
+                    flex items-center justify-center gap-2
+                  "
+                >
 
+                  <Check size={18} />
 
-      fetchReviews()
+                  Approve
 
-    } catch (error) {
+                </button>
 
-      console.log(error)
+              )
+            }
 
-    }
+            <button
 
-  }
+              onClick={() =>
+                deleteReview(review.id)
+              }
 
+              className="
+                flex-1
+                h-[48px]
+                rounded-xl
+                border border-[#ffd6d6]
+                text-red-500
+                hover:bg-[#fff5f5]
+                flex items-center justify-center gap-2
+              "
+            >
 
+              <Trash2 size={18} />
 
-  // DELETE REVIEW
-  const deleteReview = async (id) => {
+              Delete
 
-    const confirmDelete =
-      window.confirm(
+            </button>
 
-        "Delete this review?"
+          </div>
 
-      )
+        </div>
 
+      ))}
 
+    </div>
 
-    if (!confirmDelete) return
+  )}
 
+  {/* DESKTOP TABLE */}
+  {!loading && reviews.length > 0 && (
 
+    <div className="hidden md:block mt-8 bg-white rounded-[28px] border border-[#edf1e8] overflow-hidden">
 
-    try {
+      <div className="overflow-x-auto">
 
-      await axios.delete(
-        `https://farm2flake-backend.onrender.com/api/reviews/${id}`
-      )
+        <table className="w-full">
 
+          <thead className="bg-[#f8faf8] border-b border-[#edf1e8]">
 
+            <tr>
 
-      fetchReviews()
+              <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
 
-    } catch (error) {
+                Customer
 
-      console.log(error)
+              </th>
 
-    }
+              <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
 
-  }
+                Product
 
+              </th>
 
+              <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
 
-  return (
+                Rating
 
-    <div>
+              </th>
 
-      {/* TOP */}
-      <div>
+              <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
 
-        <h1 className="text-4xl font-bold text-[#111827]">
+                Review
 
-          Customer Reviews
+              </th>
 
-        </h1>
+              <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
 
-        <p className="text-[#6b7280] mt-2">
+                Status
 
-          Approve or manage customer experiences.
+              </th>
 
-        </p>
+              <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
 
-      </div>
+                Actions
 
+              </th>
 
+            </tr>
 
-      {/* TABLE */}
-      <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] overflow-hidden">
+          </thead>
 
-        <div className="overflow-x-auto">
+          <tbody>
 
-          <table className="w-full">
+            {reviews.map((review) => (
 
-            <thead className="bg-[#f8faf8] border-b border-[#edf1e8]">
+              <tr
+                key={review.id}
+                className="border-b border-[#edf1e8]"
+              >
 
-              <tr>
+                <td className="px-6 py-5 font-semibold text-[#111827]">
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+                  {review.name}
 
-                  Customer
+                </td>
 
-                </th>
+                <td className="px-6 py-5 text-[#374151] font-medium">
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+                  {review.product_name || "Unknown Product"}
 
-                  Product
+                </td>
 
-                </th>
+                <td className="px-6 py-5">
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+                  {"⭐".repeat(review.rating)}
 
-                  Rating
+                </td>
 
-                </th>
+                <td className="px-6 py-5 text-[#374151] max-w-[400px]">
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+                  {review.review}
 
-                  Review
+                </td>
 
-                </th>
+                <td className="px-6 py-5">
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+                 <span
+  className={`px-4 py-2 rounded-full text-xs font-semibold ${
+    review.status === "approved"
+      ? "bg-[#e8f7e8] text-[#1e7a1e]"
+      : "bg-[#fff4e8] text-[#ff7a00]"
+  }`}
+>
+  {review.status}
+</span>
 
-                  Status
+                </td>
 
-                </th>
+                <td className="px-6 py-5">
 
-                <th className="text-left px-6 py-5 text-sm font-bold text-[#111827]">
+                  <div className="flex items-center gap-3">
 
-                  Actions
+                    {
+                      review.status !== "approved" && (
 
-                </th>
+                        <button
+                          onClick={() =>
+                            approveReview(review.id)
+                          }
+                          className="w-10 h-10 rounded-lg border border-[#d6f5d6] text-green-600 flex items-center justify-center hover:bg-[#f3fff3]"
+                        >
+
+                          <Check size={18} />
+
+                        </button>
+
+                      )
+                    }
+
+                    <button
+                      onClick={() =>
+                        deleteReview(review.id)
+                      }
+                      className="w-10 h-10 rounded-lg border border-[#ffd6d6] text-red-500 flex items-center justify-center hover:bg-[#fff5f5]"
+                    >
+
+                      <Trash2 size={18} />
+
+                    </button>
+
+                  </div>
+
+                </td>
 
               </tr>
 
-            </thead>
+            ))}
 
+          </tbody>
 
-
-            <tbody>
-
-              {reviews.map((review) => (
-
-                <tr
-                  key={review.id}
-                  className="border-b border-[#edf1e8]"
-                >
-
-                  {/* NAME */}
-                  <td className="px-6 py-5 font-semibold text-[#111827]">
-
-                    {review.name}
-
-                  </td>
-
-
-
-                  {/* PRODUCT NAME */}
-                  <td className="px-6 py-5 text-[#374151] font-medium">
-
-                    {review.product_name || "Unknown Product"}
-
-                  </td>
-
-
-
-                  {/* RATING */}
-                  <td className="px-6 py-5">
-
-                    {"⭐".repeat(review.rating)}
-
-                  </td>
-
-
-
-                  {/* REVIEW */}
-                  <td className="px-6 py-5 text-[#374151] max-w-[400px]">
-
-                    {review.review}
-
-                  </td>
-
-
-
-                  {/* STATUS */}
-                  <td className="px-6 py-5">
-
-                    <span
-                      className={`px-4 py-2 rounded-full text-xs font-semibold
-
-                      ${
-                        review.status === "approved"
-                          ? "bg-[#e8f7e8] text-[#1e7a1e]"
-                          : "bg-[#fff4e8] text-[#ff7a00]"
-                      }`}
-                    >
-
-                      {review.status}
-
-                    </span>
-
-                  </td>
-
-
-
-                  {/* ACTIONS */}
-                  <td className="px-6 py-5">
-
-                    <div className="flex items-center gap-3">
-
-                      {
-                        review.status !== "approved" && (
-
-                          <button
-                            onClick={() =>
-                              approveReview(review.id)
-                            }
-                            className="w-10 h-10 rounded-lg border border-[#d6f5d6] text-green-600 flex items-center justify-center hover:bg-[#f3fff3]"
-                          >
-
-                            <Check size={18} />
-
-                          </button>
-
-                        )
-                      }
-
-
-
-                      <button
-                        onClick={() =>
-                          deleteReview(review.id)
-                        }
-                        className="w-10 h-10 rounded-lg border border-[#ffd6d6] text-red-500 flex items-center justify-center hover:bg-[#fff5f5]"
-                      >
-
-                        <Trash2 size={18} />
-
-                      </button>
-
-                    </div>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </tbody>
-
-          </table>
-
-        </div>
+        </table>
 
       </div>
 
     </div>
 
-  )
+  )}
+
+</div>
+
+)
 
 }
