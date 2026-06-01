@@ -92,7 +92,7 @@ const uploadImage = async (e) => {
   )
 ) {
 
-  alert("Please fill all required fields.")
+  alert("Please fill all required fieldssssss.")
 
   return
 
