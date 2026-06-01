@@ -40,7 +40,7 @@ export default function Preloader({ loading }) {
 
             {/* LOGO */}
             <motion.img
-              src="/logo.png"
+              src="/logo1.png"
               alt="Farm2Flake"
               initial={{
                 opacity: 0,
