@@ -152,7 +152,9 @@ app.post('/api/blogs', async (req, res) => {
       short_description,
       content,
       image,
-      status
+      status,
+      meta_title,
+      meta_description
     } = req.body;
 
     const connection = await pool.getConnection();
@@ -160,8 +162,17 @@ app.post('/api/blogs', async (req, res) => {
     const [result] = await connection.query(
 
       `INSERT INTO blogs
-      (title, category, short_description, content, image, status)
-      VALUES (?, ?, ?, ?, ?, ?)`,
+      (
+        title,
+        category,
+        short_description,
+        content,
+        image,
+        status,
+        meta_title,
+        meta_description
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
 
       [
         title,
@@ -169,7 +180,9 @@ app.post('/api/blogs', async (req, res) => {
         short_description,
         content,
         image,
-        status
+        status,
+        meta_title,
+        meta_description
       ]
 
     );

@@ -1,10 +1,12 @@
-import {
-  Save
-} from "lucide-react"
+import { Save } from "lucide-react"
 
 import { useState } from "react"
 
 import axios from "axios"
+
+//import ReactQuill from "react-quill"
+
+//import "react-quill/dist/quill.snow.css"
 
 export default function AddBlog() {
 
@@ -15,6 +17,10 @@ export default function AddBlog() {
   const [shortDescription, setShortDescription] = useState("")
 
   const [content, setContent] = useState("")
+
+  const [metaTitle, setMetaTitle] = useState("")
+
+  const [metaDescription, setMetaDescription] = useState("")
 
   const [image, setImage] = useState("")
 
@@ -75,6 +81,23 @@ const uploadImage = async (e) => {
   // SAVE BLOG
   const saveBlog = async (status) => {
 
+    if (
+  status === "published" &&
+  (
+    !title ||
+    !category ||
+    !shortDescription ||
+    !content ||
+    !image
+  )
+) {
+
+  alert("Please fill all required fields.")
+
+  return
+
+}
+
     try {
 
       setLoading(true)
@@ -84,13 +107,15 @@ const uploadImage = async (e) => {
         "https://farm2flake-backend.onrender.com/api/blogs",
 
         {
-          title,
-          category,
-          short_description: shortDescription,
-          content,
-          image,
-          status
-        }
+  title,
+  category,
+  short_description: shortDescription,
+  content,
+  image,
+  status,
+  meta_title: metaTitle,
+  meta_description: metaDescription
+}
 
       )
 
@@ -109,6 +134,8 @@ const uploadImage = async (e) => {
       setShortDescription("")
       setContent("")
       setImage("")
+      setMetaTitle("")
+      setMetaDescription("")
 
     } catch (error) {
 
@@ -116,7 +143,7 @@ const uploadImage = async (e) => {
 
       alert("Something went wrong")
 
-    } finally {
+      } finally {
 
       setLoading(false)
 
@@ -124,273 +151,477 @@ const uploadImage = async (e) => {
 
   }
 
-
-
   return (
 
-    <div>
 
-      {/* TOP */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+  <div>
 
-        <div>
+    {/* TOP */}
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
 
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#111827]">
+      <div>
 
-            Add New Blog
+        <h1 className="text-3xl sm:text-4xl font-bold text-[#111827]">
 
-          </h1>
+          Add New Blog
 
-          <p className="text-[#6b7280] mt-2">
+        </h1>
 
-            Create and publish a new blog for the website.
+        <p className="text-[#6b7280] mt-2">
 
-          </p>
+          Create and publish a professional blog article.
 
-        </div>
+        </p>
 
       </div>
 
+    </div>
 
-      {/* FORM */}
-      <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] p-5 sm:p-8">
+    {/* FORM */}
+    <div className="mt-8 bg-white rounded-[28px] border border-[#edf1e8] p-5 sm:p-8">
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
 
-          {/* LEFT */}
-          <div className="space-y-6">
+        {/* LEFT SIDE */}
+        <div className="xl:col-span-2 space-y-6">
 
-            {/* TITLE */}
-            <div>
+          {/* BLOG TITLE */}
+          <div>
 
-              <label className="text-[15px] font-semibold text-[#111827]">
+            <label className="text-[15px] font-semibold text-[#111827]">
 
-                Blog Title
+              Blog Title *
+
+            </label>
+
+            <input
+              type="text"
+              value={title}
+              onChange={(e) =>
+                setTitle(e.target.value)
+              }
+              placeholder="Enter blog title"
+              className="
+                mt-3
+                w-full
+                h-[52px]
+                rounded-xl
+                border border-[#dbe3ea]
+                px-4
+                outline-none
+                focus:border-[#ff7a00]
+              "
+            />
+
+          </div>
+
+          {/* CATEGORY */}
+          <div>
+
+            <label className="text-[15px] font-semibold text-[#111827]">
+
+              Category
+
+            </label>
+
+            <select
+              value={category}
+              onChange={(e) =>
+                setCategory(e.target.value)
+              }
+              className="
+                mt-3
+                w-full
+                h-[52px]
+                rounded-xl
+                border border-[#dbe3ea]
+                px-4
+                outline-none
+                focus:border-[#ff7a00]
+              "
+            >
+
+              <option value="">
+
+                Select Category
+
+              </option>
+
+              <option>
+
+                Fruit Powders
+
+              </option>
+
+              <option>
+
+                Vegetable Powders
+
+              </option>
+
+              <option>
+
+                Herbs Powders
+
+              </option>
+
+              <option>
+
+                Cooking Ingredients
+
+              </option>
+
+            </select>
+
+          </div>
+
+          {/* SHORT EXCERPT */}
+          <div>
+
+            <label className="text-[15px] font-semibold text-[#111827]">
+
+              Short Excerpt
+
+            </label>
+
+            <textarea
+              rows="4"
+              value={shortDescription}
+              onChange={(e) =>
+                setShortDescription(
+                  e.target.value
+                )
+              }
+              placeholder="Brief summary of your blog"
+              className="
+                mt-3
+                w-full
+                rounded-xl
+                border border-[#dbe3ea]
+                px-4
+                py-4
+                outline-none
+                resize-none
+                focus:border-[#ff7a00]
+              "
+            />
+
+          </div>
+
+          {/* SEO SETTINGS */}
+          <div className="border border-[#edf1e8] rounded-2xl p-5">
+
+            <h3 className="font-bold text-[#111827] text-lg">
+
+              SEO Settings
+
+            </h3>
+
+            <p className="text-sm text-[#6b7280] mt-1">
+
+              Improve search engine visibility.
+
+            </p>
+
+            {/* META TITLE */}
+            <div className="mt-5">
+
+              <label className="font-semibold text-[#111827]">
+
+                Meta Title
 
               </label>
 
               <input
                 type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter blog title"
-                className="mt-3 w-full h-[52px] rounded-xl border border-[#dbe3ea] px-4 outline-none focus:border-[#ff7a00]"
+                value={metaTitle}
+                onChange={(e) =>
+                  setMetaTitle(
+                    e.target.value
+                  )
+                }
+                placeholder="SEO Title"
+                className="
+                  mt-3
+                  w-full
+                  h-[52px]
+                  rounded-xl
+                  border border-[#dbe3ea]
+                  px-4
+                  outline-none
+                  focus:border-[#ff7a00]
+                "
               />
 
-            </div>
+              <p className="text-xs text-[#6b7280] mt-2">
 
+                {metaTitle.length}/60 characters
 
-            {/* CATEGORY */}
-            <div>
-
-              <label className="text-[15px] font-semibold text-[#111827]">
-
-                Category
-
-              </label>
-
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="mt-3 w-full h-[52px] rounded-xl border border-[#dbe3ea] px-4 outline-none focus:border-[#ff7a00]"
-              >
-
-                <option value="">
-
-                  Select Category
-
-                </option>
-
-                <option>
-
-                  Fruit Powders
-
-                </option>
-
-                <option>
-
-                  Vegetable Powders
-
-                </option>
-
-                <option>
-
-                  Herbs Powders
-
-                </option>
-
-                <option>
-
-                  Cooking Ingredients
-
-                </option>
-
-              </select>
+              </p>
 
             </div>
 
+            {/* META DESCRIPTION */}
+            <div className="mt-5">
 
-            {/* SHORT DESC */}
-            <div>
+              <label className="font-semibold text-[#111827]">
 
-              <label className="text-[15px] font-semibold text-[#111827]">
-
-                Short Description
+                Meta Description
 
               </label>
 
               <textarea
                 rows="4"
-                value={shortDescription}
-                onChange={(e) => setShortDescription(e.target.value)}
-                placeholder="Enter short description"
-                className="mt-3 w-full rounded-xl border border-[#dbe3ea] px-4 py-4 outline-none resize-none focus:border-[#ff7a00]"
+                value={metaDescription}
+                onChange={(e) =>
+                  setMetaDescription(
+                    e.target.value
+                  )
+                }
+                placeholder="SEO Description"
+                className="
+                  mt-3
+                  w-full
+                  rounded-xl
+                  border border-[#dbe3ea]
+                  px-4
+                  py-4
+                  outline-none
+                  resize-none
+                  focus:border-[#ff7a00]
+                "
               />
 
-            </div>
+              <p className="text-xs text-[#6b7280] mt-2">
 
+                {metaDescription.length}/160 characters
 
-            {/* CONTENT */}
-            <div>
-
-              <label className="text-[15px] font-semibold text-[#111827]">
-
-                Full Blog Content
-
-              </label>
-
-              <textarea
-                rows="8"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="Write full blog content..."
-                className="mt-3 w-full rounded-xl border border-[#dbe3ea] px-4 py-4 outline-none resize-none focus:border-[#ff7a00]"
-              />
+              </p>
 
             </div>
 
           </div>
+                    {/* BLOG CONTENT */}
+          <div>
 
+            <label className="text-[15px] font-semibold text-[#111827]">
 
-          {/* RIGHT */}
-          <div className="space-y-6">
+              Blog Content
 
-            {/* IMAGE */}
-<div>
+            </label>
 
-  <label className="text-[15px] font-semibold text-[#111827]">
+            <div className="mt-3">
 
-    Thumbnail Image
+              <textarea
+  rows="14"
+  value={content}
+  onChange={(e) =>
+    setContent(e.target.value)
+  }
+  placeholder="Write your blog content here..."
+  className="
+    mt-3
+    w-full
+    rounded-xl
+    border border-[#dbe3ea]
+    px-4
+    py-4
+    outline-none
+    resize-none
+    focus:border-[#ff7a00]
+  "
+/>
 
-  </label>
-
-
-  <div className="mt-3 border-2 border-dashed border-[#dbe3ea] rounded-2xl p-6 text-center">
-
-    <input
-      type="file"
-      accept="image/*"
-      onChange={uploadImage}
-      className="hidden"
-      id="blogImage"
-    />
-
-
-    <label
-      htmlFor="blogImage"
-      className="cursor-pointer inline-block px-6 py-3 rounded-xl bg-[#ff7a00] hover:bg-[#e96f00] transition text-white font-semibold"
-    >
-
-      {
-        uploading
-          ? "Uploading..."
-          : "Choose Image"
-      }
-
-    </label>
-
-
-    <p className="text-[#6b7280] text-sm mt-3">
-
-      PNG, JPG or JPEG allowed
-
-    </p>
-
-
-    {
-      image && (
-
-        <img
-          src={image}
-          alt="preview"
-          className="mt-6 w-full h-[220px] sm:h-[260px] object-cover rounded-2xl border border-[#edf1e8]"
-        />
-
-      )
-    }
-
-  </div>
-
-</div>
+            </div>
 
           </div>
 
         </div>
 
+        {/* RIGHT SIDE */}
+        <div className="space-y-6">
 
-        {/* BUTTONS */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 sm:gap-4 mt-10 border-t border-[#edf1e8] pt-8">
+          {/* FEATURED IMAGE */}
+          <div className="border border-[#edf1e8] rounded-2xl p-5">
 
-          <button
-            onClick={() => saveBlog("draft")}
-            disabled={loading}
-            className="
-w-full sm:w-auto
-h-[50px]
-px-7
-rounded-xl
-border border-[#dbe3ea]
-font-semibold
-text-[#111827]
-"
-          >
+            <h3 className="font-bold text-[#111827]">
 
-            Save Draft
+              Featured Image
 
-          </button>
+            </h3>
 
+            <p className="text-sm text-[#6b7280] mt-1">
 
-          <button
-            onClick={() => saveBlog("published")}
-            disabled={loading}
-            className="
-w-full sm:w-auto
-h-[50px]
-px-8
-rounded-xl
-bg-[#ff7a00]
-hover:bg-[#e96f00]
-transition
-text-white
-font-semibold
-flex items-center justify-center gap-3
-" >
+              Upload a thumbnail image for your blog.
 
-            <Save size={18} />
+            </p>
 
-            {
-              loading
-                ? "Publishing..."
-                : "Publish Blog"
-            }
+            <div className="mt-5 border-2 border-dashed border-[#dbe3ea] rounded-2xl p-6 text-center">
 
-          </button>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={uploadImage}
+                className="hidden"
+                id="blogImage"
+              />
+
+              <label
+                htmlFor="blogImage"
+                className="
+                  cursor-pointer
+                  inline-block
+                  px-6
+                  py-3
+                  rounded-xl
+                  bg-[#ff7a00]
+                  hover:bg-[#e96f00]
+                  transition
+                  text-white
+                  font-semibold
+                "
+              >
+
+                {
+                  uploading
+                    ? "Uploading..."
+                    : "Choose Image"
+                }
+
+              </label>
+
+              <p className="text-[#6b7280] text-sm mt-3">
+
+                PNG, JPG or JPEG allowed
+
+              </p>
+
+              {
+                image && (
+
+                  <img
+                    src={image}
+                    alt="preview"
+                    className="
+                      mt-6
+                      w-full
+                      h-[240px]
+                      object-cover
+                      rounded-2xl
+                      border border-[#edf1e8]
+                    "
+                  />
+
+                )
+              }
+
+            </div>
+
+          </div>
+
+          {/* SEO PREVIEW */}
+          <div className="border border-[#edf1e8] rounded-2xl p-5">
+
+            <h3 className="font-bold text-[#111827]">
+
+              SEO Preview
+
+            </h3>
+
+            <div className="mt-4">
+
+              <p className="text-blue-700 text-lg font-medium">
+
+                {
+                  metaTitle ||
+                  "Your Meta Title"
+                }
+
+              </p>
+
+              <p className="text-green-700 text-sm mt-1">
+
+                www.farm2flake.com/blog
+              </p>
+
+              <p className="text-[#6b7280] text-sm mt-2">
+
+                {
+                  metaDescription ||
+                  "Your meta description will appear here."
+                }
+
+              </p>
+
+            </div>
+
+          </div>
 
         </div>
 
       </div>
 
+      {/* BUTTONS */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 sm:gap-4 mt-10 border-t border-[#edf1e8] pt-8">
+
+        <button
+          onClick={() =>
+            saveBlog("draft")
+          }
+          disabled={loading}
+          className="
+            w-full
+            sm:w-auto
+            h-[50px]
+            px-7
+            rounded-xl
+            border border-[#dbe3ea]
+            font-semibold
+            text-[#111827]
+          "
+        >
+
+          Save Draft
+
+        </button>
+
+        <button
+          onClick={() =>
+            saveBlog("published")
+          }
+          disabled={loading}
+          className="
+            w-full
+            sm:w-auto
+            h-[50px]
+            px-8
+            rounded-xl
+            bg-[#ff7a00]
+            hover:bg-[#e96f00]
+            transition
+            text-white
+            font-semibold
+            flex items-center
+            justify-center
+            gap-3
+          "
+        >
+
+          <Save size={18} />
+
+          {
+            loading
+              ? "Publishing..."
+              : "Publish Blog"
+          }
+
+        </button>
+
+      </div>
+
     </div>
+
+  </div>
 
   )
 

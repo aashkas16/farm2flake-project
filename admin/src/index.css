@@ -16,3 +16,15 @@ body {
   box-sizing: border-box;
 
 }
+
+.ql-toolbar {
+  overflow-x: auto;
+}
+
+.ql-container {
+  min-height: 300px;
+}
+
+.ql-editor {
+  min-height: 260px;
+}
