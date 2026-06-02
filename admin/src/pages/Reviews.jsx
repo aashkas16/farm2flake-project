@@ -79,34 +79,19 @@ useEffect(() => {
 // APPROVE REVIEW
 const approveReview = async (id) => {
 
-try {
+  try {
 
-  await axios.put(
+    await axios.put(
+      `https://farm2flake-backend.onrender.com/api/reviews/${id}/approve`
+    )
 
-  `https://farm2flake-backend.onrender.com/api/reviews/${id}/reply`,
+    fetchReviews()
 
-  {
-    admin_reply:
-      replyText[id]
+  } catch (error) {
+
+    console.log(error)
+
   }
-
-)
-
-setSavedReplies({
-
-  ...savedReplies,
-
-  [id]: true
-
-})
-
-fetchReviews()
-
-} catch (error) {
-
-  console.log(error)
-
-}
 
 }
 
@@ -147,11 +132,18 @@ const saveReply = async (id) => {
       `https://farm2flake-backend.onrender.com/api/reviews/${id}/reply`,
 
       {
-        admin_reply:
-          replyText[id]
+        admin_reply: replyText[id]
       }
 
     )
+
+    setSavedReplies({
+
+      ...savedReplies,
+
+      [id]: true
+
+    })
 
     fetchReviews()
 
