@@ -527,63 +527,76 @@ return (
 
   <textarea
 
-    rows="2"
+  rows="2"
 
-    value={
-      replyText[review.id] ??
-      review.admin_reply ??
-      ""
-    }
+  value={
+    replyText[review.id] ??
+    review.admin_reply ??
+    ""
+  }
 
-    onChange={(e) =>
+  onChange={(e) => {
 
-      setReplyText({
+    setReplyText({
 
-        ...replyText,
+      ...replyText,
 
-        [review.id]:
-          e.target.value
+      [review.id]:
+        e.target.value
 
-      })
+    })
 
-    }
+    setSavedReplies({
 
-    placeholder="Reply as Farm2Flake Team..."
+      ...savedReplies,
 
-    className="
-      mt-3
-      w-full
-      rounded-lg
-      border border-[#dbe3ea]
-      px-3
-      py-2
-      text-sm
-      outline-none
-    "
-  />
+      [review.id]:
+        false
 
-  <button
+    })
 
-    onClick={() =>
-      saveReply(review.id)
-    }
+  }}
 
-    disabled={savingReply}
+  placeholder="Reply as Farm2Flake Team..."
 
-    className="
-      mt-2
-      px-4
-      py-2
-      rounded-lg
-      bg-[#2d5a2d]
-      text-white
-      text-sm
-    "
-  >
+  className="
+    mt-3
+    w-full
+    rounded-lg
+    border border-[#dbe3ea]
+    px-3
+    py-2
+    text-sm
+    outline-none
+  "
+/>
 
-    Save Reply
+ <button
 
-  </button>
+  onClick={() =>
+    saveReply(review.id)
+  }
+
+  disabled={savingReply}
+
+  className="
+    mt-2
+    px-4
+    py-2
+    rounded-lg
+    bg-[#2d5a2d]
+    text-white
+    text-sm
+  "
+>
+
+  {
+    savedReplies[review.id]
+      ? "Saved ✓"
+      : "Save Reply"
+  }
+
+</button>
 
 </td>
 
