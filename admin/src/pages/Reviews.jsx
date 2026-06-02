@@ -21,6 +21,9 @@ useState({})
 const [savingReply, setSavingReply] =
 useState(false)
 
+const [savedReplies, setSavedReplies] =
+useState({})
+
 // FETCH REVIEWS
 const fetchReviews = async () => {
 
@@ -51,16 +54,53 @@ fetchReviews()
 
 }, [])
 
+useEffect(() => {
+
+  if (reviews.length > 0) {
+
+    const initialSaved = {}
+
+    reviews.forEach((review) => {
+
+      if (review.admin_reply) {
+
+        initialSaved[review.id] = true
+
+      }
+
+    })
+
+    setSavedReplies(initialSaved)
+
+  }
+
+}, [reviews])
+
 // APPROVE REVIEW
 const approveReview = async (id) => {
 
 try {
 
   await axios.put(
-    `https://farm2flake-backend.onrender.com/api/reviews/${id}/approve`
-  )
 
-  fetchReviews()
+  `https://farm2flake-backend.onrender.com/api/reviews/${id}/reply`,
+
+  {
+    admin_reply:
+      replyText[id]
+  }
+
+)
+
+setSavedReplies({
+
+  ...savedReplies,
+
+  [id]: true
+
+})
+
+fetchReviews()
 
 } catch (error) {
 
@@ -268,18 +308,27 @@ return (
       ""
     }
 
-    onChange={(e) =>
+    onChange={(e) => {
 
-      setReplyText({
+  setReplyText({
 
-        ...replyText,
+    ...replyText,
 
-        [review.id]:
-          e.target.value
+    [review.id]:
+      e.target.value
 
-      })
+  })
 
-    }
+  setSavedReplies({
+
+    ...savedReplies,
+
+    [review.id]:
+      false
+
+  })
+
+}}
 
     placeholder="Reply as Farm2Flake Team..."
 
@@ -295,26 +344,40 @@ return (
 
   <button
 
-    onClick={() =>
-      saveReply(review.id)
-    }
+  onClick={() =>
+    saveReply(review.id)
+  }
 
-    disabled={savingReply}
+  disabled={
+    savingReply
+  }
 
-    className="
-      mt-3
-      px-5
-      py-2
-      rounded-xl
-      bg-[#2d5a2d]
-      text-white
-      font-medium
-    "
-  >
+  className="
+    mt-2
+    px-4
+    py-2
+    rounded-lg
+    text-white
+    text-sm
+    font-medium
+    transition
+    bg-[#2d5a2d]
+  "
+>
 
-    Save Reply
+  {
 
-  </button>
+    savedReplies[
+      review.id
+    ]
+
+      ? "Saved ✓"
+
+      : "Save Reply"
+
+  }
+
+</button>
 
 </div>
 
