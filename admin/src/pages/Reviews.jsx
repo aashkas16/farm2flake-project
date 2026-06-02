@@ -21,9 +21,6 @@ useState({})
 const [savingReply, setSavingReply] =
 useState(false)
 
-const [savedReplies, setSavedReplies] =
-useState({})
-
 // FETCH REVIEWS
 const fetchReviews = async () => {
 
@@ -53,28 +50,6 @@ useEffect(() => {
 fetchReviews()
 
 }, [])
-
-useEffect(() => {
-
-  if (reviews.length > 0) {
-
-    const initialSaved = {}
-
-    reviews.forEach((review) => {
-
-      if (review.admin_reply) {
-
-        initialSaved[review.id] = true
-
-      }
-
-    })
-
-    setSavedReplies(initialSaved)
-
-  }
-
-}, [reviews])
 
 // APPROVE REVIEW
 const approveReview = async (id) => {
@@ -136,15 +111,6 @@ const saveReply = async (id) => {
       }
 
     )
-
-    setSavedReplies({
-
-      ...savedReplies,
-
-      [id]: true
-
-    })
-
     fetchReviews()
 
   }
@@ -300,7 +266,7 @@ return (
       ""
     }
 
-    onChange={(e) => {
+  onChange={(e) => {
 
   setReplyText({
 
@@ -308,15 +274,6 @@ return (
 
     [review.id]:
       e.target.value
-
-  })
-
-  setSavedReplies({
-
-    ...savedReplies,
-
-    [review.id]:
-      false
 
   })
 
@@ -357,17 +314,16 @@ return (
   "
 >
 
-  {
-
-    savedReplies[
-      review.id
-    ]
-
+ {
+  (
+    replyText[review.id] !== undefined &&
+    replyText[review.id] !== review.admin_reply
+  )
+    ? "Save Reply"
+    : review.admin_reply
       ? "Saved ✓"
-
       : "Save Reply"
-
-  }
+}
 
 </button>
 
@@ -535,27 +491,18 @@ return (
     ""
   }
 
-  onChange={(e) => {
+ onChange={(e) => {
 
-    setReplyText({
+  setReplyText({
 
-      ...replyText,
+    ...replyText,
 
-      [review.id]:
-        e.target.value
+    [review.id]:
+      e.target.value
 
-    })
+  })
 
-    setSavedReplies({
-
-      ...savedReplies,
-
-      [review.id]:
-        false
-
-    })
-
-  }}
+}}
 
   placeholder="Reply as Farm2Flake Team..."
 
@@ -590,12 +537,16 @@ return (
   "
 >
 
-  {
-    savedReplies[review.id]
+ {
+  (
+    replyText[review.id] !== undefined &&
+    replyText[review.id] !== review.admin_reply
+  )
+    ? "Save Reply"
+    : review.admin_reply
       ? "Saved ✓"
       : "Save Reply"
-  }
-
+}
 </button>
 
 </td>
