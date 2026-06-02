@@ -897,7 +897,50 @@ export default function ProductDetails() {
                     </div>
                     <span className="text-xs text-gray-400">{new Date(rev.created_at).toLocaleDateString()}</span>
                   </div>
-                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed mt-3">{rev.review}</p>
+                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed mt-3">
+  {rev.review}
+</p>
+
+{
+  rev.admin_reply && (
+
+    <div
+      className="
+        mt-4
+        bg-[#f4faf4]
+        border-l-4
+        border-[#2f7c1f]
+        rounded-xl
+        p-4
+      "
+    >
+
+      <div className="flex items-center gap-2">
+
+        <span className="bg-[#2f7c1f] text-white text-[10px] px-2 py-1 rounded-full font-bold uppercase">
+
+          Official Response
+
+        </span>
+
+      </div>
+
+      <p className="font-bold text-[#2f7c1f] mt-2">
+
+        Farm2Flake Team
+
+      </p>
+
+      <p className="text-gray-700 text-sm sm:text-base mt-1 leading-relaxed">
+
+        {rev.admin_reply}
+
+      </p>
+
+    </div>
+
+  )
+}
                 </div>
               ))}
 

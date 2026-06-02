@@ -121,6 +121,37 @@ export default function Testimonials() {
 
                   </p>
 
+                  {
+  item.admin_reply && (
+
+    <div
+      className="
+        mt-4
+        bg-[#f4faf4]
+        border-l-4
+        border-[#1f6b1f]
+        rounded-xl
+        p-4
+      "
+    >
+
+      <p className="font-semibold text-[#1f6b1f] text-sm">
+
+        Farm2Flake Team
+
+      </p>
+
+      <p className="text-gray-700 text-sm mt-1 leading-relaxed">
+
+        {item.admin_reply}
+
+      </p>
+
+    </div>
+
+  )
+}
+
                 </div>
 
               </div>
