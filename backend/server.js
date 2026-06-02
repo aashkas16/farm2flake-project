@@ -744,7 +744,94 @@ app.put('/api/reviews/:id/approve', async (req, res) => {
 
 })
 
+// ADMIN REPLY TO REVIEW
+app.put('/api/reviews/:id/reply', async (req, res) => {
 
+  try {
+
+    const { id } = req.params
+
+    const { admin_reply } = req.body
+
+    const connection = await pool.getConnection()
+
+    await connection.query(
+
+      `
+      UPDATE reviews
+      SET admin_reply = ?
+      WHERE id = ?
+      `,
+
+      [
+        admin_reply,
+        id
+      ]
+
+    )
+
+    connection.release()
+
+    res.json({
+      message: "Reply added successfully"
+    })
+
+  }
+
+  catch (error) {
+
+    console.error(error)
+
+    res.status(500).json({
+      error: "Failed to add reply"
+    })
+
+  }
+
+})
+
+app.put('/api/reviews/:id/reply', async (req, res) => {
+
+  try {
+
+    const { id } = req.params
+
+    const { admin_reply } = req.body
+
+    const connection = await pool.getConnection()
+
+    await connection.query(
+
+      `
+      UPDATE reviews
+      SET admin_reply = ?
+      WHERE id = ?
+      `,
+
+      [
+        admin_reply,
+        id
+      ]
+
+    )
+
+    connection.release()
+
+    res.json({
+      message: "Reply saved successfully"
+    })
+
+  } catch (error) {
+
+    console.error(error)
+
+    res.status(500).json({
+      error: "Failed to save reply"
+    })
+
+  }
+
+})
 
 // DELETE REVIEW
 app.delete('/api/reviews/:id', async (req, res) => {

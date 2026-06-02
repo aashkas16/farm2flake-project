@@ -15,6 +15,12 @@ useState([])
 const [loading, setLoading] =
 useState(true)
 
+const [replyText, setReplyText] =
+useState({})
+
+const [savingReply, setSavingReply] =
+useState(false)
+
 // FETCH REVIEWS
 const fetchReviews = async () => {
 
@@ -87,6 +93,43 @@ try {
   console.log(error)
 
 }
+
+}
+
+const saveReply = async (id) => {
+
+  try {
+
+    setSavingReply(true)
+
+    await axios.put(
+
+      `https://farm2flake-backend.onrender.com/api/reviews/${id}/reply`,
+
+      {
+        admin_reply:
+          replyText[id]
+      }
+
+    )
+
+    fetchReviews()
+
+  }
+
+  catch (error) {
+
+    console.log(error)
+
+    alert("Failed to save reply")
+
+  }
+
+  finally {
+
+    setSavingReply(false)
+
+  }
 
 }
 
@@ -212,6 +255,68 @@ return (
             {review.review}
 
           </p>
+
+          <div className="mt-4">
+
+  <textarea
+
+    rows="3"
+
+    value={
+      replyText[review.id] ??
+      review.admin_reply ??
+      ""
+    }
+
+    onChange={(e) =>
+
+      setReplyText({
+
+        ...replyText,
+
+        [review.id]:
+          e.target.value
+
+      })
+
+    }
+
+    placeholder="Reply as Farm2Flake Team..."
+
+    className="
+      w-full
+      rounded-xl
+      border border-[#dbe3ea]
+      px-4
+      py-3
+      outline-none
+    "
+  />
+
+  <button
+
+    onClick={() =>
+      saveReply(review.id)
+    }
+
+    disabled={savingReply}
+
+    className="
+      mt-3
+      px-5
+      py-2
+      rounded-xl
+      bg-[#2d5a2d]
+      text-white
+      font-medium
+    "
+  >
+
+    Save Reply
+
+  </button>
+
+</div>
 
           <div className="flex gap-3 mt-5">
 
@@ -357,11 +462,75 @@ return (
 
                 </td>
 
-                <td className="px-6 py-5 text-[#374151] max-w-[400px]">
+                <td className="px-6 py-5 max-w-[420px]">
 
-                  {review.review}
+  <p className="text-[#374151]">
 
-                </td>
+    {review.review}
+
+  </p>
+
+  <textarea
+
+    rows="2"
+
+    value={
+      replyText[review.id] ??
+      review.admin_reply ??
+      ""
+    }
+
+    onChange={(e) =>
+
+      setReplyText({
+
+        ...replyText,
+
+        [review.id]:
+          e.target.value
+
+      })
+
+    }
+
+    placeholder="Reply as Farm2Flake Team..."
+
+    className="
+      mt-3
+      w-full
+      rounded-lg
+      border border-[#dbe3ea]
+      px-3
+      py-2
+      text-sm
+      outline-none
+    "
+  />
+
+  <button
+
+    onClick={() =>
+      saveReply(review.id)
+    }
+
+    disabled={savingReply}
+
+    className="
+      mt-2
+      px-4
+      py-2
+      rounded-lg
+      bg-[#2d5a2d]
+      text-white
+      text-sm
+    "
+  >
+
+    Save Reply
+
+  </button>
+
+</td>
 
                 <td className="px-6 py-5">
 
