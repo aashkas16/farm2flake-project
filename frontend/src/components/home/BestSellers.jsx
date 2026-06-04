@@ -172,18 +172,18 @@ export default function BestSellers() {
         </div>
 
         {/* BOTTOM FEATURES BAR */}
-        <div className="mt-12 bg-[#FAF7F2] border border-[#1D3B1D]/5 rounded-[32px] p-6 grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="mt-12 bg-[#FAF7F2] border border-[#1D3B1D]/5 rounded-[32px] p-5 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { icon: "☀️", title: "Low-Temp Dehydration", text: "Locking in organic nutrition" },
             { icon: "🌿", title: "Zero Synthetic Sugars", text: "100% natural, active purity" },
             { icon: "🧪", title: "Independently Lab-Tested", text: "Inspected for chemical safety" },
             { icon: "🇮🇳", title: "Direct Farmer Sourcing", text: "Harvested locally with care" }
           ].map((item, idx) => (
-            <div key={idx} className="flex items-center gap-3 bg-white p-4 rounded-2xl border border-black/[0.01]">
-              <span className="text-2xl shrink-0">{item.icon}</span>
-              <div>
-                <h4 className="font-extrabold text-[#111827] text-xs sm:text-sm">{item.title}</h4>
-                <p className="text-gray-400 text-[10px] sm:text-xs mt-0.5">{item.text}</p>
+            <div key={idx} className="flex items-center gap-3.5 bg-white p-4 rounded-2xl border border-[#1D3B1D]/5 shadow-[0_4px_20px_rgba(29,59,29,0.01)]">
+              <span className="text-2xl shrink-0 select-none">{item.icon}</span>
+              <div className="min-w-0">
+                <h4 className="font-extrabold text-[#111827] text-xs sm:text-sm leading-tight">{item.title}</h4>
+                <p className="text-gray-400 text-[10px] sm:text-xs mt-1 leading-normal">{item.text}</p>
               </div>
             </div>
           ))}

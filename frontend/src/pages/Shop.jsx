@@ -272,167 +272,132 @@ export default function Shop() {
 
         {/* MOBILE FILTER BUTTON */}
         <div className="lg:hidden mb-5">
-
           <button
-            onClick={() =>
-              setShowFilters(!showFilters)
-            }
-            className="w-full bg-[#2f7c1f] text-white py-3 rounded-2xl font-semibold flex items-center justify-center gap-3"
+            onClick={() => setShowFilters(true)}
+            className="w-full bg-[#2f7c1f] text-white py-3.5 rounded-2xl font-bold flex items-center justify-center gap-3 active:scale-[0.98] transition-transform shadow-sm"
           >
-
             <SlidersHorizontal size={18} />
-
             Filters
-
           </button>
-
         </div>
 
-
-
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
-
-          {/* SIDEBAR */}
+          {/* SIDEBAR / DRAWER FOR FILTERS */}
           <aside
-            className={`${
-
-              showFilters
-                ? "block"
-                : "hidden"
-
-            } lg:block space-y-6`}
+            className={`
+              fixed lg:static inset-0 z-[99999] lg:z-auto
+              lg:block
+              ${showFilters ? "flex" : "hidden"}
+              flex-col lg:flex-row justify-end lg:justify-start lg:w-auto
+            `}
           >
+            {/* Backdrop for mobile */}
+            <div 
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm lg:hidden"
+              onClick={() => setShowFilters(false)}
+            />
 
-            {/* CATEGORY */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200">
-
-              <h3 className="font-bold text-[20px] text-[#1c2b1d] mb-6">
-
-                CATEGORIES
-
-              </h3>
-
-
-
-              <div className="space-y-5 text-[15px] sm:text-[16px]">
-
-                <button
-                  onClick={() => {
-
-                    setSelectedCategory("All")
-
-                    setShowFilters(false)
-
-                  }}
-                  className={`flex items-center gap-3 font-semibold ${
-
-                    selectedCategory === "All"
-
-                      ? "text-[#4c8d2b]"
-
-                      : "text-black"
-
-                  }`}
+            {/* Content Drawer */}
+            <div 
+              className={`
+                relative bg-white lg:bg-transparent
+                w-full max-h-[80vh] lg:max-h-none overflow-y-auto lg:overflow-visible
+                rounded-t-[32px] lg:rounded-none
+                p-6 lg:p-0
+                border-t border-gray-200 lg:border-none
+                space-y-6
+                z-10
+                lg:w-[280px]
+                transition-all duration-300
+              `}
+            >
+              {/* Mobile Drawer Header */}
+              <div className="flex items-center justify-between lg:hidden border-b border-gray-100 pb-4 mb-2">
+                <h3 className="font-extrabold text-[#1c2b1d] text-lg">Filters</h3>
+                <button 
+                  onClick={() => setShowFilters(false)}
+                  className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-500 hover:bg-gray-200"
                 >
-
-                  <SlidersHorizontal size={18} />
-
-                  All Products
-
+                  ✕
                 </button>
+              </div>
 
+              {/* CATEGORY */}
+              <div className="bg-white rounded-2xl p-6 border border-gray-200 lg:shadow-sm">
+                <h3 className="font-bold text-[20px] text-[#1c2b1d] mb-6">
+                  CATEGORIES
+                </h3>
 
-
-                {[
-                  "Fruit Powders",
-                  "Vegetable Powders",
-                  "Herbs Powders"
-                ].map((category) => (
-
+                <div className="space-y-5 text-[15px] sm:text-[16px]">
                   <button
-                    key={category}
                     onClick={() => {
-
-                      setSelectedCategory(category)
-
+                      setSelectedCategory("All")
                       setShowFilters(false)
-
                     }}
-                    className={`block hover:text-[#4c8d2b] ${
-
-                      selectedCategory === category
-
-                        ? "text-[#4c8d2b] font-semibold"
-
-                        : ""
-
+                    className={`flex items-center gap-3 font-semibold ${
+                      selectedCategory === "All"
+                        ? "text-[#4c8d2b]"
+                        : "text-black"
                     }`}
                   >
-
-                    {category}
-
+                    <SlidersHorizontal size={18} />
+                    All Products
                   </button>
 
-                ))}
-
+                  {[
+                    "Fruit Powders",
+                    "Vegetable Powders",
+                    "Herbs Powders"
+                  ].map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => {
+                        setSelectedCategory(category)
+                        setShowFilters(false)
+                      }}
+                      className={`block hover:text-[#4c8d2b] ${
+                        selectedCategory === category
+                          ? "text-[#4c8d2b] font-semibold"
+                          : ""
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-            </div>
+              {/* PRICE */}
+              <div className="bg-white rounded-2xl p-6 border border-gray-200 lg:shadow-sm">
+                <h3 className="font-bold text-[20px] text-[#1c2b1d] mb-6">
+                  FILTER BY
+                </h3>
 
+                <p className="font-semibold mb-4">
+                  Price Range
+                </p>
 
+                <input
+                  type="range"
+                  min="0"
+                  max="2000"
+                  value={maxPrice}
+                  onChange={(e) =>
+                    setMaxPrice(Number(e.target.value))
+                  }
+                  className="w-full accent-green-700"
+                />
 
-            {/* PRICE */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200">
-
-              <h3 className="font-bold text-[20px] text-[#1c2b1d] mb-6">
-
-                FILTER BY
-
-              </h3>
-
-
-
-              <p className="font-semibold mb-4">
-
-                Price Range
-
-              </p>
-
-
-
-              <input
-                type="range"
-                min="0"
-                max="2000"
-                value={maxPrice}
-                onChange={(e) =>
-                  setMaxPrice(Number(e.target.value))
-                }
-                className="w-full accent-green-700"
-              />
-
-
-
-              <div className="flex justify-between text-sm mt-3 text-gray-600">
-
-                <span>
-
-                  ₹0
-
-                </span>
-
-
-
-                <span>
-
-                  ₹{maxPrice}
-
-                </span>
-
+                <div className="flex justify-between text-sm mt-3 text-gray-600">
+                  <span>
+                    ₹0
+                  </span>
+                  <span>
+                    ₹{maxPrice}
+                  </span>
+                </div>
               </div>
-
             </div>
-
           </aside>
 
 

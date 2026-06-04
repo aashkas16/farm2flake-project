@@ -10,8 +10,8 @@ export default function RealIngredients() {
           className="
             relative
             overflow-hidden
-            rounded-[40px]
-            min-h-[460px]
+            rounded-3xl sm:rounded-[40px]
+            min-h-[400px]
             sm:min-h-[380px]
             md:min-h-[320px]
             lg:h-[300px]
@@ -23,9 +23,9 @@ export default function RealIngredients() {
             before:absolute
             before:inset-0
             before:bg-gradient-to-r
-            before:from-[#FAF7F2]/96
-            before:via-[#FAF7F2]/80
-            before:to-[#FAF7F2]/10
+            before:from-[#FAF7F2]/98
+            before:via-[#FAF7F2]/92
+            before:to-[#FAF7F2]/50
             sm:before:from-[#FAF7F2]/90
             sm:before:via-[#FAF7F2]/60
             sm:before:to-transparent

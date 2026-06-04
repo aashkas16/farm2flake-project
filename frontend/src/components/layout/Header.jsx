@@ -422,6 +422,7 @@ export default function Header() {
 
                     <Link
                       to={item.path}
+                      onClick={() => setMobileMenu(false)}
                       className="
                         w-full
 

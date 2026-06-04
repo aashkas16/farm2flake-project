@@ -1,25 +1,39 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
-import { Send, Mail, Phone, MapPin } from "lucide-react"
+import { Send, Mail, Phone, MapPin, ChevronDown } from "lucide-react"
 
 export default function Footer() {
+  const [openSections, setOpenSections] = useState({
+    quickLinks: false,
+    categories: false,
+    contact: false,
+  })
+
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section]
+    }))
+  }
+
   return (
-    <footer className="bg-[#FAF7F2] text-[#1D3B1D] pt-16 pb-8 border-t border-[#1D3B1D]/5 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+    <footer className="bg-[#FAF7F2] text-[#1D3B1D] pt-10 md:pt-16 pb-6 md:pb-8 border-t border-[#1D3B1D]/5 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         
         {/* MAIN FOOTER */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 items-start mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8 lg:gap-12 items-start mb-8 md:mb-12">
           
           {/* BRAND */}
           <div className="lg:col-span-1.5 flex flex-col justify-start">
-            <h2 className="text-2xl font-black tracking-tight text-[#1D3B1D]">
+            <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#1D3B1D]">
               Farm2Flake
             </h2>
-            <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mt-4 max-w-[280px]">
+            <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mt-3 max-w-[280px]">
               We bring you the absolute best of nature in every spoon. Premium freeze-dried nutrition for active daily lifestyles.
             </p>
             
             {/* SOCIAL MEDIA */}
-            <div className="flex gap-4 mt-6">
+            <div className="flex gap-4 mt-5">
               {[
                 { 
                   icon: (
@@ -60,90 +74,123 @@ export default function Footer() {
           </div>
 
           {/* QUICK LINKS */}
-          <div>
-            <h3 className="font-extrabold text-[#111827] text-sm uppercase tracking-wider mb-5">
-              Quick Links
-            </h3>
-            <ul className="space-y-3 text-xs sm:text-sm text-gray-500">
-              <li>
-                <Link to="/shop" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors">
-                  Shop Catalog
-                </Link>
-              </li>
-              <li>
-                <Link to="/blog" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors">
-                  Health Journal
-                </Link>
-              </li>
-              <li>
-                <Link to="/trial" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors">
-                  Trial Packs
-                </Link>
-              </li>
-            </ul>
+          <div className="border-b border-[#1D3B1D]/5 md:border-none pb-3 md:pb-0">
+            <button
+              onClick={() => toggleSection("quickLinks")}
+              className="w-full md:cursor-default flex items-center justify-between md:block text-left py-1 md:py-0"
+            >
+              <h3 className="font-extrabold text-[#111827] text-xs sm:text-sm uppercase tracking-wider md:mb-5">
+                Quick Links
+              </h3>
+              <ChevronDown 
+                size={16} 
+                className={`text-[#1D3B1D]/50 transition-transform duration-300 md:hidden ${openSections.quickLinks ? "rotate-180" : ""}`}
+              />
+            </button>
+            <div className={`mt-2 md:mt-0 transition-all duration-300 overflow-hidden md:max-h-none ${openSections.quickLinks ? "max-h-[160px] opacity-100" : "max-h-0 opacity-0 md:opacity-100"}`}>
+              <ul className="space-y-2 md:space-y-3 text-xs sm:text-sm text-gray-500 pt-1 md:pt-0">
+                <li>
+                  <Link to="/shop" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors py-1 block">
+                    Shop Catalog
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/blog" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors py-1 block">
+                    Health Journal
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/trial" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors py-1 block">
+                    Trial Packs
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* CATEGORIES */}
-          <div>
-            <h3 className="font-extrabold text-[#111827] text-sm uppercase tracking-wider mb-5">
-              Categories
-            </h3>
-            <ul className="space-y-3 text-xs sm:text-sm text-gray-500">
-              <li>
-                <Link to="/shop?category=Fruit Powders" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors">
-                  Fruit Powders
-                </Link>
-              </li>
-              <li>
-                <Link to="/shop?category=Vegetable Powders" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors">
-                  Vegetable Powders
-                </Link>
-              </li>
-              <li>
-                <Link to="/shop?category=Herbs Powders" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors">
-                  Herbs Powders
-                </Link>
-              </li>
-            </ul>
+          <div className="border-b border-[#1D3B1D]/5 md:border-none pb-3 md:pb-0">
+            <button
+              onClick={() => toggleSection("categories")}
+              className="w-full md:cursor-default flex items-center justify-between md:block text-left py-1 md:py-0"
+            >
+              <h3 className="font-extrabold text-[#111827] text-xs sm:text-sm uppercase tracking-wider md:mb-5">
+                Categories
+              </h3>
+              <ChevronDown 
+                size={16} 
+                className={`text-[#1D3B1D]/50 transition-transform duration-300 md:hidden ${openSections.categories ? "rotate-180" : ""}`}
+              />
+            </button>
+            <div className={`mt-2 md:mt-0 transition-all duration-300 overflow-hidden md:max-h-none ${openSections.categories ? "max-h-[160px] opacity-100" : "max-h-0 opacity-0 md:opacity-100"}`}>
+              <ul className="space-y-2 md:space-y-3 text-xs sm:text-sm text-gray-500 pt-1 md:pt-0">
+                <li>
+                  <Link to="/shop?category=Fruit Powders" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors py-1 block">
+                    Fruit Powders
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=Vegetable Powders" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors py-1 block">
+                    Vegetable Powders
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=Herbs Powders" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors py-1 block">
+                    Herbs Powders
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* CONTACT INFO */}
-          <div>
-            <h3 className="font-extrabold text-[#111827] text-sm uppercase tracking-wider mb-5">
-              Contact
-            </h3>
-            <ul className="space-y-3 text-xs sm:text-sm text-gray-500">
-              <li className="flex gap-2.5 items-start">
-                <MapPin size={16} className="text-[#2F7C1F] shrink-0 mt-0.5" />
-                <span>Indore, Madhya Pradesh, India</span>
-              </li>
-              <li className="flex gap-2.5 items-center">
-                <Phone size={16} className="text-[#2F7C1F] shrink-0" />
-                <span>+91 63592 25925</span>
-              </li>
-              <li className="flex gap-2.5 items-center">
-                <Mail size={16} className="text-[#2F7C1F] shrink-0" />
-                <span>care@farm2flake.com</span>
-              </li>
-            </ul>
+          <div className="border-b border-[#1D3B1D]/5 md:border-none pb-3 md:pb-0">
+            <button
+              onClick={() => toggleSection("contact")}
+              className="w-full md:cursor-default flex items-center justify-between md:block text-left py-1 md:py-0"
+            >
+              <h3 className="font-extrabold text-[#111827] text-xs sm:text-sm uppercase tracking-wider md:mb-5">
+                Contact
+              </h3>
+              <ChevronDown 
+                size={16} 
+                className={`text-[#1D3B1D]/50 transition-transform duration-300 md:hidden ${openSections.contact ? "rotate-180" : ""}`}
+              />
+            </button>
+            <div className={`mt-2 md:mt-0 transition-all duration-300 overflow-hidden md:max-h-none ${openSections.contact ? "max-h-[160px] opacity-100" : "max-h-0 opacity-0 md:opacity-100"}`}>
+              <ul className="space-y-2.5 md:space-y-3 text-xs sm:text-sm text-gray-500 pt-1 md:pt-0">
+                <li className="flex gap-2.5 items-start py-0.5">
+                  <MapPin size={16} className="text-[#2F7C1F] shrink-0 mt-0.5" />
+                  <span>Indore, Madhya Pradesh, India</span>
+                </li>
+                <li className="flex gap-2.5 items-center py-0.5">
+                  <Phone size={16} className="text-[#2F7C1F] shrink-0" />
+                  <span>+91 63592 25925</span>
+                </li>
+                <li className="flex gap-2.5 items-center py-0.5">
+                  <Mail size={16} className="text-[#2F7C1F] shrink-0" />
+                  <span>care@farm2flake.com</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* NEWSLETTER */}
-          <div>
-            <h3 className="font-extrabold text-[#111827] text-sm uppercase tracking-wider mb-5">
+          <div className="pt-2 md:pt-0">
+            <h3 className="font-extrabold text-[#111827] text-xs sm:text-sm uppercase tracking-wider mb-3 md:mb-5">
               Stay Connected
             </h3>
             <p className="text-gray-500 text-xs sm:text-sm leading-relaxed">
-              Subscribe to get updates on new crop arrivals, recipes, and trade promotions.
+              Subscribe to get updates on new crop arrivals, recipes, and promotions.
             </p>
             
-            <div className="mt-4 flex bg-white border border-[#1D3B1D]/10 rounded-xl overflow-hidden shadow-sm">
+            <div className="mt-4 flex bg-white border border-[#1D3B1D]/10 rounded-xl overflow-hidden shadow-sm max-w-sm">
               <input
                 type="email"
                 placeholder="Your email address"
-                className="bg-transparent px-4 py-3 w-full outline-none text-xs text-gray-700 placeholder:text-gray-400"
+                className="bg-transparent px-4 py-2.5 w-full outline-none text-xs text-gray-700 placeholder:text-gray-400"
               />
-              <button className="bg-[#1D3B1D] hover:bg-[#2F7C1F] px-4 py-3 transition text-[#FAF7F2] flex items-center justify-center shrink-0">
+              <button className="bg-[#1D3B1D] hover:bg-[#2F7C1F] px-4 py-2.5 transition text-[#FAF7F2] flex items-center justify-center shrink-0">
                 <Send size={14} />
               </button>
             </div>
@@ -152,7 +199,7 @@ export default function Footer() {
         </div>
 
         {/* BOTTOM COPYRIGHT */}
-        <div className="border-t border-[#1D3B1D]/5 pt-8 text-center text-gray-400 text-xs">
+        <div className="border-t border-[#1D3B1D]/5 pt-6 text-center text-gray-400 text-xs">
           © {new Date().getFullYear()} Farm2Flake. All Rights Reserved. Made in India.
         </div>
 
