@@ -1,154 +1,79 @@
-import glass1 from "../../assets/products/gl.png"
-
-import glass2 from "../../assets/products/g2.png"
-
-import glass3 from "../../assets/products/g3.png"
+import { Layers, Sprout, Activity, Ban, Globe, CalendarRange } from "lucide-react"
 
 export default function HowItWorks() {
-
-  const steps = [
-
+  const points = [
     {
-
-      id: 1,
-
-      image: glass1,
-
-      title: "Add Powder",
-
-      desc: "Add 2-3 teaspoons of Farm2Flake powder"
-
+      title: "Freeze-Dried Technology",
+      desc: "Our state-of-the-art low temperature dehydration sublimation extracts moisture while maintaining structural cellular integrity.",
+      icon: <Layers className="w-7 h-7 text-[#2F7C1F]" strokeWidth={1.5} />
     },
-
-
-
     {
-
-      id: 2,
-
-      image: glass2,
-
-      title: "Add Water or Milk",
-
-      desc: "Pour your choice of water, milk or any beverage"
-
+      title: "100% Natural & Sourced",
+      desc: "Pure raw ingredients sourced directly from audited local farmers across active harvests in India.",
+      icon: <Sprout className="w-7 h-7 text-[#2F7C1F]" strokeWidth={1.5} />
     },
-
-
-
     {
-
-      id: 3,
-
-      image: glass3,
-
-      title: "Shake & Enjoy",
-
-      desc: "Stir, shake or blend and enjoy real nutrition instantly!"
-
+      title: "Full Nutrient Retention",
+      desc: "Preserves up to 98% of natural vitamins, antioxidants, active enzymes, and healthy dietary fiber.",
+      icon: <Activity className="w-7 h-7 text-[#2F7C1F]" strokeWidth={1.5} />
+    },
+    {
+      title: "Zero Preservatives",
+      desc: "No added sugars, anti-caking agents, synthetic food starch, artificial colorings, or chemicals.",
+      icon: <Ban className="w-7 h-7 text-[#2F7C1F]" strokeWidth={1.5} />
+    },
+    {
+      title: "Export Quality Standards",
+      desc: "Manufactured in sterile, FSSAI certified facilities meeting international quality benchmarks.",
+      icon: <Globe className="w-7 h-7 text-[#2F7C1F]" strokeWidth={1.5} />
+    },
+    {
+      title: "12-Month Shelf Life",
+      desc: "Advanced low-moisture packing provides organic preservation for up to a year without refrigeration.",
+      icon: <CalendarRange className="w-7 h-7 text-[#2F7C1F]" strokeWidth={1.5} />
     }
-
   ]
 
-
-
   return (
-
-    <section className="py-16 md:py-24 bg-white overflow-hidden">
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-
+    <section className="py-16 md:py-24 bg-white overflow-hidden border-b border-[#1D3B1D]/5">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+        
         {/* HEADING */}
-        <div className="text-center mb-12">
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0f172a]">
-
-            How It Works
-
+        <div className="text-center mb-14 max-w-2xl mx-auto">
+          <span className="text-xs font-bold tracking-[2px] text-[#2F7C1F] uppercase block mb-2">
+            The Farm2Flake Advantage
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#1D3B1D] tracking-tight">
+            Why Choose Farm2Flake?
           </h2>
-
-
-
-          <p className="text-gray-500 mt-3 text-sm sm:text-base">
-
-            Easy as 1-2-3!
-
+          <p className="text-gray-500 mt-4 text-xs sm:text-sm leading-relaxed">
+            We lock in nature's absolute best using clean processing standards that fit right into your active healthy lifestyle.
           </p>
-
         </div>
 
-
-
-        {/* STEPS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-14 md:gap-10 items-center">
-
-          {steps.map((step, index) => (
-
+        {/* WHY CHOOSE CARDS GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {points.map((item, index) => (
             <div
-              key={step.id}
-              className="relative flex flex-col items-center text-center"
+              key={index}
+              className="bg-[#FAF7F2] rounded-3xl p-6 sm:p-8 border border-[#1D3B1D]/5 flex flex-col justify-between hover:shadow-md transition-all duration-300"
             >
-
-              {/* STEP NUMBER */}
-              <div className="absolute top-0 left-1/2 md:left-8 -translate-x-1/2 md:translate-x-0 w-10 h-10 rounded-full bg-[#2d5a2d] text-white flex items-center justify-center font-bold shadow-md z-20">
-
-                {step.id}
-
-              </div>
-
-
-
-              {/* IMAGE CARD */}
-              <div className="bg-[#f8f7f2] rounded-3xl p-6 sm:p-8 w-full max-w-[240px] shadow-sm">
-
-                <img
-                  src={step.image}
-                  alt={step.title}
-                  className="h-32 sm:h-40 w-full object-cover scale-125 sm:scale-150"
-                />
-
-              </div>
-
-
-
-              {/* TEXT */}
-              <h3 className="mt-6 text-xl sm:text-2xl font-bold text-[#0f172a]">
-
-                {step.title}
-
-              </h3>
-
-
-
-              <p className="mt-3 text-gray-500 text-sm leading-relaxed max-w-[240px]">
-
-                {step.desc}
-
-              </p>
-
-
-
-              {/* ARROW */}
-              {index !== 2 && (
-
-                <div className="hidden md:block absolute top-28 -right-10 text-[#2d5a2d] text-4xl">
-
-                  →
-
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center border border-[#1D3B1D]/5 shadow-sm mb-6">
+                  {item.icon}
                 </div>
-
-              )}
-
+                <h3 className="text-lg sm:text-xl font-black text-[#111827] leading-snug">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-gray-500 text-xs sm:text-sm leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
             </div>
-
           ))}
-
         </div>
 
       </div>
-
     </section>
-
   )
-
 }

@@ -1,243 +1,131 @@
 import { useEffect, useState } from "react"
-
-import axios from "axios"
-
 import { Link } from "react-router-dom"
+import axios from "axios"
+import { Star, Quote, ArrowRight, MessageSquareCheck } from "lucide-react"
 
 export default function Testimonials() {
+  const [reviews, setReviews] = useState([])
 
-  const [reviews, setReviews] =
-    useState([])
-
-
-
-  // FETCH APPROVED REVIEWS
   const fetchReviews = async () => {
-
     try {
-
-      const response =
-        await axios.get(
-
-          "https://farm2flake-backend.onrender.com/api/reviews"
-
-        )
-
-
-
+      const response = await axios.get("https://farm2flake-backend.onrender.com/api/reviews")
       setReviews(response.data)
-
     } catch (error) {
-
-      console.log(error)
-
+      console.log("Error loading reviews:", error)
     }
-
   }
 
-
-
   useEffect(() => {
-
     fetchReviews()
-
   }, [])
 
-
-
   return (
-
-    <section className="py-14 md:py-16 bg-[#fafaf7] overflow-hidden">
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-
+    <section className="py-16 md:py-24 bg-white overflow-hidden border-b border-[#1D3B1D]/5">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+        
         {/* HEADING */}
-        <div className="text-center mb-10">
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1d3b1d] leading-tight">
-
-            What Our Customers Say
-
+        <div className="text-center mb-14 max-w-2xl mx-auto">
+          <span className="text-xs font-bold tracking-[2px] text-[#2F7C1F] uppercase block mb-2">
+            Verified Experiences
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#1D3B1D] tracking-tight">
+            Customer Testimonials
           </h2>
-
+          <p className="text-gray-500 mt-4 text-xs sm:text-sm leading-relaxed">
+            Real feedback from health-conscious snackers, bakers, and nutritionists.
+          </p>
         </div>
 
-
-
-        {/* TESTIMONIALS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-
+        {/* TESTIMONIALS GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {reviews.map((item) => (
-
             <div
               key={item.id}
-              className="bg-white rounded-[22px] border border-[#f0f0f0] p-5 sm:p-6 shadow-sm hover:shadow-md transition"
+              className="bg-[#FAF7F2] rounded-3xl border border-[#1D3B1D]/5 p-6 sm:p-8 flex flex-col justify-between hover:shadow-sm transition-shadow duration-300 relative group"
             >
+              <Quote className="absolute top-6 right-6 w-8 h-8 text-[#2F7C1F]/10" />
 
-              {/* USER */}
-              <div className="flex items-start gap-4">
-
-                {/* AVATAR */}
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#e8f3cc] flex items-center justify-center text-[#1d3b1d] font-bold text-lg sm:text-xl shrink-0">
-
-                  {
-
-                    item.name?.charAt(0)
-
-                  }
-
+              <div>
+                {/* STARS */}
+                <div className="flex text-amber-400 gap-0.5 mb-4">
+                  {Array.from({ length: item.rating || 5 }).map((_, i) => (
+                    <Star key={i} size={15} fill="currentColor" className="stroke-none" />
+                  ))}
                 </div>
 
+                {/* REVIEW TEXT */}
+                <p className="text-[#4B5563] text-sm sm:text-base leading-relaxed italic">
+                  "{item.review}"
+                </p>
 
-
-                <div className="flex-1">
-
-                  {/* REVIEW */}
-                  <p className="text-gray-700 text-sm sm:text-[15px] leading-relaxed break-words">
-
-                    "{item.review}"
-
-                  </p>
-
-
-
-                  {/* STARS */}
-                  <div className="flex gap-1 mt-4 text-[#f4c430] text-sm">
-
-                    {
-
-                      "★".repeat(item.rating)
-
-                    }
-
+                {/* USER PROFILE */}
+                <div className="flex items-center gap-3.5 mt-6 pt-5 border-t border-[#1D3B1D]/5">
+                  <div className="w-10 h-10 rounded-full bg-[#1D3B1D] text-[#FAF7F2] flex items-center justify-center font-extrabold text-sm uppercase shrink-0">
+                    {item.name?.charAt(0) || "U"}
                   </div>
-
-
-
-                  {/* NAME */}
-                  <p className="text-gray-500 text-sm mt-2">
-
-                    — {item.name}
-
-                  </p>
-
-                  {
-  item.admin_reply && (
-
-    <div
-      className="
-        mt-4
-        bg-[#f4faf4]
-        border-l-4
-        border-[#1f6b1f]
-        rounded-xl
-        p-4
-      "
-    >
-
-      <p className="font-semibold text-[#1f6b1f] text-sm">
-
-        Farm2Flake Team
-
-      </p>
-
-      <p className="text-gray-700 text-sm mt-1 leading-relaxed">
-
-        {item.admin_reply}
-
-      </p>
-
-    </div>
-
-  )
-}
-
+                  <div>
+                    <h4 className="font-extrabold text-[#111827] text-sm sm:text-base">
+                      {item.name}
+                    </h4>
+                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider mt-0.5">
+                      Verified Buyer
+                    </p>
+                  </div>
                 </div>
-
               </div>
 
+              {/* ADMIN REPLY BLOCK */}
+              {item.admin_reply && (
+                <div className="mt-6 bg-white border border-[#2F7C1F]/15 rounded-2xl p-4 shadow-sm relative">
+                  <div className="flex items-center gap-2 text-[#2F7C1F] mb-1.5">
+                    <MessageSquareCheck size={16} />
+                    <span className="font-bold text-xs uppercase tracking-wide">
+                      Official Reply
+                    </span>
+                  </div>
+                  <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+                    {item.admin_reply}
+                  </p>
+                  <p className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mt-2 text-right">
+                    — Farm2Flake Team
+                  </p>
+                </div>
+              )}
+
             </div>
-
           ))}
-
         </div>
 
-
-
         {/* EMPTY STATE */}
-        {
-
-          reviews.length === 0 && (
-
-            <div className="text-center text-gray-500 mt-10">
-
-              No customer reviews yet.
-
-            </div>
-
-          )
-
-        }
-
-
-
-        {/* BOTTOM BANNER */}
-        <div className="mt-10 bg-[#e8f3cc] rounded-3xl px-5 sm:px-8 py-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-
-          {/* LEFT */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 w-full">
-
-            {/* ICON */}
-            <div className="text-4xl sm:text-5xl">
-
-              📦
-
-            </div>
-
-
-
-            {/* TEXT */}
-            <div>
-
-              <h3 className="text-[#1d3b1d] font-bold text-xl sm:text-2xl leading-snug">
-
-                Free Shipping on Orders Above ₹999
-
-              </h3>
-
-
-
-              <p className="text-gray-600 text-sm mt-2">
-
-                Delivered fresh to your doorstep
-
-              </p>
-
-            </div>
-
+        {reviews.length === 0 && (
+          <div className="text-center py-12 text-gray-400 font-medium text-sm">
+            No customer reviews available yet. Be the first to share your experience!
           </div>
+        )}
 
-
-
-          {/* BUTTON */}
+        {/* PROMO SHIPPING BAR */}
+        <div className="mt-14 bg-[#1D3B1D] text-[#FAF7F2] rounded-[32px] p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_15px_40px_rgba(29,59,29,0.12)]">
+          <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+            <span className="text-4xl">🚚</span>
+            <div>
+              <h3 className="font-extrabold text-lg sm:text-xl leading-snug">
+                Free Shipping on Orders Above ₹999
+              </h3>
+              <p className="text-[#FAF7F2]/75 text-xs sm:text-sm mt-1">
+                Delivered fresh, pure, and securely sealed to your doorstep pan India.
+              </p>
+            </div>
+          </div>
           <Link
             to="/shop"
-            onClick={() =>
-              window.scrollTo(0, 0)
-            }
-            className="w-full sm:w-fit bg-[#1f6b1f] hover:bg-[#195719] transition text-white px-8 py-3 rounded-xl font-semibold text-sm text-center whitespace-nowrap"
+            onClick={() => window.scrollTo(0, 0)}
+            className="w-full md:w-auto bg-[#2F7C1F] hover:bg-white hover:text-[#1D3B1D] transition-all duration-300 text-white px-8 py-4 rounded-xl font-bold text-sm text-center whitespace-nowrap"
           >
-
-            Shop Now →
-
+            Shop Collection →
           </Link>
-
         </div>
 
       </div>
-
     </section>
-
   )
-
 }

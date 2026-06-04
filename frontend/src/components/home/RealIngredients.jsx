@@ -1,160 +1,111 @@
 import { Link } from "react-router-dom"
-
 import bannerImg from "../../assets/products/realingredients.png"
+import { ArrowRight } from "lucide-react"
 
 export default function RealIngredients() {
-
   return (
-
-    <section className="py-10 sm:py-12 md:py-14 bg-[#fafaf7] overflow-hidden">
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-
+    <section className="py-12 md:py-16 bg-[#FAF7F2] overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <div
           className="
             relative
             overflow-hidden
-
-            rounded-[28px]
-
-            min-h-[420px]
-            sm:min-h-[390px]
+            rounded-[40px]
+            min-h-[460px]
+            sm:min-h-[380px]
             md:min-h-[320px]
-            lg:h-[260px]
-
+            lg:h-[300px]
             bg-cover
             bg-center
             flex items-center
-
+            border border-[#1D3B1D]/5
+            shadow-[0_15px_50px_rgba(29,59,29,0.03)]
             before:absolute
             before:inset-0
-
             before:bg-gradient-to-r
-
-            before:from-[#f7f4ea]/95
-            before:via-[#f7f4ea]/78
-            before:to-[#f7f4ea]/28
-
-            sm:before:from-[#f7f4ea]/88
-            sm:before:via-[#f7f4ea]/58
-            sm:before:to-[#f7f4ea]/18
-
+            before:from-[#FAF7F2]/96
+            before:via-[#FAF7F2]/80
+            before:to-[#FAF7F2]/10
+            sm:before:from-[#FAF7F2]/90
+            sm:before:via-[#FAF7F2]/60
+            sm:before:to-transparent
             before:z-[1]
           "
           style={{
             backgroundImage: `url(${bannerImg})`
           }}
         >
-
-          {/* EXTRA SOFT DARK LAYER */}
-          <div className="absolute inset-0 bg-black/[0.04] z-[1]" />
-
           {/* CONTENT */}
-          <div className="relative z-[2] w-full flex justify-center md:justify-end px-6 sm:px-10 py-10 sm:py-12">
-
-            <div className="w-full md:w-[48%] lg:w-[38%] flex flex-col justify-center text-center md:text-left">
-
+          <div className="relative z-[2] w-full flex justify-start px-8 sm:px-14 py-12">
+            <div className="w-full md:w-[50%] lg:w-[42%] flex flex-col justify-center text-left">
+              
+              <span className="text-xs font-bold tracking-[2px] text-[#2F7C1F] uppercase block mb-3">
+                Traceable Sourcing
+              </span>
+              
               {/* HEADING */}
               <h2
                 className="
-                  text-[32px]
+                  text-3xl
                   sm:text-4xl
-                  lg:text-[30px]
-
+                  font-black
+                  tracking-tight
+                  text-[#1D3B1D]
                   leading-[1.1]
-
-                  font-bold
-
-                  tracking-[-1px]
-
-                  text-[#173617]
                 "
               >
-
                 Real Ingredients.
-
                 <br />
-
-                Real Results.
-
+                <span className="text-[#2F7C1F]">Real Results.</span>
               </h2>
 
               {/* DESCRIPTION */}
               <p
                 className="
-                  text-[#374151]
-
-                  text-[14px]
-                  sm:text-[15px]
-
-                  leading-7
-
+                  text-gray-600
+                  text-sm
+                  sm:text-base
+                  leading-relaxed
                   mt-4
-
                   max-w-[320px]
                   sm:max-w-[420px]
-
-                  mx-auto
-                  md:mx-0
                 "
               >
-
-                Boost your daily nutrition with the
-                goodness of real fruits & vegetables.
-
+                Unlock raw cellular vitality with nutrient-dense superfood powders harvested at peak ripeness and dehydrated inside sterile local mills.
               </p>
 
               {/* BUTTON */}
               <Link
                 to="/shop"
-                onClick={() =>
-                  window.scrollTo(0, 0)
-                }
+                onClick={() => window.scrollTo(0, 0)}
                 className="
-                  mt-6
-
+                  mt-8
                   w-full
                   sm:w-fit
-
                   h-[52px]
-
-                  bg-[#1f6b1f]
-                  hover:bg-[#195719]
-
+                  bg-[#1D3B1D]
+                  hover:bg-[#2F7C1F]
                   transition-all
                   duration-300
-
-                  text-white
-
-                  px-6
-
+                  text-[#FAF7F2]
+                  px-8
                   rounded-xl
-
-                  font-semibold
-
-                  text-[14px]
-                  sm:text-[15px]
-
-                  shadow-[0_10px_30px_rgba(31,107,31,0.18)]
-
+                  font-bold
+                  text-sm
+                  shadow-[0_8px_30px_rgba(29,59,29,0.12)]
                   flex items-center justify-center
+                  gap-2
                 "
               >
-
-                Shop Now →
-
+                <span>Shop Collection</span>
+                <ArrowRight size={16} />
               </Link>
 
             </div>
-
           </div>
 
         </div>
-
       </div>
-
     </section>
-
   )
-
 }

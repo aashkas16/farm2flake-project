@@ -6,6 +6,8 @@ import {
   Link
 } from "react-router-dom"
 
+import { getProductPriceAndSize } from "../utils/price"
+
 import {
   ChevronRight,
   Star,
@@ -64,8 +66,28 @@ export default function Shop() {
 
   const {
     cartItems,
-    toggleCart
+    addToCart,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart
   } = useCart()
+
+  const handleIncrease = (productId) => {
+    increaseQuantity(productId, "250g")
+  }
+
+  const handleDecrease = (productId) => {
+    const cartItem = cartItems.find(
+      (item) =>
+        item.id === productId &&
+        (item.selectedSize === "250g" || !item.selectedSize)
+    )
+    if (cartItem && cartItem.quantity > 1) {
+      decreaseQuantity(productId, "250g")
+    } else {
+      removeFromCart(productId, "250g")
+    }
+  }
 
 
 
@@ -466,40 +488,38 @@ export default function Shop() {
 
 
             {/* GRID */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
 
               {filteredProducts.map((product) => (
 
                 <div
                   key={product.id}
-                  className="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl transition duration-300"
+                  className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col h-full"
                 >
 
                   {/* IMAGE */}
-                  <div className="relative bg-[#fafaf7] p-5">
+                  <div className="relative bg-[#fafaf7] p-3 sm:p-5 aspect-square flex items-center justify-center">
 
                     {Number(product.is_best_seller) === 1 && (
 
-  <span className="absolute top-4 left-4 bg-[#3c9b2d] text-white text-[11px] px-3 py-1 rounded-full font-bold">
+                      <span className="absolute top-2 left-2 bg-[#2d5a2d] text-white text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
 
-    BEST SELLER
+                        Best Seller
 
-  </span>
+                      </span>
 
-)}
-
-
+                    )}
 
                     {/* WISHLIST */}
                     <button
                       onClick={() =>
                         toggleWishlist(product)
                       }
-                      className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:scale-105 transition z-10"
+                      className="absolute top-2 right-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:scale-105 transition z-10"
                     >
 
                       <Heart
-                        size={18}
+                        size={16}
                         fill={
 
                           wishlistItems.find(
@@ -528,24 +548,20 @@ export default function Shop() {
 
                     </button>
 
-
-
-                    <Link to={`/product/${product.id}`}>
+                    <Link to={`/product/${product.id}`} className="w-full h-full flex items-center justify-center">
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-[180px] sm:h-[220px] object-contain hover:scale-102 transition duration-200 cursor-pointer"
+                        className="max-h-full max-w-full object-contain hover:scale-105 transition duration-300 cursor-pointer"
                       />
                     </Link>
 
                   </div>
 
-
-
                   {/* CONTENT */}
-                  <div className="p-5 text-center">
+                  <div className="p-3 sm:p-5 flex flex-col flex-1 text-center">
 
-                    <h3 className="font-bold text-[17px] sm:text-[18px] text-[#1f1f1f] leading-snug min-h-[52px] hover:text-[#2f7c1f] transition">
+                    <h3 className="font-bold text-sm sm:text-base text-[#1c2b1d] leading-snug min-h-[40px] sm:min-h-[48px] hover:text-[#2f7c1f] transition line-clamp-2">
 
                       <Link to={`/product/${product.id}`}>
                         {product.name}
@@ -553,20 +569,16 @@ export default function Shop() {
 
                     </h3>
 
-
-
                     {/* STARS */}
-                    <div className="flex justify-center items-center gap-1 mt-2 text-yellow-400">
+                    <div className="flex justify-center items-center gap-0.5 mt-1 text-amber-400">
 
-                      <Star size={15} fill="currentColor" />
-                      <Star size={15} fill="currentColor" />
-                      <Star size={15} fill="currentColor" />
-                      <Star size={15} fill="currentColor" />
-                      <Star size={15} fill="currentColor" />
+                      <Star size={12} fill="currentColor" className="shrink-0" />
+                      <Star size={12} fill="currentColor" className="shrink-0" />
+                      <Star size={12} fill="currentColor" className="shrink-0" />
+                      <Star size={12} fill="currentColor" className="shrink-0" />
+                      <Star size={12} fill="currentColor" className="shrink-0" />
 
-
-
-                      <span className="text-gray-500 text-sm ml-1">
+                      <span className="text-gray-400 text-[10px] sm:text-xs ml-1 font-semibold">
 
                         ({product.reviews})
 
@@ -574,52 +586,56 @@ export default function Shop() {
 
                     </div>
 
-
-
                     {/* PRICE */}
-                    <p className="mt-3 text-[18px] font-semibold text-[#1c2b1d]">
+                    <p className="mt-2 text-sm sm:text-base font-black text-[#1c2b1d]">
 
-                      ₹{product.price}.00
+                      ₹{getProductPriceAndSize(product, "250g")}
+                      <span className="text-gray-400 text-[10px] sm:text-xs font-bold ml-1 uppercase">(250g)</span>
 
                     </p>
 
-
-
-                    {/* CART */}
-                    <button
-                      onClick={() =>
-                        toggleCart(product)
-                      }
-                      className={`mt-5 w-full py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden text-sm sm:text-base
-
-                      ${
-
-                        cartItems.find(
-                          (item) =>
-                            item.id === product.id
-                        )
-
-                          ? "bg-[#183818] text-white scale-[1.02]"
-
-                          : "bg-[#2f7c1f] hover:bg-[#256718] text-white"
-
-                      }`}
-                    >
-
-                      {
-
-                        cartItems.find(
-                          (item) =>
-                            item.id === product.id
-                        )
-
-                          ? "✓ ADDED"
-
-                          : "ADD TO CART"
-
-                      }
-
-                    </button>
+                    {cartItems.some(
+                      (item) =>
+                        item.id === product.id &&
+                        (item.selectedSize === "250g" || !item.selectedSize)
+                    ) ? (
+                      <div className="mt-auto flex items-center justify-between border-2 border-[#1D3B1D]/10 bg-[#FAF7F2] rounded-xl h-[40px] sm:h-[44px] overflow-hidden w-full px-2">
+                        <button
+                          onClick={() => handleDecrease(product.id)}
+                          className="w-10 h-full flex items-center justify-center text-[#1D3B1D] hover:bg-black/5 transition font-black text-sm"
+                        >
+                          -
+                        </button>
+                        <span className="font-extrabold text-xs sm:text-sm text-[#1D3B1D]">
+                          {cartItems.find(
+                            (item) =>
+                              item.id === product.id &&
+                              (item.selectedSize === "250g" || !item.selectedSize)
+                          )?.quantity || 1}{" "}
+                          Qty
+                        </span>
+                        <button
+                          onClick={() => handleIncrease(product.id)}
+                          className="w-10 h-full flex items-center justify-center text-[#1D3B1D] hover:bg-black/5 transition font-black text-sm"
+                        >
+                          +
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          addToCart(
+                            product,
+                            1,
+                            "250g",
+                            getProductPriceAndSize(product, "250g")
+                          )
+                        }
+                        className="mt-auto w-full py-2.5 sm:py-3 rounded-xl font-bold bg-[#2f7c1f] hover:bg-[#256718] text-white shadow-sm shadow-[#2f7c1f]/10 transition duration-300 flex items-center justify-center gap-2 text-xs sm:text-sm hover:scale-[1.02] active:scale-[0.98]"
+                      >
+                        Add to Cart
+                      </button>
+                    )}
 
                   </div>
 

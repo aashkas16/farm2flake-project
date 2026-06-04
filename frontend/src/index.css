@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* GLOBAL RESPONSIVE FIXES */
+/* GLOBAL RESPONSIVE FIXES & DESIGN TOKENS */
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -13,6 +17,11 @@ body,
 #root {
   width: 100%;
   overflow-x: hidden;
+  font-family: 'Outfit', sans-serif;
+  background-color: #FAF7F2;
+  color: #111827;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img {
@@ -24,6 +33,56 @@ img {
 button,
 a {
   -webkit-tap-highlight-color: transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* PREMIUM UTILITIES */
+.luxury-shadow {
+  box-shadow: 0 8px 30px rgba(29, 59, 29, 0.03), 0 1px 2px rgba(0, 0, 0, 0.01);
+}
+
+.luxury-shadow-hover:hover {
+  box-shadow: 0 20px 40px rgba(29, 59, 29, 0.06);
+  transform: translateY(-2px);
+}
+
+.luxury-border {
+  border-color: rgba(29, 59, 29, 0.08);
+}
+
+/* SHIMMER EFFECT FOR PRELOADERS */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #FAF7F2 25%, #f0ebd9 50%, #FAF7F2 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* CUSTOM SCROLLBAR FOR MODERN FEEL */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dfe5d8;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2F7C1F;
 }
 
 .container-responsive {
@@ -35,9 +94,8 @@ a {
 }
 
 @media (max-width: 768px) {
-
   h1 {
-    line-height: 1.2 !important;
+    line-height: 1.25 !important;
   }
 
   h2 {
@@ -45,7 +103,6 @@ a {
   }
 
   p {
-    line-height: 1.6 !important;
+    line-height: 1.7 !important;
   }
-
 }

@@ -176,114 +176,63 @@ export default function Cart() {
                     >
 
                       {/* MOBILE */}
-                      <div className="flex flex-col sm:flex-row gap-5 md:hidden">
+                      <div className="flex gap-4 md:hidden items-start">
 
                         {/* IMAGE */}
-                        <div className="bg-[#f8f8f5] rounded-xl overflow-hidden w-full sm:w-[120px] flex items-center justify-center">
-
+                        <div className="bg-[#f8f8f5] rounded-xl overflow-hidden w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center shrink-0 border border-gray-100 p-2">
                           <img
-                           src={product.image}
+                            src={product.image}
                             alt={product.name}
-                            className="w-[110px] h-[110px] object-contain p-2"
+                            className="max-h-full max-w-full object-contain"
                           />
-
                         </div>
 
-
-
                         {/* CONTENT */}
-                        <div className="flex-1">
-
-                          <div className="flex justify-between gap-4">
-
-                            <div>
-
-                              <h2 className="font-semibold text-[#183818] text-[16px] leading-snug">
-
-                                {product.name}
-
-                              </h2>
-
-
-
-                              <p className="text-sm text-[#667166] mt-1">
-
-                                (100g)
-
-                              </p>
-
+                        <div className="flex-1 min-w-0">
+                          <div className="flex justify-between gap-2">
+                            <h2 className="font-bold text-[#1D3B1D] text-sm sm:text-base leading-snug truncate">
+                              {product.name}
+                            </h2>
+                            <button
+                              onClick={() =>
+                                removeFromCart(product.id, product.selectedSize)
+                              }
+                              className="text-gray-400 hover:text-red-500 transition p-1"
+                            >
+                              <X size={16} />
+                            </button>
+                          </div>
+                          <p className="text-xs text-gray-500 font-bold mt-0.5">({product.selectedSize || "250g"})</p>
+                          
+                          <div className="flex items-center justify-between mt-3 flex-wrap gap-2">
+                            {/* QUANTITY COUNTER */}
+                            <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-[#FAF7F2]">
+                              <button
+                                onClick={() =>
+                                  decreaseQuantity(product.id, product.selectedSize)
+                                }
+                                className="w-8 h-8 flex items-center justify-center hover:bg-gray-200/40 text-gray-700 transition"
+                              >
+                                <Minus size={12} />
+                              </button>
+                              <span className="w-8 text-center text-xs font-bold text-[#1D3B1D]">
+                                {product.quantity}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  increaseQuantity(product.id, product.selectedSize)
+                                }
+                                className="w-8 h-8 flex items-center justify-center hover:bg-gray-200/40 text-gray-700 transition"
+                              >
+                                <Plus size={12} />
+                              </button>
                             </div>
-
-
-
-                            <button
-                              onClick={() =>
-                                removeFromCart(product.id)
-                              }
-                              className="text-[#667166] hover:text-red-500 transition h-fit"
-                            >
-
-                              <X size={18} />
-
-                            </button>
-
-                          </div>
-
-
-
-                          <p className="mt-4 font-semibold text-[#183818]">
-
-                            ₹{product.price}
-
-                          </p>
-
-
-
-                          {/* QUANTITY */}
-                          <div className="mt-4 flex items-center border border-[#e5e7eb] rounded-lg overflow-hidden w-fit">
-
-                            <button
-                              onClick={() =>
-                                decreaseQuantity(product.id)
-                              }
-                              className="w-9 h-9 flex items-center justify-center hover:bg-[#f5f5f5] transition"
-                            >
-
-                              <Minus size={15} />
-
-                            </button>
-
-
-
-                            <span className="w-10 text-center text-sm font-semibold">
-
-                              {product.quantity}
-
+                            
+                            {/* PRICE */}
+                            <span className="font-extrabold text-[#1D3B1D] text-sm sm:text-base">
+                              ₹{product.price * product.quantity}
                             </span>
-
-
-
-                            <button
-                              onClick={() =>
-                                increaseQuantity(product.id)
-                              }
-                              className="w-9 h-9 flex items-center justify-center hover:bg-[#f5f5f5] transition"
-                            >
-
-                              <Plus size={15} />
-
-                            </button>
-
                           </div>
-
-
-
-                          <p className="mt-4 font-bold text-[#183818]">
-
-                            Subtotal: ₹{product.price * product.quantity}
-
-                          </p>
-
                         </div>
 
                       </div>
@@ -318,11 +267,11 @@ export default function Cart() {
 
 
 
-                            <p className="text-sm text-[#667166] mt-1">
+                             <p className="text-sm text-[#667166] mt-1">
 
-                              (100g)
+                               ({product.selectedSize || "250g"})
 
-                            </p>
+                             </p>
 
                           </div>
 
@@ -344,37 +293,37 @@ export default function Cart() {
 
                           <div className="flex items-center border border-[#e5e7eb] rounded-lg overflow-hidden">
 
-                            <button
-                              onClick={() =>
-                                decreaseQuantity(product.id)
-                              }
-                              className="w-9 h-9 flex items-center justify-center hover:bg-[#f5f5f5] transition"
-                            >
+                             <button
+                               onClick={() =>
+                                 decreaseQuantity(product.id, product.selectedSize)
+                               }
+                               className="w-9 h-9 flex items-center justify-center hover:bg-[#f5f5f5] transition"
+                             >
 
-                              <Minus size={15} />
+                               <Minus size={15} />
 
-                            </button>
-
-
-
-                            <span className="w-10 text-center text-sm font-semibold">
-
-                              {product.quantity}
-
-                            </span>
+                             </button>
 
 
 
-                            <button
-                              onClick={() =>
-                                increaseQuantity(product.id)
-                              }
-                              className="w-9 h-9 flex items-center justify-center hover:bg-[#f5f5f5] transition"
-                            >
+                             <span className="w-10 text-center text-sm font-semibold">
 
-                              <Plus size={15} />
+                               {product.quantity}
 
-                            </button>
+                             </span>
+
+
+
+                             <button
+                               onClick={() =>
+                                 increaseQuantity(product.id, product.selectedSize)
+                               }
+                               className="w-9 h-9 flex items-center justify-center hover:bg-[#f5f5f5] transition"
+                             >
+
+                               <Plus size={15} />
+
+                             </button>
 
                           </div>
 
@@ -393,16 +342,16 @@ export default function Cart() {
 
 
 
-                          <button
-                            onClick={() =>
-                              removeFromCart(product.id)
-                            }
-                            className="text-[#667166] hover:text-red-500 transition"
-                          >
+                           <button
+                             onClick={() =>
+                               removeFromCart(product.id, product.selectedSize)
+                             }
+                             className="text-[#667166] hover:text-red-500 transition"
+                           >
 
-                            <X size={18} />
+                             <X size={18} />
 
-                          </button>
+                           </button>
 
                         </div>
 

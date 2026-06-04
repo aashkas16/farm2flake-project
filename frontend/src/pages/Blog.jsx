@@ -6,8 +6,12 @@ import axios from "axios"
 
 export default function Blog() {
 
-  const [blogs, setBlogs] =
-    useState([])
+  const [blogs, setBlogs] = useState([])
+
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = "https://images.unsplash.com/photo-1610970881699-44a5587caaec?q=80&w=800&auto=format&fit=crop";
+  }
 
 
 
@@ -112,88 +116,66 @@ export default function Blog() {
 
 
         {/* BLOG GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
           {blogs.map((blog) => (
 
             <article
               key={blog.id}
-              className="bg-white border border-gray-200 rounded-[22px] overflow-hidden shadow-sm hover:shadow-md transition duration-300"
+              className="bg-white border border-[#1D3B1D]/5 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 flex flex-col h-full"
             >
 
               {/* IMAGE */}
-              <div className="overflow-hidden">
-
+              <div className="aspect-[16/10] overflow-hidden w-full bg-gray-100 relative">
                 <img
                   src={blog.image}
                   alt={blog.title}
-                  className="w-full h-[220px] sm:h-[240px] object-cover hover:scale-105 transition duration-500"
+                  onError={handleImageError}
+                  className="w-full h-full object-cover hover:scale-[1.03] transition duration-500"
                 />
-
               </div>
 
-
-
               {/* CONTENT */}
-              <div className="p-5 sm:p-6">
+              <div className="p-6 flex flex-col flex-1">
 
-                {/* TOP */}
-                <div className="flex flex-wrap items-center gap-3 mb-4">
-
-                  <span className="bg-[#edf7df] text-[#2d5a2d] px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold whitespace-nowrap">
-
+                {/* TOP METADATA */}
+                <div className="flex items-center gap-3 mb-3 flex-wrap">
+                  <span className="bg-[#eef7ec] text-[#2F7C1F] px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
                     {blog.category}
-
                   </span>
 
-
-
-                  <span className="text-gray-500 text-xs sm:text-sm">
-
-                    {
-
-                      new Date(blog.created_at)
-
-                        .toLocaleDateString()
-
-                    }
-
+                  <span className="text-gray-400 text-xs font-medium">
+                    {new Date(blog.created_at).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric"
+                    })}
                   </span>
-
                 </div>
 
-
-
                 {/* TITLE */}
-                <h2 className="text-[20px] sm:text-xl font-semibold text-[#1c2b1d] mb-3 leading-snug line-clamp-2 min-h-[58px]">
-
-                  {blog.title}
-
+                <h2 className="text-xl font-black text-[#1D3B1D] mb-3 leading-snug hover:text-[#2F7C1F] transition min-h-[56px] line-clamp-2">
+                  <Link to={`/blog/${blog.id}`} onClick={() => window.scrollTo(0, 0)}>
+                    {blog.title}
+                  </Link>
                 </h2>
 
-
-
                 {/* DESCRIPTION */}
-                <p className="text-gray-600 text-sm sm:text-[15px] leading-7 mb-5 line-clamp-3">
-
+                <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3 flex-1">
                   {blog.short_description}
-
                 </p>
 
-
-
                 {/* BUTTON */}
-                <Link
-                  to={`/blog/${blog.id}`}
-                  onClick={() =>
-                    window.scrollTo(0, 0)
-                  }
-                  className="inline-flex items-center gap-2 text-[#275227] font-semibold hover:text-[#1d3a1d] transition text-sm sm:text-base"
-                >
-
-                  Read More →
-
-                </Link>
+                <div className="mt-auto">
+                  <Link
+                    to={`/blog/${blog.id}`}
+                    onClick={() => window.scrollTo(0, 0)}
+                    className="inline-flex items-center gap-1.5 text-[#1D3B1D] hover:text-[#2F7C1F] font-bold transition text-sm group"
+                  >
+                    Read Article 
+                    <span className="transform group-hover:translate-x-1 transition duration-200">→</span>
+                  </Link>
+                </div>
 
               </div>
 

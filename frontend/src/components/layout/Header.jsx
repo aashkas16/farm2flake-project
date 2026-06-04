@@ -117,7 +117,7 @@ export default function Header() {
 
             scrolled
 
-              ? "bg-white/85 backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.06)] border-b border-black/[0.04]"
+              ? "bg-[#FAF7F2]/90 backdrop-blur-md shadow-[0_8px_30px_rgba(29,59,29,0.06)] border-b border-[#1D3B1D]/5"
 
               : "bg-transparent border-transparent"
 
@@ -144,7 +144,7 @@ export default function Header() {
 
                 flex items-center justify-center
 
-                hover:bg-white/60
+                hover:bg-black/5
 
                 transition-all duration-300
 
@@ -154,7 +154,7 @@ export default function Header() {
 
               <Menu
                 size={22}
-                strokeWidth={2.3}
+                strokeWidth={2}
                 className="text-[#111827]"
               />
 
@@ -163,18 +163,18 @@ export default function Header() {
             {/* LOGO */}
             <Link
               to="/"
-              className="leading-none min-w-0"
+              className="leading-none min-w-0 flex flex-col justify-center"
             >
 
-              <h1 className="text-[22px] sm:text-[28px] md:text-[34px] font-extrabold tracking-[-1px] text-[#275227] leading-none truncate">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-[-1.5px] text-[#1D3B1D] leading-none">
 
                 Farm2Flake
 
               </h1>
 
-              <p className="text-[10px] sm:text-[11px] text-[#6b7280] mt-1 tracking-[0.3px] truncate">
+              <p className="text-[10px] text-gray-500 font-medium tracking-[1.5px] uppercase mt-0.5">
 
-                Rich Fruits. Real Goodness.
+                Freeze-Dried Superfoods
 
               </p>
 
@@ -183,7 +183,7 @@ export default function Header() {
           </div>
 
           {/* DESKTOP NAV */}
-          <nav className="hidden lg:flex items-center gap-8 text-[15px] font-semibold text-[#1f2937]">
+          <nav className="hidden lg:flex items-center gap-8 text-[14px] font-bold tracking-wider text-[#111827]">
 
             {navLinks.map((item) => (
 
@@ -192,16 +192,18 @@ export default function Header() {
                 to={item.path}
                 className="
                   relative
-                  hover:text-[#2d5a2d]
-                  transition
+                  hover:text-[#2F7C1F]
+                  transition-colors duration-300
                   after:absolute
-                  after:left-0
-                  after:-bottom-1
-                  after:h-[2px]
+                  after:left-1/2
+                  after:-translate-x-1/2
+                  after:-bottom-1.5
+                  after:h-[3px]
                   after:w-0
-                  after:bg-[#2d5a2d]
+                  after:rounded-full
+                  after:bg-[#2F7C1F]
                   after:transition-all
-                  hover:after:w-full
+                  hover:after:w-4
                 "
               >
 

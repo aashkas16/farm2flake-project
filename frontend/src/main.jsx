@@ -3,33 +3,12 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
 
-import Lenis from "@studio-freight/lenis"
-
 import { WishlistProvider } from "./components/context/WishlistContext"
 import { CartProvider } from "./components/context/CartContext"
 import { TrialProvider } from "./components/context/TrialContext"
 
-const lenis = new Lenis({
-
-  duration: 1.2,
-
-  smoothWheel: true,
-
-  smoothTouch: false,
-
-  touchMultiplier: 2
-
-})
-
-function raf(time) {
-
-  lenis.raf(time)
-
-  requestAnimationFrame(raf)
-
-}
-
-requestAnimationFrame(raf)
+// Native smooth scrolling is enabled via CSS in index.css (html { scroll-behavior: smooth; })
+// Disabled JS smooth scrolling interceptor (Lenis) to eliminate input lag and rendering stutters.
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 

@@ -18,6 +18,7 @@ import {
 
 import { useCart } from "../components/context/CartContext"
 import { useWishlist } from "../components/context/WishlistContext"
+import { getProductPriceAndSize } from "../utils/price"
 
 export default function ProductDetails() {
 
@@ -25,7 +26,7 @@ export default function ProductDetails() {
 
   const navigate = useNavigate()
 
-  const { cartItems, addToCart } = useCart()
+  const { cartItems, addToCart, showToast } = useCart()
 
   const { wishlistItems, toggleWishlist } = useWishlist()
 
@@ -34,8 +35,9 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true)
   const [activeImage, setActiveImage] = useState("")
   const [quantity, setQuantity] = useState(1)
-  const [selectedSize, setSelectedSize] = useState("100g")
+  const [selectedSize, setSelectedSize] = useState("250g")
   const [activeTab, setActiveTab] = useState("description")
+  const [showStickyCTA, setShowStickyCTA] = useState(false)
 
   // REVIEWS STATE
   const [reviews, setReviews] = useState([])
@@ -68,7 +70,7 @@ export default function ProductDetails() {
 
       setActiveImage(res.data.image)
 
-      setSelectedSize(res.data.size || "100g")
+      setSelectedSize("250g")
 
       // REVIEWS
       const reviewsRes = await axios.get(
@@ -130,6 +132,18 @@ export default function ProductDetails() {
 
   }, [id])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowStickyCTA(true);
+      } else {
+        setShowStickyCTA(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   if (loading) {
 
     return (
@@ -189,29 +203,17 @@ export default function ProductDetails() {
   }
 
   // DYNAMIC PRICING
-  const basePrice = Number(product.price)
-
-  const sizePrices = {
-
-    "100g": basePrice,
-
-    "250g": Math.round(basePrice * 2.2),
-
-    "500g": Math.round(basePrice * 4.5),
-
-  }
-
-  const finalPrice = sizePrices[selectedSize]
+  const finalPrice = getProductPriceAndSize(product, selectedSize)
 
   // BUNDLE MATHS
   const currentPrice = finalPrice
 
   const sug0Price = suggestedProducts[0]
-    ? parseFloat(suggestedProducts[0].price)
+    ? getProductPriceAndSize(suggestedProducts[0], "250g")
     : 0
 
   const sug1Price = suggestedProducts[1]
-    ? parseFloat(suggestedProducts[1].price)
+    ? getProductPriceAndSize(suggestedProducts[1], "250g")
     : 0
 
   let originalBundleTotal = 0
@@ -242,15 +244,7 @@ export default function ProductDetails() {
 
     if (selectedBundleItems[2]) {
 
-      addToCart({
-
-        ...product,
-
-        size: selectedSize,
-        price: finalPrice,
-        quantity: 1
-
-      })
+      addToCart(product, 1, selectedSize, finalPrice)
 
       addedCount++
 
@@ -258,14 +252,7 @@ export default function ProductDetails() {
 
     if (selectedBundleItems[0] && suggestedProducts[0]) {
 
-      addToCart({
-
-        ...suggestedProducts[0],
-
-        size: suggestedProducts[0].size || "100g",
-        quantity: 1
-
-      })
+      addToCart(suggestedProducts[0], 1, "250g", sug0Price)
 
       addedCount++
 
@@ -273,14 +260,7 @@ export default function ProductDetails() {
 
     if (selectedBundleItems[1] && suggestedProducts[1]) {
 
-      addToCart({
-
-        ...suggestedProducts[1],
-
-        size: suggestedProducts[1].size || "100g",
-        quantity: 1
-
-      })
+      addToCart(suggestedProducts[1], 1, "250g", sug1Price)
 
       addedCount++
 
@@ -288,11 +268,7 @@ export default function ProductDetails() {
 
     if (addedCount > 0) {
 
-      alert(
-
-        `Successfully added ${addedCount} bundle products to your Cart!`
-
-      )
+      showToast(`Successfully added ${addedCount} bundle products to your Cart! 🌿`)
 
     }
 
@@ -345,11 +321,17 @@ export default function ProductDetails() {
 
         )
 
+        showToast("Review submitted successfully! Redirecting to home...")
+
         setReviewName("")
 
         setReviewText("")
 
         setReviewRating(5)
+
+        setTimeout(() => {
+          navigate("/")
+        }, 2000)
 
       } else {
 
@@ -382,15 +364,7 @@ export default function ProductDetails() {
   // BUY NOW
   const handleBuyNow = () => {
 
-    addToCart({
-
-      ...product,
-
-      size: selectedSize,
-      price: finalPrice,
-      quantity
-
-    })
+    addToCart(product, quantity, selectedSize, finalPrice)
 
     navigate("/cart")
 
@@ -571,43 +545,42 @@ export default function ProductDetails() {
             </div>
 
             {/* QTY & ACTION BUTTONS */}
-            <div className="mt-8 pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+            <div className="mt-8 pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-stretch sm:items-center gap-5">
               
               {/* QUANTITY PICKER */}
-              <div>
-                <span className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Quantity</span>
-                <div className="flex items-center justify-between border border-gray-200 rounded-xl w-full sm:w-[130px] h-[52px] px-3">
+              <div className="shrink-0">
+                <span className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Quantity</span>
+                <div className="flex items-center justify-between border-2 border-gray-100 bg-[#FAF7F2] rounded-2xl w-full sm:w-[140px] h-14 px-2 shadow-inner">
                   <button
                     onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                    className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600 transition"
+                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200/60 text-[#1D3B1D] hover:scale-105 active:scale-95 transition"
                   >
-                    <Minus size={16} />
+                    <Minus size={15} />
                   </button>
-                  <span className="font-extrabold text-lg text-[#1c2b1d]">{quantity}</span>
+                  <span className="font-black text-lg text-[#1D3B1D]">{quantity}</span>
                   <button
                     onClick={() => setQuantity(q => q + 1)}
-                    className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600 transition"
+                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200/60 text-[#1D3B1D] hover:scale-105 active:scale-95 transition"
                   >
-                    <Plus size={16} />
+                    <Plus size={15} />
                   </button>
                 </div>
               </div>
 
               {/* ACTION PILLS */}
-              <div className="flex-1 flex gap-3 items-end">
+              <div className="flex-1 flex gap-4 items-end">
                 <button
                   onClick={() => {
-                    addToCart(product, quantity)
-                    alert(`Added ${quantity} x ${product.name} to cart successfully!`)
+                    addToCart(product, quantity, selectedSize, finalPrice)
                   }}
-                  className="flex-1 h-[52px] bg-[#2f7c1f] hover:bg-[#256718] text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm shadow-[#2f7c1f]/10 transition duration-300 transform active:scale-95 text-sm sm:text-base"
+                  className="flex-1 h-14 bg-[#1D3B1D] hover:bg-[#2F7C1F] text-[#FAF7F2] rounded-2xl font-bold flex items-center justify-center gap-2.5 shadow-md shadow-[#1D3B1D]/10 hover:shadow-lg transition duration-300 transform active:scale-[0.97] text-sm sm:text-base"
                 >
                   <ShoppingBag size={18} />
                   Add to Cart
                 </button>
                 <button
                   onClick={handleBuyNow}
-                  className="flex-1 h-[52px] bg-[#ffb703] hover:bg-[#fb8500] text-[#1c2b1d] rounded-xl font-extrabold flex items-center justify-center shadow-sm transition duration-300 transform active:scale-95 text-sm sm:text-base"
+                  className="flex-1 h-14 bg-[#E6A122] hover:bg-[#d89312] text-[#1D3B1D] rounded-2xl font-black flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition duration-300 transform active:scale-[0.97] text-sm sm:text-base"
                 >
                   Buy Now
                 </button>
@@ -803,7 +776,7 @@ export default function ProductDetails() {
                   </button>
                   <img src={suggestedProducts[0].image} alt="" className="w-20 h-20 object-contain mb-2" />
                   <span className="font-bold text-xs text-[#1c2b1d] line-clamp-1">{suggestedProducts[0].name}</span>
-                  <span className="text-sm font-bold text-gray-500 mt-1">₹{suggestedProducts[0].price}</span>
+                  <span className="text-sm font-bold text-gray-500 mt-1">₹{sug0Price} (250g)</span>
                 </div>
               </div>
 
@@ -823,7 +796,7 @@ export default function ProductDetails() {
                   </button>
                   <img src={suggestedProducts[1].image} alt="" className="w-20 h-20 object-contain mb-2" />
                   <span className="font-bold text-xs text-[#1c2b1d] line-clamp-1">{suggestedProducts[1].name}</span>
-                  <span className="text-sm font-bold text-gray-500 mt-1">₹{suggestedProducts[1].price}</span>
+                  <span className="text-sm font-bold text-gray-500 mt-1">₹{sug1Price} (250g)</span>
                 </div>
               </div>
 
@@ -843,7 +816,7 @@ export default function ProductDetails() {
                   </button>
                   <img src={product.image} alt="" className="w-20 h-20 object-contain mb-2" />
                   <span className="font-bold text-xs text-[#1c2b1d] line-clamp-1">{product.name}</span>
-                  <span className="text-sm font-bold text-gray-500 mt-1">₹{product.price}</span>
+                  <span className="text-sm font-bold text-gray-500 mt-1">₹{currentPrice} ({selectedSize})</span>
                 </div>
               </div>
 
@@ -1064,6 +1037,34 @@ export default function ProductDetails() {
             </form>
           </div>
 
+        </div>
+      </div>
+
+      {/* STICKY BOTTOM MOBILE CTA */}
+      <div className={`fixed bottom-0 left-0 right-0 bg-[#FAF7F2]/95 backdrop-blur-md border-t border-[#1D3B1D]/10 p-4 pb-5 shadow-[0_-10px_30px_rgba(29,59,29,0.08)] flex items-center justify-between z-45 transition-transform duration-300 md:hidden ${
+        showStickyCTA ? "translate-y-0" : "translate-y-full"
+      }`}>
+        <div className="flex flex-col">
+          <span className="text-[11px] text-gray-400 font-bold tracking-wider uppercase truncate max-w-[110px]">{product.name}</span>
+          <div className="flex items-baseline gap-1.5 mt-0.5">
+            <span className="text-xl font-black text-[#1D3B1D]">₹{finalPrice}</span>
+            <span className="text-[10px] text-gray-500 font-bold">({selectedSize})</span>
+          </div>
+        </div>
+        <div className="flex gap-2.5 flex-1 justify-end ml-4">
+          <button
+            onClick={() => addToCart(product, quantity, selectedSize, finalPrice)}
+            className="w-12 h-12 bg-white border-2 border-[#1D3B1D] text-[#1D3B1D] rounded-xl flex items-center justify-center shadow-sm active:scale-95 transition"
+            aria-label="Add to Cart"
+          >
+            <ShoppingBag size={18} />
+          </button>
+          <button
+            onClick={handleBuyNow}
+            className="h-12 px-6 bg-[#E6A122] text-[#1D3B1D] rounded-xl font-black text-sm shadow-md active:scale-95 transition flex-1 max-w-[180px] text-center"
+          >
+            Buy Now
+          </button>
         </div>
       </div>
 

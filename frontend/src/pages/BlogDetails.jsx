@@ -8,8 +8,12 @@ export default function BlogDetails() {
 
   const { id } = useParams()
 
-  const [blog, setBlog] =
-    useState(null)
+  const [blog, setBlog] = useState(null)
+
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = "https://images.unsplash.com/photo-1610970881699-44a5587caaec?q=80&w=800&auto=format&fit=crop";
+  }
 
   const [blogs, setBlogs] =
     useState([])
@@ -140,14 +144,13 @@ export default function BlogDetails() {
 
 
         {/* IMAGE */}
-        <div className="mt-8 sm:mt-12 rounded-[24px] sm:rounded-[30px] shadow-lg overflow-hidden">
-
+        <div className="mt-8 sm:mt-12 rounded-[24px] sm:rounded-[30px] shadow-lg overflow-hidden aspect-[16/9] w-full bg-gray-100 relative">
           <img
-             src={blog.image}
+            src={blog.image}
             alt={blog.title}
-            className="w-full h-[240px] sm:h-[380px] md:h-[500px] object-cover"
+            onError={handleImageError}
+            className="w-full h-full object-cover"
           />
-
         </div>
 
 
@@ -192,7 +195,7 @@ export default function BlogDetails() {
 
 
         {/* GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6">
 
           {blogs
             .filter(
@@ -204,63 +207,45 @@ export default function BlogDetails() {
 
               <div
                 key={item.id}
-                className="bg-white rounded-[24px] sm:rounded-[28px] overflow-hidden border border-[#edf1e8] hover:shadow-xl transition duration-300 hover:-translate-y-1"
+                className="bg-white rounded-2xl overflow-hidden border border-[#1D3B1D]/5 hover:shadow-lg transition duration-300 hover:-translate-y-1 flex flex-col h-full"
               >
 
                 {/* IMAGE */}
-                <div className="overflow-hidden">
-
+                <div className="aspect-[16/10] overflow-hidden w-full bg-gray-100 relative">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-[220px] sm:h-[260px] object-cover hover:scale-105 transition duration-500"
+                    onError={handleImageError}
+                    className="w-full h-full object-cover hover:scale-[1.03] transition duration-500"
                   />
-
                 </div>
 
-
-
                 {/* CONTENT */}
-                <div className="p-5 sm:p-6">
+                <div className="p-6 flex flex-col flex-1">
 
-                  <span className="bg-[#edf7df] text-[#2d5a2d] px-4 py-1 rounded-full text-xs sm:text-sm font-medium inline-block">
-
+                  <span className="bg-[#eef7ec] text-[#2F7C1F] px-3.5 py-1 rounded-full text-xs font-bold w-fit">
                     {item.category}
-
                   </span>
 
-
-
-                  <h3 className="mt-5 text-[20px] sm:text-[24px] leading-[1.4] font-bold text-[#1c2b1d] line-clamp-2 min-h-[68px]">
-
-                    {item.title}
-
+                  <h3 className="mt-4 text-xl leading-[1.4] font-black text-[#1c2b1d] line-clamp-2 min-h-[56px] hover:text-[#2F7C1F] transition">
+                    <Link to={`/blog/${item.id}`} onClick={() => window.scrollTo(0, 0)}>
+                      {item.title}
+                    </Link>
                   </h3>
 
-
-
-                  <p className="mt-4 text-[#667166] leading-7 sm:leading-[1.8] text-sm sm:text-[15px] line-clamp-3">
-
-                    {
-
-                      item.short_description?.slice(0, 90)
-
-                    }...
-
+                  <p className="mt-3 text-gray-500 leading-relaxed text-sm line-clamp-3 flex-1">
+                    {item.short_description}
                   </p>
-
-
 
                   <Link
                     to={`/blog/${item.id}`}
                     onClick={() =>
                       window.scrollTo(0, 0)
                     }
-                    className="inline-block mt-6 text-[#2d5a2d] font-semibold hover:translate-x-1 transition text-sm sm:text-base"
+                    className="inline-flex items-center gap-1.5 mt-5 text-[#1D3B1D] hover:text-[#2F7C1F] font-bold transition text-sm group"
                   >
-
-                    Read Article →
-
+                    Read Article 
+                    <span className="transform group-hover:translate-x-1 transition duration-200">→</span>
                   </Link>
 
                 </div>

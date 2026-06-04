@@ -8,6 +8,8 @@ import { useWishlist } from "../components/context/WishlistContext"
 
 import { useCart } from "../components/context/CartContext"
 
+import { getProductPriceAndSize } from "../utils/price"
+
 export default function Wishlist() {
 
   const {
@@ -18,11 +20,29 @@ export default function Wishlist() {
   } = useWishlist()
 
   const {
-
+    cartItems,
     addToCart,
-    cartItems
-
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart
   } = useCart()
+
+  const handleIncrease = (productId) => {
+    increaseQuantity(productId, "250g")
+  }
+
+  const handleDecrease = (productId) => {
+    const cartItem = cartItems.find(
+      (item) =>
+        item.id === productId &&
+        (item.selectedSize === "250g" || !item.selectedSize)
+    )
+    if (cartItem && cartItem.quantity > 1) {
+      decreaseQuantity(productId, "250g")
+    } else {
+      removeFromCart(productId, "250g")
+    }
+  }
 
   return (
 
@@ -123,10 +143,10 @@ export default function Wishlist() {
           /* PRODUCTS */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
 
-            {wishlistItems.map((product) => {
+             {wishlistItems.map((product) => {
 
-              const alreadyInCart = cartItems.find(
-                (item) => item.id === product.id
+              const alreadyInCart = cartItems.some(
+                (item) => item.id === product.id && item.selectedSize === "250g"
               )
 
               return (
@@ -190,60 +210,62 @@ export default function Wishlist() {
 
                       <span className="text-[28px] sm:text-3xl font-bold text-[#183818]">
 
-                        ₹{product.price}
+                        ₹{getProductPriceAndSize(product, "250g")}
 
                       </span>
 
                       <span className="text-[#9ca3af] text-sm mb-1">
 
-                        (100g)
+                        (250g)
 
                       </span>
 
                     </div>
 
                     {/* ADD TO CART */}
-                    <button
-
-                      disabled={alreadyInCart}
-
-                      onClick={() =>
-                        addToCart(product)
-                      }
-
-                      className={`
-
-                        mt-6
-                        w-full
-                        py-3
-                        rounded-xl
-                        font-semibold
-                        flex
-                        items-center
-                        justify-center
-                        gap-2
-                        text-sm
-                        sm:text-base
-                        transition
-
-                        ${
-                          alreadyInCart
-                            ? "bg-[#dff3df] text-[#2d5a2d] cursor-default"
-                            : "bg-[#2d5a2d] hover:bg-[#1f431f] text-white"
+                    {cartItems.some(
+                      (item) =>
+                        item.id === product.id &&
+                        (item.selectedSize === "250g" || !item.selectedSize)
+                    ) ? (
+                      <div className="mt-6 flex items-center justify-between border-2 border-[#1D3B1D]/10 bg-[#FAF7F2] rounded-xl h-[48px] overflow-hidden w-full px-2">
+                        <button
+                          onClick={() => handleDecrease(product.id)}
+                          className="w-10 h-full flex items-center justify-center text-[#1D3B1D] hover:bg-black/5 transition font-black text-sm"
+                        >
+                          -
+                        </button>
+                        <span className="font-extrabold text-xs sm:text-sm text-[#1D3B1D]">
+                          {cartItems.find(
+                            (item) =>
+                              item.id === product.id &&
+                              (item.selectedSize === "250g" || !item.selectedSize)
+                          )?.quantity || 1}{" "}
+                          Qty
+                        </span>
+                        <button
+                          onClick={() => handleIncrease(product.id)}
+                          className="w-10 h-full flex items-center justify-center text-[#1D3B1D] hover:bg-black/5 transition font-black text-sm"
+                        >
+                          +
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          addToCart(
+                            product,
+                            1,
+                            "250g",
+                            getProductPriceAndSize(product, "250g")
+                          )
                         }
-
-                      `}
-                    >
-
-                      <ShoppingCart size={18} />
-
-                      {
-                        alreadyInCart
-                          ? "Added ✓"
-                          : "Add To Cart"
-                      }
-
-                    </button>
+                        className="mt-6 w-full py-3 rounded-xl font-semibold bg-[#2d5a2d] hover:bg-[#1f431f] text-white transition flex items-center justify-center gap-2 text-sm sm:text-base hover:scale-[1.02] active:scale-[0.98]"
+                      >
+                        <ShoppingCart size={18} />
+                        Add To Cart
+                      </button>
+                    )}
 
                   </div>
 

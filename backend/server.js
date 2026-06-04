@@ -1,5 +1,7 @@
 // eslint-disable-next-line no-undef
 const sendInvoiceEmail = require("./utils/sendInvoiceEmail")
+// eslint-disable-next-line no-undef
+const sendOrderStatusEmail = require("./utils/sendOrderStatusEmail")
 
 // eslint-disable-next-line no-undef
 const multer = require('multer')
@@ -1110,39 +1112,39 @@ app.put('/api/orders/:id', async (req, res) => {
 
     const { status } = req.body
 
+    const connection = await pool.getConnection()
 
-
-    const connection =
-      await pool.getConnection()
-
-
-
-    await connection.query(
-
-      `
-
-      UPDATE orders
-
-      SET status = ?
-
-      WHERE id = ?
-
-      `,
-
-      [
-
-        status,
-        req.params.id
-
-      ]
-
+    // Fetch order first to get details for the email
+    const [orders] = await connection.query(
+      'SELECT order_id, customer_name, email FROM orders WHERE id = ?',
+      [req.params.id]
     )
 
+    if (orders.length > 0) {
+      const order = orders[0]
 
+      // Update status
+      await connection.query(
+        `
+        UPDATE orders
+        SET status = ?
+        WHERE id = ?
+        `,
+        [
+          status,
+          req.params.id
+        ]
+      )
+
+      // Send email if status is confirmed or delivered
+      if (status === 'confirmed' || status === 'delivered') {
+        sendOrderStatusEmail(order, status).catch((err) => {
+          console.error("Order Status Email Error:", err)
+        })
+      }
+    }
 
     connection.release()
-
-
 
     res.json({
       success: true

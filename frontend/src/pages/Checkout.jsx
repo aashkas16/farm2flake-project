@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import axios from "axios"
 
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import { useTrial } from "../components/context/TrialContext"
 
@@ -14,6 +14,7 @@ import { useCart } from "../components/context/CartContext"
 export default function Checkout() {
 
   const location = useLocation()
+  const navigate = useNavigate()
 
 
 
@@ -183,47 +184,16 @@ ${productText}
 
 
       // CLEAR CART
-localStorage.removeItem("cartItems")
-
-// OPEN WHATSAPP IN NEW TAB
-window.open(
-  whatsappUrl,
-  "_blank"
-)
-
-// REDIRECT TO SUCCESS PAGE
-setTimeout(() => {
-
-  window.location.href = "/order-success"
-
-}, 1200)
-
-      // OPEN WHATSAPP
-      //window.location.href = whatsappUrl
-      //window.open(
-        //whatsappUrl,
-        //"_blank"
-      //)
-
-
-
-      // CLEAR CART
       localStorage.removeItem("cartItems")
 
-
-
-      // SUCCESS
-      //alert(
-
-        //`Order placed successfully!\n\nOrder ID: ${orderId}`
-
-      //)
-
-
-
-      // REDIRECT
-      //window.location.href =
-        //"/order-success"
+      // REDIRECT TO SUCCESS PAGE PASSING STATE
+      navigate("/order-success", { 
+        state: { 
+          whatsappUrl, 
+          orderId,
+          customerName: fullName
+        } 
+      })
 
     } catch (error) {
 
