@@ -15,26 +15,36 @@ export default function RealIngredients() {
             sm:min-h-[380px]
             md:min-h-[320px]
             lg:h-[300px]
-            bg-cover
-            bg-center
             flex items-center
             border border-[#1D3B1D]/5
             shadow-[0_15px_50px_rgba(29,59,29,0.03)]
-            before:absolute
-            before:inset-0
-            before:bg-gradient-to-r
-            before:from-[#FAF7F2]/98
-            before:via-[#FAF7F2]/92
-            before:to-[#FAF7F2]/50
-            sm:before:from-[#FAF7F2]/90
-            sm:before:via-[#FAF7F2]/60
-            sm:before:to-transparent
-            before:z-[1]
+            bg-[#FAF7F2]
           "
-          style={{
-            backgroundImage: `url(${bannerImg})`
-          }}
         >
+          {/* FADED BACKGROUND IMAGE */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-30 md:opacity-45 pointer-events-none select-none z-0"
+            style={{
+              backgroundImage: `url(${bannerImg})`
+            }}
+          />
+
+          {/* GRADIENT OVERLAY */}
+          <div 
+            className="
+              absolute inset-0
+              bg-gradient-to-r
+              from-[#FAF7F2]/98
+              via-[#FAF7F2]/92
+              to-[#FAF7F2]/45
+              sm:from-[#FAF7F2]/90
+              sm:via-[#FAF7F2]/60
+              sm:to-transparent
+              z-[1]
+              pointer-events-none
+            "
+          />
+
           {/* CONTENT */}
           <div className="relative z-[2] w-full flex justify-start px-8 sm:px-14 py-12">
             <div className="w-full md:w-[50%] lg:w-[42%] flex flex-col justify-center text-left">
