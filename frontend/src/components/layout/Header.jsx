@@ -282,53 +282,31 @@ export default function Header() {
         {mobileMenu && (
 
           <motion.div
-
             initial={{ opacity: 0 }}
-
             animate={{ opacity: 1 }}
-
             exit={{ opacity: 0 }}
-
-            transition={{ duration: 0.25 }}
-
-            className="
-              fixed inset-0 z-[10000] lg:hidden
-
-              bg-black/45
-              backdrop-blur-md
-
-              supports-[backdrop-filter]:bg-black/35
-            "
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[10000] lg:hidden bg-black/40"
+            onClick={() => setMobileMenu(false)}
           >
 
             {/* DRAWER */}
             <motion.div
-
               initial={{ x: "-100%" }}
-
               animate={{ x: 0 }}
-
               exit={{ x: "-100%" }}
-
               transition={{
-                type: "spring",
-                damping: 26,
-                stiffness: 260
+                duration: 0.28,
+                ease: [0.16, 1, 0.3, 1]
               }}
-
+              style={{ willChange: "transform" }}
+              onClick={(e) => e.stopPropagation()}
               className="
-                absolute top-0 left-0 h-full w-[88%]
-                max-w-[360px]
-
-                bg-white/55
-                backdrop-blur-[24px]
-
-                supports-[backdrop-filter]:bg-white/45
-
-                border-r border-white/20
-
-                shadow-[0_10px_50px_rgba(0,0,0,0.10)]
-
+                absolute top-0 left-0 h-full w-[85%]
+                max-w-[320px]
+                bg-[#FAF7F2]
+                border-r border-[#1D3B1D]/5
+                shadow-[0_10px_50px_rgba(29,59,29,0.08)]
                 flex flex-col
               "
             >
