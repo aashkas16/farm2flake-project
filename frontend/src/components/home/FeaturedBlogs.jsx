@@ -18,6 +18,22 @@ export default function FeaturedBlogs() {
     }
   }
 
+  const handleImageError = (e, title) => {
+    e.target.onerror = null;
+    const lowerTitle = (title || "").toLowerCase();
+    
+    // Topic-based high-quality Unsplash fallbacks
+    if (lowerTitle.includes("beetroot") || lowerTitle.includes("carrot") || lowerTitle.includes("red")) {
+      e.target.src = "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?q=80&w=800&auto=format&fit=crop"; // Beetroot/root vegetables
+    } else if (lowerTitle.includes("fruit") || lowerTitle.includes("berry") || lowerTitle.includes("mango")) {
+      e.target.src = "https://images.unsplash.com/photo-1519996521430-02b798c1d881?q=80&w=800&auto=format&fit=crop"; // Fruits
+    } else if (lowerTitle.includes("spinach") || lowerTitle.includes("green") || lowerTitle.includes("leaf") || lowerTitle.includes("herbs")) {
+      e.target.src = "https://images.unsplash.com/photo-1576045057995-568f588f82fb?q=80&w=800&auto=format&fit=crop"; // Green leafy/spinach
+    } else {
+      e.target.src = "https://images.unsplash.com/photo-1490812978985-3aa01d713244?q=80&w=800&auto=format&fit=crop"; // General organic food/diet
+    }
+  }
+
   useEffect(() => {
     fetchFeaturedBlogs()
   }, [])
@@ -60,9 +76,10 @@ export default function FeaturedBlogs() {
                 <img
                   src={blog.image}
                   alt={blog.title}
+                  onError={(e) => handleImageError(e, blog.title)}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <span className="absolute top-4 left-4 bg-[#1D3B1D]/90 backdrop-blur-sm text-[#FAF7F2] px-3.5 py-1 rounded-full text-xs font-bold tracking-wide">
+                <span className="absolute top-4 left-4 bg-[#1D3B1D]/90 backdrop-blur-sm text-[#FAF7F2] px-3.5 py-1 rounded-full text-xs font-bold tracking-wide z-10">
                   {blog.category}
                 </span>
               </div>
