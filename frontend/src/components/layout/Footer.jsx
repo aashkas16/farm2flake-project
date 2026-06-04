@@ -161,15 +161,15 @@ export default function Footer() {
               <ul className="space-y-2.5 md:space-y-3 text-xs sm:text-sm text-gray-500 pt-1 md:pt-0">
                 <li className="flex gap-2.5 items-start py-0.5">
                   <MapPin size={16} className="text-[#2F7C1F] shrink-0 mt-0.5" />
-                  <span>Indore, Madhya Pradesh, India</span>
+                  <span>Gujarat, India</span>
                 </li>
                 <li className="flex gap-2.5 items-center py-0.5">
                   <Phone size={16} className="text-[#2F7C1F] shrink-0" />
-                  <span>+91 63592 25925</span>
+                  <span>+91 8866177704</span>
                 </li>
                 <li className="flex gap-2.5 items-center py-0.5">
                   <Mail size={16} className="text-[#2F7C1F] shrink-0" />
-                  <span>care@farm2flake.com</span>
+                  <span>farm2flake@gmail.com</span>
                 </li>
               </ul>
             </div>
