@@ -45,14 +45,6 @@ export default function Footer() {
                 },
                 { 
                   icon: (
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                      <path d="M18.2 2.4h3.3L14.3 11l8.5 11.3h-6.8l-5.3-7-6.1 7H1.3l7.6-8.7L.7 2.4h7l4.8 6.4 5.7-6.4zm-1.2 17.6h1.8L7.1 4.5H5.1l11.9 15.5z"/>
-                    </svg>
-                  ), 
-                  link: "#" 
-                },
-                { 
-                  icon: (
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
@@ -65,6 +57,8 @@ export default function Footer() {
                 <a
                   key={idx}
                   href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full border border-[#1D3B1D]/10 flex items-center justify-center text-gray-500 hover:text-[#2F7C1F] hover:border-[#2F7C1F] transition duration-300"
                 >
                   {item.icon}
