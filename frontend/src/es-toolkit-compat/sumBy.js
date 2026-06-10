@@ -1,2 +1,2 @@
-import { sumBy } from '../../node_modules/es-toolkit/dist/compat/index.mjs';
+import { sumBy } from 'es-toolkit/compat';
 export default sumBy;

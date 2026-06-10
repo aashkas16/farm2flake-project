@@ -1,2 +1,2 @@
-import { isPlainObject } from '../../node_modules/es-toolkit/dist/compat/index.mjs';
+import { isPlainObject } from 'es-toolkit/compat';
 export default isPlainObject;

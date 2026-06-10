@@ -1,2 +1,2 @@
-import { sortBy } from '../../node_modules/es-toolkit/dist/compat/index.mjs';
+import { sortBy } from 'es-toolkit/compat';
 export default sortBy;

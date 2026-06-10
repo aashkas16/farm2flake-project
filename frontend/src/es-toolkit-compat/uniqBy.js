@@ -1,2 +1,2 @@
-import { uniqBy } from '../../node_modules/es-toolkit/dist/compat/index.mjs';
+import { uniqBy } from 'es-toolkit/compat';
 export default uniqBy;

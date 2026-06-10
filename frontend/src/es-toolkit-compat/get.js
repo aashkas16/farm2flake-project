@@ -1,2 +1,2 @@
-import { get } from '../../node_modules/es-toolkit/dist/compat/index.mjs';
+import { get } from 'es-toolkit/compat';
 export default get;

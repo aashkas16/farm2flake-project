@@ -1,2 +1,2 @@
-import { throttle } from '../../node_modules/es-toolkit/dist/compat/index.mjs';
+import { throttle } from 'es-toolkit/compat';
 export default throttle;

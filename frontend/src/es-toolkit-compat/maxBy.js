@@ -1,2 +1,2 @@
-import { maxBy } from '../../node_modules/es-toolkit/dist/compat/index.mjs';
+import { maxBy } from 'es-toolkit/compat';
 export default maxBy;

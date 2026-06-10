@@ -1,2 +1,2 @@
-import { range } from '../../node_modules/es-toolkit/dist/compat/index.mjs';
+import { range } from 'es-toolkit/compat';
 export default range;
