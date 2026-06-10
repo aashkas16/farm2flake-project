@@ -496,6 +496,20 @@ const uploadImage = async (e) => {
 
               </p>
 
+              {/* OR ENTER URL */}
+              <div className="mt-4 pt-4 border-t border-[#edf1e8] text-left">
+                <label className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider block mb-2">
+                  Or Paste Image URL
+                </label>
+                <input
+                  type="text"
+                  value={image}
+                  onChange={(e) => setImage(e.target.value)}
+                  placeholder="https://example.com/image.jpg"
+                  className="w-full h-[46px] rounded-lg border border-[#dbe3ea] px-3 text-sm outline-none focus:border-[#ff7a00]"
+                />
+              </div>
+
               {
                 image && (
 
