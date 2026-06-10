@@ -41,7 +41,7 @@ export default function Footer() {
                       <path d="M9 8H7v3h2v9h3v-9h3l.5-3H12V6.5c0-.8.2-1 1-1h2V3h-3c-2.5 0-4 1.2-4 3.5V8z"/>
                     </svg>
                   ), 
-                  link: "#" 
+                  link: "https://www.facebook.com/share/1FqWRt7hhK/" 
                 },
                 { 
                   icon: (
@@ -59,7 +59,7 @@ export default function Footer() {
                       <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
                     </svg>
                   ), 
-                  link: "#" 
+                  link: "https://www.instagram.com/farm2flake_official?igsh=MWJqMDU0Y2JoMjU2MQ==" 
                 }
               ].map((item, idx) => (
                 <a

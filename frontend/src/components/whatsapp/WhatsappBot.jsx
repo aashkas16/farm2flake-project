@@ -78,7 +78,7 @@ export default function WhatsappBot() {
 
 
   const whatsappLink =
-    "https://wa.me/919428428672"
+    "https://wa.me/918866177704"
 
 
 
