@@ -35,62 +35,8 @@ export default function AddProduct() {
   const [isBestSeller, setIsBestSeller] =
     useState(false)
 
-  const [uploading, setUploading] =
-    useState(false)
-
   const [loading, setLoading] =
     useState(false)
-
-
-
-  // UPLOAD IMAGE
-  const uploadImage = async (e) => {
-
-    try {
-
-      const file = e.target.files[0]
-
-      if (!file) return
-
-      setUploading(true)
-
-      const formData = new FormData()
-
-      formData.append("image", file)
-
-
-
-      const response = await axios.post(
-
-        "https://farm2flake-backend.onrender.com/api/upload-blog-image",
-
-        formData,
-
-        {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        }
-
-      )
-
-
-
-      setImage(response.data.imageUrl)
-
-    } catch (error) {
-
-      console.log(error)
-
-      alert("Image upload failed")
-
-    } finally {
-
-      setUploading(false)
-
-    }
-
-  }
 
 
 
@@ -457,72 +403,46 @@ export default function AddProduct() {
 
 
 
-            <div className="mt-3 border-2 border-dashed border-[#dbe3ea] rounded-2xl p-4 sm:p-6 text-center">
+            <div className="mt-3 border border-[#edf1e8] rounded-2xl p-5 bg-white shadow-sm">
 
-              <input
-                type="file"
-                accept="image/*"
-                onChange={uploadImage}
-                className="hidden"
-                id="productImage"
-              />
+              <div className="space-y-4">
+                <div>
+                  <label className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider block mb-2">
+                    Image URL *
+                  </label>
+                  <input
+                    type="text"
+                    value={image}
+                    onChange={(e) => setImage(e.target.value)}
+                    placeholder="https://example.com/image.jpg"
+                    className="w-full h-[52px] rounded-xl border border-[#dbe3ea] px-4 outline-none focus:border-[#ff7a00] transition"
+                  />
+                </div>
 
-
-
-              <label
-                htmlFor="productImage"
-                className="cursor-pointer inline-block px-6 py-3 rounded-xl bg-[#ff7a00] hover:bg-[#e96f00] transition text-white font-semibold"
-              >
+                <p className="text-[#6b7280] text-xs leading-relaxed">
+                  Provide a hosted image link (e.g. from Imgur, PostImages, or other cloud storage). Directly uploading files is disabled to ensure images persist across system deployments on Vercel and Render.
+                </p>
 
                 {
-                  uploading
-                    ? "Uploading..."
-                    : "Choose Image"
+                  image && (
+
+                    <img
+                      src={image}
+                      alt="preview"
+                      className="
+    mt-6
+    w-full
+    h-[220px]
+    sm:h-[350px]
+    object-cover
+    rounded-2xl
+    border border-[#edf1e8]
+  "
+                    />
+
+                  )
                 }
-
-              </label>
-
-
-
-              <p className="text-[#6b7280] text-sm mt-3">
-
-                PNG, JPG or JPEG allowed
-
-              </p>
-
-              {/* OR ENTER URL */}
-              <div className="mt-4 pt-4 border-t border-[#edf1e8] text-left">
-                <label className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider block mb-2">
-                  Or Paste Image URL
-                </label>
-                <input
-                  type="text"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  placeholder="https://example.com/image.jpg"
-                  className="w-full h-[46px] rounded-lg border border-[#dbe3ea] px-3 text-sm outline-none focus:border-[#ff7a00]"
-                />
               </div>
-
-              {
-                image && (
-
-                  <img
-                    src={image}
-                    alt="preview"
-                    className="
-  mt-6
-  w-full
-  h-[220px]
-  sm:h-[350px]
-  object-cover
-  rounded-2xl
-  border border-[#edf1e8]
-"
-                  />
-
-                )
-              }
 
             </div>
 

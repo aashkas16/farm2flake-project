@@ -26,57 +26,6 @@ export default function AddBlog() {
 
   const [loading, setLoading] = useState(false)
 
-  const [uploading, setUploading] = useState(false)
-
-  // UPLOAD IMAGE
-const uploadImage = async (e) => {
-
-  try {
-
-    const file = e.target.files[0]
-
-    if (!file) return
-
-    setUploading(true)
-
-    const formData = new FormData()
-
-    formData.append("image", file)
-
-
-
-    const response = await axios.post(
-
-      "https://farm2flake-backend.onrender.com/api/upload-blog-image",
-
-      formData,
-
-      {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      }
-
-    )
-
-
-
-    setImage(response.data.imageUrl)
-
-  } catch (error) {
-
-    console.log(error)
-
-    alert("Image upload failed")
-
-  } finally {
-
-    setUploading(false)
-
-  }
-
-}
-
 
   // SAVE BLOG
   const saveBlog = async (status) => {
@@ -452,63 +401,22 @@ const uploadImage = async (e) => {
 
             <p className="text-sm text-[#6b7280] mt-1">
 
-              Upload a thumbnail image for your blog.
+              Paste the image URL for your blog article.
 
             </p>
 
-            <div className="mt-5 border-2 border-dashed border-[#dbe3ea] rounded-2xl p-6 text-center">
-
+            <div className="mt-5 space-y-4">
               <input
-                type="file"
-                accept="image/*"
-                onChange={uploadImage}
-                className="hidden"
-                id="blogImage"
+                type="text"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+                placeholder="https://example.com/image.jpg"
+                className="w-full h-[52px] rounded-xl border border-[#dbe3ea] px-4 outline-none focus:border-[#ff7a00] transition"
               />
 
-              <label
-                htmlFor="blogImage"
-                className="
-                  cursor-pointer
-                  inline-block
-                  px-6
-                  py-3
-                  rounded-xl
-                  bg-[#ff7a00]
-                  hover:bg-[#e96f00]
-                  transition
-                  text-white
-                  font-semibold
-                "
-              >
-
-                {
-                  uploading
-                    ? "Uploading..."
-                    : "Choose Image"
-                }
-
-              </label>
-
-              <p className="text-[#6b7280] text-sm mt-3">
-
-                PNG, JPG or JPEG allowed
-
+              <p className="text-[#6b7280] text-xs leading-relaxed">
+                Provide a hosted image link (e.g. from Imgur, PostImages, or other cloud storage). Directly uploading files is disabled to ensure images persist across system deployments on Vercel and Render.
               </p>
-
-              {/* OR ENTER URL */}
-              <div className="mt-4 pt-4 border-t border-[#edf1e8] text-left">
-                <label className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider block mb-2">
-                  Or Paste Image URL
-                </label>
-                <input
-                  type="text"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  placeholder="https://example.com/image.jpg"
-                  className="w-full h-[46px] rounded-lg border border-[#dbe3ea] px-3 text-sm outline-none focus:border-[#ff7a00]"
-                />
-              </div>
 
               {
                 image && (
