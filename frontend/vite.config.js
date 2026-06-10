@@ -1,36 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-// Custom plugin to resolve es-toolkit/compat/ imports to ESM equivalents,
-// resolving require_isUnsafeProperty naming collisions during dependency pre-bundling.
-const esToolkitCompatPlugin = () => ({
-  name: 'es-toolkit-compat-bridge',
-  resolveId(id) {
-    const match = id.match(/es-toolkit[/\\]compat[/\\]([^./\\\?]+)/);
-    if (match) {
-      return '\0es-toolkit/compat/' + match[1];
-    }
-    return null;
-  },
-  load(id) {
-    if (id.startsWith('\0es-toolkit/compat/')) {
-      const name = id.replace('\0es-toolkit/compat/', '');
-      return `
-        import { ${name} } from 'es-toolkit/dist/compat/index.mjs';
-        export default ${name};
-      `;
-    }
-    return null;
-  }
-});
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
-  plugins: [
-    react(),
-    esToolkitCompatPlugin()
-  ],
-  optimizeDeps: {
-    exclude: ['recharts', 'es-toolkit']
+  plugins: [react()],
+  resolve: {
+    alias: {
+      'es-toolkit/compat': path.resolve(__dirname, 'src/es-toolkit-compat')
+    }
   },
   server: {
     proxy: {
