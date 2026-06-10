@@ -344,18 +344,14 @@ export default function Shop() {
                     All Products
                   </button>
 
-                  {[
-                    "Fruit Powders",
-                    "Vegetable Powders",
-                    "Herbs Powders"
-                  ].map((category) => (
+                  {[...new Set(products.map(p => p.category).filter(Boolean))].map((category) => (
                     <button
                       key={category}
                       onClick={() => {
                         setSelectedCategory(category)
                         setShowFilters(false)
                       }}
-                      className={`block hover:text-[#4c8d2b] ${
+                      className={`block hover:text-[#4c8d2b] text-left ${
                         selectedCategory === category
                           ? "text-[#4c8d2b] font-semibold"
                           : ""

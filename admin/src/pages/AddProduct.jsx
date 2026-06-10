@@ -14,6 +14,8 @@ export default function AddProduct() {
 
   const [category, setCategory] = useState("")
 
+  const [customCategory, setCustomCategory] = useState("")
+
   const [price, setPrice] = useState("")
 
   const [size, setSize] = useState("")
@@ -43,11 +45,13 @@ export default function AddProduct() {
   // SAVE PRODUCT
   const saveProduct = async (status) => {
 
+  const finalCategory = category === "Other" ? customCategory : category;
+
   if (
     status === "published" &&
     (
       !name ||
-      !category ||
+      !finalCategory ||
       !price ||
       !size ||
       !stock ||
@@ -76,7 +80,7 @@ export default function AddProduct() {
         {
 
           name,
-          category,
+          category: finalCategory,
           price,
           size,
           stock,
@@ -106,6 +110,7 @@ export default function AddProduct() {
       // RESET
       setName("")
       setCategory("")
+      setCustomCategory("")
       setPrice("")
       setSize("")
       setStock("")
@@ -219,12 +224,27 @@ export default function AddProduct() {
                 </option>
 
                 <option>
-                  Cooking Ingredients
+                  Other
                 </option>
 
               </select>
 
             </div>
+
+            {category === "Other" && (
+              <div>
+                <label className="font-semibold text-[#111827]">
+                  Custom Category Name *
+                </label>
+                <input
+                  type="text"
+                  value={customCategory}
+                  onChange={(e) => setCustomCategory(e.target.value)}
+                  placeholder="e.g. Spices, Protein Blends, Freeze Dried Snacks"
+                  className="mt-3 w-full h-[52px] rounded-xl border border-[#dbe3ea] px-4 outline-none focus:border-[#ff7a00]"
+                />
+              </div>
+            )}
 
 
 

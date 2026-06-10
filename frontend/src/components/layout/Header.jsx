@@ -36,9 +36,12 @@ export default function Header() {
   const [scrolled, setScrolled] =
     useState(false)
 
+  const [isAdmin, setIsAdmin] = useState(false)
+
   useEffect(() => {
 
     setMobileMenu(false)
+    setIsAdmin(!!sessionStorage.getItem("admin"))
 
   }, [location.pathname])
 
@@ -498,6 +501,79 @@ export default function Header() {
                   </Link>
 
                 </motion.div>
+
+                {isAdmin && (
+                  <>
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, x: -20 },
+                        visible: { opacity: 1, x: 0 }
+                      }}
+                    >
+                      <Link
+                        to="/admin/dashboard"
+                        onClick={() => setMobileMenu(false)}
+                        className="
+                          w-full
+                          px-5
+                          py-[18px]
+                          rounded-2xl
+                          bg-green-50/80
+                          backdrop-blur-xl
+                          border border-green-200/50
+                          text-[16px]
+                          font-bold
+                          tracking-[0.5px]
+                          text-[#2d5a2d]
+                          flex items-center
+                          hover:bg-green-100/80
+                          transition-all
+                          duration-300
+                          active:scale-[0.98]
+                        "
+                      >
+                        ADMIN PANEL
+                      </Link>
+                    </motion.div>
+
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, x: -20 },
+                        visible: { opacity: 1, x: 0 }
+                      }}
+                    >
+                      <button
+                        onClick={() => {
+                          sessionStorage.clear()
+                          setIsAdmin(false)
+                          setMobileMenu(false)
+                          window.location.href = "/admin"
+                        }}
+                        className="
+                          w-full
+                          px-5
+                          py-[18px]
+                          rounded-2xl
+                          bg-red-50/80
+                          backdrop-blur-xl
+                          border border-red-200/50
+                          text-[16px]
+                          font-bold
+                          tracking-[0.5px]
+                          text-red-600
+                          flex items-center
+                          hover:bg-red-100/80
+                          transition-all
+                          duration-300
+                          active:scale-[0.98]
+                          text-left
+                        "
+                      >
+                        LOGOUT
+                      </button>
+                    </motion.div>
+                  </>
+                )}
 
               </motion.div>
 

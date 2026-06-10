@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Send, Mail, Phone, MapPin, ChevronDown } from "lucide-react"
+import axios from "axios"
 
 export default function Footer() {
   const [openSections, setOpenSections] = useState({
@@ -8,6 +9,19 @@ export default function Footer() {
     categories: false,
     contact: false,
   })
+
+  const [categories, setCategories] = useState(["Fruit Powders", "Vegetable Powders", "Herbs Powders"])
+
+  useEffect(() => {
+    axios.get("https://farm2flake-backend.onrender.com/api/products")
+      .then(res => {
+        const unique = [...new Set(res.data.map(p => p.category).filter(Boolean))]
+        if (unique.length > 0) {
+          setCategories(unique)
+        }
+      })
+      .catch(err => console.log("Failed to fetch footer categories:", err))
+  }, [])
 
   const toggleSection = (section) => {
     setOpenSections((prev) => ({
@@ -118,21 +132,13 @@ export default function Footer() {
             </button>
             <div className={`mt-2 md:mt-0 transition-all duration-300 overflow-hidden md:max-h-none ${openSections.categories ? "max-h-[160px] opacity-100" : "max-h-0 opacity-0 md:opacity-100"}`}>
               <ul className="space-y-2 md:space-y-3 text-xs sm:text-sm text-gray-500 pt-1 md:pt-0">
-                <li>
-                  <Link to="/shop?category=Fruit Powders" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors py-1 block">
-                    Fruit Powders
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/shop?category=Vegetable Powders" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors py-1 block">
-                    Vegetable Powders
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/shop?category=Herbs Powders" onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors py-1 block">
-                    Herbs Powders
-                  </Link>
-                </li>
+                {categories.map((cat) => (
+                  <li key={cat}>
+                    <Link to={`/shop?category=${encodeURIComponent(cat)}`} onClick={() => window.scrollTo(0, 0)} className="hover:text-[#2F7C1F] transition-colors py-1 block">
+                      {cat}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
