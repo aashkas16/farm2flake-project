@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react'
 const esToolkitCompatPlugin = () => ({
   name: 'es-toolkit-compat-bridge',
   resolveId(id) {
-    const match = id.match(/es-toolkit\/compat\/([^./\?]+)/);
+    const match = id.match(/es-toolkit[/\\]compat[/\\]([^./\\\?]+)/);
     if (match) {
       return '\0es-toolkit/compat/' + match[1];
     }
