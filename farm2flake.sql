@@ -19,9 +19,8 @@
 -- Table structure for table `admins`
 --
 
-CREATE DATABASE IF NOT EXISTS railway;
-
-USE railway;
+-- CREATE DATABASE IF NOT EXISTS railway;
+-- USE railway;
 
 DROP TABLE IF EXISTS `admins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
