@@ -1,3 +1,4 @@
+import API_BASE_URL from "../../services/api"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Send, Mail, Phone, MapPin, ChevronDown } from "lucide-react"
@@ -13,7 +14,7 @@ export default function Footer() {
   const [categories, setCategories] = useState(["Fruit Powders", "Vegetable Powders", "Herbs Powders"])
 
   useEffect(() => {
-    axios.get("https://farm2flake-backend.onrender.com/api/products")
+    axios.get(`${API_BASE_URL}/api/products`)
       .then(res => {
         const unique = [...new Set(res.data.map(p => p.category).filter(Boolean))]
         if (unique.length > 0) {

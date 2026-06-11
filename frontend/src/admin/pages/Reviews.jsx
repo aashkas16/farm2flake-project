@@ -1,3 +1,4 @@
+import API_BASE_URL from "../../services/api"
 import { useEffect, useState } from "react"
 
 import axios from "axios"
@@ -28,7 +29,7 @@ try {
 
   const response =
     await axios.get(
-      "https://farm2flake-backend.onrender.com/api/admin-reviews"
+      `${API_BASE_URL}/api/admin-reviews`
     )
 
   setReviews(response.data)
@@ -57,7 +58,7 @@ const approveReview = async (id) => {
   try {
 
     await axios.put(
-      `https://farm2flake-backend.onrender.com/api/reviews/${id}/approve`
+      `${API_BASE_URL}/api/reviews/${id}/approve`
     )
 
     fetchReviews()
@@ -83,7 +84,7 @@ if (!confirmDelete) return
 try {
 
   await axios.delete(
-    `https://farm2flake-backend.onrender.com/api/reviews/${id}`
+    `${API_BASE_URL}/api/reviews/${id}`
   )
 
   fetchReviews()
@@ -104,7 +105,7 @@ const saveReply = async (id) => {
 
     await axios.put(
 
-      `https://farm2flake-backend.onrender.com/api/reviews/${id}/reply`,
+      `${API_BASE_URL}/api/reviews/${id}/reply`,
 
       {
         admin_reply: replyText[id]

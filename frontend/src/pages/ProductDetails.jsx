@@ -1,3 +1,4 @@
+import API_BASE_URL from "../services/api"
 import { useEffect, useState } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import axios from "axios"
@@ -62,7 +63,7 @@ export default function ProductDetails() {
       // PRODUCT
       const res = await axios.get(
 
-        `https://farm2flake-backend.onrender.com/api/products/${id}`
+        `${API_BASE_URL}/api/products/${id}`
 
       )
 
@@ -75,7 +76,7 @@ export default function ProductDetails() {
       // REVIEWS
       const reviewsRes = await axios.get(
 
-        `https://farm2flake-backend.onrender.com/api/reviews/product/${id}`
+        `${API_BASE_URL}/api/reviews/product/${id}`
 
       )
 
@@ -84,7 +85,7 @@ export default function ProductDetails() {
       // OTHER PRODUCTS
       const allProductsRes = await axios.get(
 
-        `https://farm2flake-backend.onrender.com/api/products`
+        `${API_BASE_URL}/api/products`
 
       )
 
@@ -297,7 +298,7 @@ export default function ProductDetails() {
 
       const res = await axios.post(
 
-        "https://farm2flake-backend.onrender.com/api/reviews",
+        `${API_BASE_URL}/api/reviews`,
 
         {
 

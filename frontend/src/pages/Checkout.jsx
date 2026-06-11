@@ -1,3 +1,4 @@
+import API_BASE_URL from "../services/api"
 import { useState } from "react"
 
 import axios from "axios"
@@ -106,7 +107,7 @@ export default function Checkout() {
       const response =
         await axios.post(
 
-          "https://farm2flake-backend.onrender.com/api/orders",
+          `${API_BASE_URL}/api/orders`,
 
           {
 

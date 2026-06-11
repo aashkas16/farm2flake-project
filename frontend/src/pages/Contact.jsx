@@ -1,3 +1,4 @@
+import API_BASE_URL from "../services/api"
 import { Link } from "react-router-dom"
 
 import { useState } from "react"
@@ -59,7 +60,7 @@ export default function Contact() {
 
       await axios.post(
 
-        "https://farm2flake-backend.onrender.com/api/contact",
+        `${API_BASE_URL}/api/contact`,
 
         {
 

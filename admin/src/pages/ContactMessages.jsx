@@ -1,3 +1,4 @@
+import API_BASE_URL from "../services/api"
 import { useEffect, useState } from "react"
 
 import axios from "axios"
@@ -19,7 +20,7 @@ export default function ContactMessages() {
 
       const response =
         await axios.get(
-          "https://farm2flake-backend.onrender.com/api/contact-messages"
+          `${API_BASE_URL}/api/contact-messages`
         )
 
       setMessages(response.data)
@@ -52,7 +53,7 @@ export default function ContactMessages() {
 
       await axios.put(
 
-        `https://farm2flake-backend.onrender.com/api/contact-messages/${id}`,
+        `${API_BASE_URL}/api/contact-messages/${id}`,
 
         {
           status

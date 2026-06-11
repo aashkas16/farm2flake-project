@@ -1,3 +1,4 @@
+import API_BASE_URL from "../../services/api"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
@@ -8,7 +9,7 @@ export default function Testimonials() {
 
   const fetchReviews = async () => {
     try {
-      const response = await axios.get("https://farm2flake-backend.onrender.com/api/reviews")
+      const response = await axios.get(`${API_BASE_URL}/api/reviews`)
       setReviews(response.data)
     } catch (error) {
       console.log("Error loading reviews:", error)

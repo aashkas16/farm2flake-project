@@ -1,3 +1,4 @@
+import API_BASE_URL from "../services/api"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
@@ -24,7 +25,7 @@ export default function Products() {
       const response =
         await axios.get(
 
-          "https://farm2flake-backend.onrender.com/api/products"
+          `${API_BASE_URL}/api/products`
 
         )
 
@@ -64,7 +65,7 @@ export default function Products() {
 
       await axios.delete(
 
-        `https://farm2flake-backend.onrender.com/api/products/${id}`
+        `${API_BASE_URL}/api/products/${id}`
 
       )
 

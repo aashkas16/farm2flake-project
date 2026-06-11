@@ -1,3 +1,4 @@
+import API_BASE_URL from "../services/api"
 import { useState } from "react"
 
 import axios from "axios"
@@ -30,7 +31,7 @@ export default function Login() {
       const response =
         await axios.post(
 
-          "https://farm2flake-backend.onrender.com/api/admin/login",
+          `${API_BASE_URL}/api/admin/login`,
 
           {
             email,

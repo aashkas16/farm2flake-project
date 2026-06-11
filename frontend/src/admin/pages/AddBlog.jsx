@@ -1,3 +1,4 @@
+import API_BASE_URL from "../../services/api"
 import { Save } from "lucide-react"
 
 import { useState } from "react"
@@ -53,7 +54,7 @@ export default function AddBlog() {
 
       await axios.post(
 
-        "https://farm2flake-backend.onrender.com/api/blogs",
+        `${API_BASE_URL}/api/blogs`,
 
         {
   title,

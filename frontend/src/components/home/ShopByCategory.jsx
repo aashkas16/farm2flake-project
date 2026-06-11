@@ -1,3 +1,4 @@
+import API_BASE_URL from "../../services/api"
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
@@ -15,7 +16,7 @@ export default function ShopByCategory() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("https://farm2flake-backend.onrender.com/api/products")
+        const response = await axios.get(`${API_BASE_URL}/api/products`)
         const products = response.data || []
         
         // Group by category to find unique category names

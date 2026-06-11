@@ -1,3 +1,4 @@
+import API_BASE_URL from "../../services/api"
 import { useEffect, useState } from "react"
 
 import axios from "axios"
@@ -48,19 +49,19 @@ export default function Dashboard() {
       ] = await Promise.all([
 
         axios.get(
-          "https://farm2flake-backend.onrender.com/api/products"
+          `${API_BASE_URL}/api/products`
         ),
 
         axios.get(
-          "https://farm2flake-backend.onrender.com/api/blogs"
+          `${API_BASE_URL}/api/blogs`
         ),
 
         axios.get(
-          "https://farm2flake-backend.onrender.com/api/admin-reviews"
+          `${API_BASE_URL}/api/admin-reviews`
         ),
 
         axios.get(
-          "https://farm2flake-backend.onrender.com/api/orders"
+          `${API_BASE_URL}/api/orders`
         )
 
       ])

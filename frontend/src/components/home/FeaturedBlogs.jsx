@@ -1,3 +1,4 @@
+import API_BASE_URL from "../../services/api"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
@@ -8,7 +9,7 @@ export default function FeaturedBlogs() {
 
   const fetchFeaturedBlogs = async () => {
     try {
-      const response = await axios.get("https://farm2flake-backend.onrender.com/api/blogs")
+      const response = await axios.get(`${API_BASE_URL}/api/blogs`)
       const published = response.data
         .filter((blog) => blog.status === "published")
         .slice(0, 3) // Get latest 3

@@ -1,3 +1,4 @@
+import API_BASE_URL from "../../services/api"
 import { useEffect, useState } from "react"
 
 import axios from "axios"
@@ -29,7 +30,7 @@ export default function AdminManagement() {
       const response =
         await axios.get(
 
-          "https://farm2flake-backend.onrender.com/api/admins"
+          `${API_BASE_URL}/api/admins`
 
         )
 
@@ -62,7 +63,7 @@ export default function AdminManagement() {
 
       await axios.post(
 
-        "https://farm2flake-backend.onrender.com/api/admins",
+        `${API_BASE_URL}/api/admins`,
 
         {
 
@@ -112,7 +113,7 @@ export default function AdminManagement() {
 
       await axios.delete(
 
-        `https://farm2flake-backend.onrender.com/api/admins/${id}`
+        `${API_BASE_URL}/api/admins/${id}`
 
       )
 

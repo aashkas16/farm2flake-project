@@ -1,3 +1,4 @@
+import API_BASE_URL from "../../services/api"
 import {
   Search,
   Trash2,
@@ -25,7 +26,7 @@ export default function Blogs() {
     try {
 
       const response = await axios.get(
-        "https://farm2flake-backend.onrender.com/api/blogs"
+        `${API_BASE_URL}/api/blogs`
       )
 
       setBlogs(response.data)
@@ -61,7 +62,7 @@ export default function Blogs() {
     try {
 
       await axios.delete(
-        `https://farm2flake-backend.onrender.com/api/blogs/${id}`
+        `${API_BASE_URL}/api/blogs/${id}`
       )
 
       fetchBlogs()

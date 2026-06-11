@@ -1,3 +1,4 @@
+import API_BASE_URL from "../services/api"
 import { useState } from "react"
 
 import axios from "axios"
@@ -75,7 +76,7 @@ export default function AddProduct() {
 
 
       await axios.post(
-        "https://farm2flake-backend.onrender.com/api/products",
+        `${API_BASE_URL}/api/products`,
 
         {
 

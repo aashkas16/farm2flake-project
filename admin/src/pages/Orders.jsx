@@ -1,3 +1,4 @@
+import API_BASE_URL from "../services/api"
 import { useEffect, useState } from "react"
 
 import axios from "axios"
@@ -21,7 +22,7 @@ export default function Orders() {
     try {
 
       const response = await axios.get(
-        "https://farm2flake-backend.onrender.com/api/orders"
+        `${API_BASE_URL}/api/orders`
       )
 
       setOrders(response.data)
@@ -54,7 +55,7 @@ export default function Orders() {
 
       await axios.put(
 
-        `https://farm2flake-backend.onrender.com/api/orders/${id}`,
+        `${API_BASE_URL}/api/orders/${id}`,
 
         {
           status
@@ -85,7 +86,7 @@ export default function Orders() {
     try {
 
       await axios.delete(
-        `https://farm2flake-backend.onrender.com/api/orders/${id}`
+        `${API_BASE_URL}/api/orders/${id}`
       )
 
       fetchOrders()

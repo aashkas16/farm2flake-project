@@ -1,3 +1,4 @@
+import API_BASE_URL from "../services/api"
 import { useEffect, useState } from "react"
 
 import {
@@ -99,7 +100,7 @@ export default function Shop() {
       const response =
         await axios.get(
 
-          "https://farm2flake-backend.onrender.com/api/products"
+          `${API_BASE_URL}/api/products`
 
         )
 

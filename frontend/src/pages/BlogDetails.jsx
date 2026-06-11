@@ -1,3 +1,4 @@
+import API_BASE_URL from "../services/api"
 import { useParams, Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 import axios from "axios"
@@ -27,7 +28,7 @@ export default function BlogDetails() {
   // FETCH BLOG
   const fetchBlog = async () => {
     try {
-      const response = await axios.get("https://farm2flake-backend.onrender.com/api/blogs")
+      const response = await axios.get(`${API_BASE_URL}/api/blogs`)
       const publishedBlogs = response.data.filter(
         (item) => item.status === "published"
       )

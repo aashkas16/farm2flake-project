@@ -1,3 +1,4 @@
+import API_BASE_URL from "../../services/api"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
@@ -27,7 +28,7 @@ export default function BestSellers() {
   // FETCH PRODUCTS
   const fetchBestSellers = async () => {
     try {
-      const response = await axios.get("https://farm2flake-backend.onrender.com/api/best-sellers")
+      const response = await axios.get(`${API_BASE_URL}/api/best-sellers`)
       setProducts(response.data)
     } catch (error) {
       console.log("Error loading best sellers:", error)
