@@ -181,7 +181,7 @@ ${productText}
       // WHATSAPP URL
       const whatsappUrl =
 
-        `https://wa.me/918866177704?text=${encodeURIComponent(message)}`
+        `https://wa.me/918866177703?text=${encodeURIComponent(message)}`
 
 
       // CLEAR CART

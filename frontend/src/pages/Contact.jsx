@@ -234,7 +234,7 @@ export default function Contact() {
 
                     <p className="text-[#667166] mt-2 text-sm sm:text-base">
 
-                      +91 8866177704
+                      +91 88661 77703
 
                     </p>
 

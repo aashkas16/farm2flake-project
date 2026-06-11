@@ -166,7 +166,7 @@ export default function Footer() {
                 </li>
                 <li className="flex gap-2.5 items-center py-0.5">
                   <Phone size={16} className="text-[#2F7C1F] shrink-0" />
-                  <span>+91 8866177704</span>
+                  <span>+91 88661 77703</span>
                 </li>
                 <li className="flex gap-2.5 items-center py-0.5">
                   <Mail size={16} className="text-[#2F7C1F] shrink-0" />
