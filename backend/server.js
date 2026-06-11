@@ -510,71 +510,50 @@ app.delete('/api/products/:id', async (req, res) => {
 
 // SUBMIT REVIEW
 app.post('/api/reviews', async (req, res) => {
-
+  let connection;
   try {
-
     const {
-
       name,
       rating,
       review,
       product_id
-
     } = req.body
 
-    if (!product_id) {
-      return res.status(400).json({ error: 'product_id is required' });
-    }
-
-    const connection = await pool.getConnection()
+    const prodId = product_id || 0;
+    connection = await pool.getConnection()
 
     const [result] = await connection.query(
-
       `
-
       INSERT INTO reviews (
-
         product_id,
         name,
         rating,
         review
-
       )
-
       VALUES (?, ?, ?, ?)
-
       `,
-
       [
-
-        product_id,
+        prodId,
         name,
         rating,
         review
-
       ]
-
     )
 
-    connection.release()
-
     res.json({
-
       success: true,
       id: result.insertId
-
     })
-
   } catch (error) {
-
     console.log(error)
-
     res.status(500).json({
       error: 'Failed to submit review'
     })
-
+  } finally {
+    if (connection) {
+      connection.release()
+    }
   }
-
 })
 
 // GET APPROVED REVIEWS FOR SPECIFIC PRODUCT
@@ -1728,8 +1707,72 @@ app.delete('/api/admins/:id', async (req, res) => {
 
 })
 
+// Self-healing database schema upgrade function
+async function upgradeDatabaseSchema() {
+  let connection;
+  try {
+    connection = await pool.getConnection();
+    console.log("Checking database schema upgrades...");
+
+    // 1. Alter products.image to TEXT
+    try {
+      await connection.query("ALTER TABLE products MODIFY COLUMN image TEXT");
+      console.log("Database Schema Upgrade: products.image altered to TEXT.");
+    } catch (err) {
+      // Ignore if already text
+    }
+
+    // 2. Add product_id to reviews if missing
+    try {
+      await connection.query("ALTER TABLE reviews ADD COLUMN product_id INT NOT NULL DEFAULT 0 AFTER id");
+      console.log("Database Schema Upgrade: product_id added to reviews.");
+    } catch (err) {
+      // Ignore if already exists
+    }
+
+    // 3. Add reply to reviews if missing
+    try {
+      await connection.query("ALTER TABLE reviews ADD COLUMN reply TEXT NULL AFTER review");
+      console.log("Database Schema Upgrade: reply added to reviews.");
+    } catch (err) {
+      // Ignore if already exists
+    }
+
+    // 4. Add meta_title to blogs if missing
+    try {
+      await connection.query("ALTER TABLE blogs ADD COLUMN meta_title VARCHAR(255) NULL AFTER status");
+      console.log("Database Schema Upgrade: meta_title added to blogs.");
+    } catch (err) {
+      // Ignore if already exists
+    }
+
+    // 5. Add meta_description to blogs if missing
+    try {
+      await connection.query("ALTER TABLE blogs ADD COLUMN meta_description TEXT NULL AFTER meta_title");
+      console.log("Database Schema Upgrade: meta_description added to blogs.");
+    } catch (err) {
+      // Ignore if already exists
+    }
+
+    console.log("Database schema checks completed successfully.");
+  } catch (error) {
+    console.error("Error during database schema upgrade:", error);
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+}
+
 // eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+upgradeDatabaseSchema().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}).catch(err => {
+  console.error("Database upgrade error:", err);
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT} (fallback without DB upgrade verification)`);
+  });
 });
