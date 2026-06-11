@@ -225,6 +225,14 @@ export default function AddProduct() {
                 </option>
 
                 <option>
+                  Smoothie Mixes
+                </option>
+
+                <option>
+                  Cooking Ingredients
+                </option>
+
+                <option>
                   Other
                 </option>
 

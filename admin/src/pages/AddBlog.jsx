@@ -220,6 +220,12 @@ export default function AddBlog() {
 
               <option>
 
+                Smoothie Mixes
+
+              </option>
+
+              <option>
+
                 Cooking Ingredients
 
               </option>
