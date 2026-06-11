@@ -30,23 +30,24 @@ export default function AddBlog() {
 
   // SAVE BLOG
   const saveBlog = async (status) => {
+    const finalCategory = category === "Other" ? customCategory : category;
 
     if (
-  status === "published" &&
-  (
-    !title ||
-    !category ||
-    !shortDescription ||
-    !content ||
-    !image
-  )
-) {
+      status === "published" &&
+      (
+        !title ||
+        !finalCategory ||
+        !shortDescription ||
+        !content ||
+        !image
+      )
+    ) {
 
-  alert("Please fill all required fieldssssss.")
+      alert("Please fill all required fields.")
 
-  return
+      return
 
-}
+    }
 
     try {
 
@@ -57,15 +58,15 @@ export default function AddBlog() {
         `${API_BASE_URL}/api/blogs`,
 
         {
-  title,
-  category,
-  short_description: shortDescription,
-  content,
-  image,
-  status,
-  meta_title: metaTitle,
-  meta_description: metaDescription
-}
+          title,
+          category: finalCategory,
+          short_description: shortDescription,
+          content,
+          image,
+          status,
+          meta_title: metaTitle,
+          meta_description: metaDescription
+        }
 
       )
 
@@ -81,6 +82,7 @@ export default function AddBlog() {
       // RESET FORM
       setTitle("")
       setCategory("")
+      setCustomCategory("")
       setShortDescription("")
       setContent("")
       setImage("")
@@ -221,7 +223,37 @@ export default function AddBlog() {
 
               </option>
 
+              <option value="Other">
+
+                Other
+
+              </option>
+
             </select>
+
+            {category === "Other" && (
+              <div className="mt-4">
+                <label className="text-[15px] font-semibold text-[#111827]">
+                  Custom Category Name *
+                </label>
+                <input
+                  type="text"
+                  value={customCategory}
+                  onChange={(e) => setCustomCategory(e.target.value)}
+                  placeholder="Enter custom category name"
+                  className="
+                    mt-3
+                    w-full
+                    h-[52px]
+                    rounded-xl
+                    border border-[#dbe3ea]
+                    px-4
+                    outline-none
+                    focus:border-[#ff7a00]
+                  "
+                />
+              </div>
+            )}
 
           </div>
 
