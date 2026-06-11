@@ -36,6 +36,17 @@ app.use(bodyParser.json());
 
 app.use('/uploads', express.static('uploads'))
 
+// Helper to process multiple product images
+function processProduct(product) {
+  if (!product) return null;
+  const imageUrls = product.image ? product.image.split(',').map(url => url.trim()).filter(Boolean) : [];
+  return {
+    ...product,
+    image: imageUrls[0] || "",
+    images: imageUrls
+  };
+}
+
 // API Routes
 
 // Get all categories
@@ -57,7 +68,7 @@ app.get('/api/products', async (req, res) => {
     const connection = await pool.getConnection();
     const [products] = await connection.query('SELECT * FROM products');
     connection.release();
-    res.json(products);
+    res.json(products.map(processProduct));
   } catch (error) {
     console.error('Error fetching products:', error);
     res.status(500).json({ error: 'Failed to fetch products' });
@@ -70,7 +81,7 @@ app.get('/api/best-sellers', async (req, res) => {
     const connection = await pool.getConnection();
     const [products] = await connection.query('SELECT * FROM products WHERE is_best_seller = TRUE');
     connection.release();
-    res.json(products);
+    res.json(products.map(processProduct));
   } catch (error) {
     console.error('Error fetching best sellers:', error);
     res.status(500).json({ error: 'Failed to fetch best sellers' });
@@ -87,7 +98,7 @@ app.get('/api/products/category/:categoryId', async (req, res) => {
       [categoryId]
     );
     connection.release();
-    res.json(products);
+    res.json(products.map(processProduct));
   } catch (error) {
     console.error('Error fetching products by category:', error);
     res.status(500).json({ error: 'Failed to fetch products' });
@@ -107,7 +118,7 @@ app.get('/api/products/:id', async (req, res) => {
     if (products.length === 0) {
       return res.status(404).json({ error: 'Product not found' });
     }
-    res.json(products[0]);
+    res.json(processProduct(products[0]));
   } catch (error) {
     console.error('Error fetching product:', error);
     res.status(500).json({ error: 'Failed to fetch product' });
@@ -1366,100 +1377,52 @@ app.get('/api/contact-messages', async (req, res) => {
 
 // UPDATE STATUS
 app.put('/api/contact-messages/:id', async (req, res) => {
-
+  let connection;
   try {
-
     const { status } = req.body
-
-
-
-    const connection =
-      await pool.getConnection()
-
-
-
+    connection = await pool.getConnection()
     await connection.query(
-
       `
-
       UPDATE contact_messages
-
       SET status = ?
-
       WHERE id = ?
-
       `,
-
-      [
-
-        status,
-        req.params.id
-
-      ]
-
+      [status, req.params.id]
     )
-
-
 
     // SEND RESOLVED EMAIL
     if (status === "resolved") {
-
-      const [rows] =
-        await connection.query(
-
-          `
-
-          SELECT *
-
-          FROM contact_messages
-
-          WHERE id = ?
-
-          `,
-
-          [req.params.id]
-
-        )
-
-
-
-      const message =
-        rows[0]
-
-
-
-      await sendResolvedEmail(
-
-        message.email,
-
-        message.name,
-
-        new Date(
-          message.created_at
-        ).toLocaleDateString()
-
+      const [rows] = await connection.query(
+        `
+        SELECT *
+        FROM contact_messages
+        WHERE id = ?
+        `,
+        [req.params.id]
       )
 
+      const message = rows[0]
+      if (message) {
+        // Send email in background without blocking the HTTP response
+        sendResolvedEmail(
+          message.email,
+          message.name,
+          new Date(message.created_at).toLocaleDateString()
+        ).catch(err => console.log("Email resolution sending failed:", err))
+      }
     }
 
-
-
-    connection.release()
-
-
-
     res.json({
-
       success: true
-
     })
-
   } catch (error) {
-
     console.log(error)
-
+    res.status(500).json({ error: error.message })
+  } finally {
+    if (connection) {
+      connection.release()
+    }
   }
-
 })
 
 // LOGIN

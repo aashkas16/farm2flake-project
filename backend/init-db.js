@@ -48,7 +48,7 @@ async function initializeDatabase() {
 
     benefits TEXT,
 
-    image VARCHAR(255),
+    image TEXT,
 
     reviews INT DEFAULT 0,
 
@@ -61,6 +61,13 @@ async function initializeDatabase() {
   )
 
 `)
+
+    // Ensure the image column is TEXT type even for existing tables
+    try {
+      await connection.query("ALTER TABLE products MODIFY COLUMN image TEXT");
+    } catch (err) {
+      console.log("Image column modification notice:", err.message);
+    }
 
     // Blogs table
 await connection.query(`

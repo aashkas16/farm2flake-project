@@ -391,6 +391,10 @@ export default function ContactMessages() {
                   </th>
 
                   <th className="px-6 py-5 text-left font-semibold">
+                    Message
+                  </th>
+
+                  <th className="px-6 py-5 text-left font-semibold">
 
                     Status
 
@@ -434,6 +438,10 @@ export default function ContactMessages() {
 
                       {item.subject}
 
+                    </td>
+
+                    <td className="px-6 py-5 max-w-sm text-sm text-[#4b5563] break-words whitespace-pre-wrap">
+                      {item.message}
                     </td>
 
                     <td className="px-6 py-5">

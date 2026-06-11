@@ -32,8 +32,8 @@ export default function AddProduct() {
   const [benefits, setBenefits] =
     useState("")
 
-  const [image, setImage] =
-    useState("")
+  const [images, setImages] =
+    useState(["", "", "", "", ""])
 
   const [isBestSeller, setIsBestSeller] =
     useState(false)
@@ -58,12 +58,12 @@ export default function AddProduct() {
       !stock ||
       !shortDescription ||
       !benefits ||
-      !image
+      !images[0]
     )
   ) {
 
     alert(
-      "Please fill all required fields before publishing product."
+      "Please fill all required fields before publishing product (including the main Product Image 1)."
     )
 
     return
@@ -88,7 +88,7 @@ export default function AddProduct() {
           short_description: shortDescription,
           full_description: fullDescription,
           benefits,
-          image,
+          image: images.filter(url => url.trim() !== "").join(","),
           is_best_seller: isBestSeller,
           status
 
@@ -118,7 +118,7 @@ export default function AddProduct() {
       setShortDescription("")
       setFullDescription("")
       setBenefits("")
-      setImage("")
+      setImages(["", "", "", "", ""])
       setIsBestSeller(false)
 
     } catch (error) {
@@ -417,54 +417,56 @@ export default function AddProduct() {
           <div>
 
             <label className="font-semibold text-[#111827]">
-
-              Product Image
-
+              Product Images (up to 5)
             </label>
 
-
-
             <div className="mt-3 border border-[#edf1e8] rounded-2xl p-5 bg-white shadow-sm">
-
               <div className="space-y-4">
-                <div>
-                  <label className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider block mb-2">
-                    Image URL *
-                  </label>
-                  <input
-                    type="text"
-                    value={image}
-                    onChange={(e) => setImage(e.target.value)}
-                    placeholder="https://example.com/image.jpg"
-                    className="w-full h-[52px] rounded-xl border border-[#dbe3ea] px-4 outline-none focus:border-[#ff7a00] transition"
-                  />
-                </div>
+                {[0, 1, 2, 3, 4].map((index) => (
+                  <div key={index}>
+                    <label className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider block mb-2">
+                      Image URL {index + 1} {index === 0 && "*"}
+                    </label>
+                    <input
+                      type="text"
+                      value={images[index]}
+                      onChange={(e) => {
+                        const newImages = [...images];
+                        newImages[index] = e.target.value;
+                        setImages(newImages);
+                      }}
+                      placeholder={`https://example.com/image${index + 1}.jpg`}
+                      className="w-full h-[52px] rounded-xl border border-[#dbe3ea] px-4 outline-none focus:border-[#ff7a00] transition text-sm"
+                    />
+                  </div>
+                ))}
 
-                <p className="text-[#6b7280] text-xs leading-relaxed">
-                  Provide a hosted image link (e.g. from Imgur, PostImages, or other cloud storage). Directly uploading files is disabled to ensure images persist across system deployments on Vercel and Render.
+                <p className="text-[#6b7280] text-xs leading-relaxed mt-2">
+                  Provide hosted image links (e.g. from Imgur, PostImages, or other cloud storage). Directly uploading files is disabled to ensure images persist across system deployments on Vercel and Render.
                 </p>
 
-                {
-                  image && (
-
-                    <img
-                      src={image}
-                      alt="preview"
-                      className="
-    mt-6
-    w-full
-    h-[220px]
-    sm:h-[350px]
-    object-cover
-    rounded-2xl
-    border border-[#edf1e8]
-  "
-                    />
-
-                  )
-                }
+                {images.some(img => img.trim() !== "") && (
+                  <div className="mt-4">
+                    <label className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider block mb-2">
+                      Previews
+                    </label>
+                    <div className="grid grid-cols-5 gap-2">
+                      {images.map((img, idx) => img.trim() !== "" && (
+                        <div key={idx} className="relative group border border-[#edf1e8] rounded-lg overflow-hidden">
+                          <img
+                            src={img}
+                            alt={`preview ${idx + 1}`}
+                            className="w-full h-16 object-cover"
+                          />
+                          <span className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">
+                            {idx === 0 ? "Main" : `#${idx + 1}`}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-
             </div>
 
           </div>

@@ -69,7 +69,8 @@ export default function ProductDetails() {
 
       setProduct(res.data)
 
-      setActiveImage(res.data.image)
+      const imgs = res.data.images && res.data.images.length > 0 ? res.data.images : [res.data.image]
+      setActiveImage(imgs[0] || "")
 
       setSelectedSize("250g")
 
@@ -372,14 +373,7 @@ export default function ProductDetails() {
   }
 
   // GALLERY
-  const thumbnails = [
-
-    product.image,
-    product.image,
-    product.image,
-    product.image
-
-  ]
+  const thumbnails = product.images && product.images.length > 0 ? product.images : [product.image];
 
   // WISHLIST
   const isWishlisted = wishlistItems.some(
@@ -424,19 +418,21 @@ export default function ProductDetails() {
           {/* LEFT: GALLERY */}
           <div className="flex flex-col-reverse md:flex-row gap-5">
             {/* THUMBNAILS (Desktop vertical) */}
-            <div className="flex md:flex-col gap-3 justify-center md:justify-start shrink-0">
-              {thumbnails.map((img, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveImage(img)}
-                  className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border-2 p-2 bg-[#fafaf7] flex items-center justify-center transition duration-200 overflow-hidden ${
-                    activeImage === img ? "border-[#2f7c1f]" : "border-gray-200 hover:border-gray-300"
-                  }`}
-                >
-                  <img src={img} alt="" className="w-full h-full object-contain" />
-                </button>
-              ))}
-            </div>
+            {thumbnails.length > 1 && (
+              <div className="flex md:flex-col gap-3 justify-center md:justify-start shrink-0">
+                {thumbnails.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveImage(img)}
+                    className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border-2 p-2 bg-[#fafaf7] flex items-center justify-center transition duration-200 overflow-hidden ${
+                      activeImage === img ? "border-[#2f7c1f]" : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-contain" />
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* MAIN IMAGE */}
             <div className="flex-1 bg-[#fafaf7] rounded-3xl p-6 md:p-10 flex items-center justify-center relative min-h-[300px] sm:min-h-[400px] border border-gray-50">
