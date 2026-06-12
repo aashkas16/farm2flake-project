@@ -13,6 +13,9 @@ export default function ContactMessages() {
   const [loading, setLoading] =
     useState(true)
 
+  const [selectedMessage, setSelectedMessage] =
+    useState(null)
+
   // FETCH
   const fetchMessages = async () => {
 
@@ -195,6 +198,7 @@ export default function ContactMessages() {
             <div
 
               key={item.id}
+              onClick={() => setSelectedMessage(item)}
 
               className="
                 bg-white
@@ -202,6 +206,9 @@ export default function ContactMessages() {
                 border border-[#edf1e8]
                 p-5
                 shadow-sm
+                cursor-pointer
+                hover:shadow-md
+                transition-all
               "
 
             >
@@ -274,7 +281,7 @@ export default function ContactMessages() {
 
                 </p>
 
-                <p className="text-[#374151] mt-2 leading-relaxed">
+                <p className="text-[#374151] mt-2 leading-relaxed line-clamp-3">
 
                   {item.message || "No message available"}
 
@@ -286,12 +293,13 @@ export default function ContactMessages() {
 
                 <button
 
-                  onClick={() =>
+                  onClick={(e) => {
+                    e.stopPropagation();
                     updateStatus(
                       item.id,
                       "resolved"
-                    )
-                  }
+                    );
+                  }}
 
                   className="
                     flex-1
@@ -318,12 +326,13 @@ export default function ContactMessages() {
 
                 <button
 
-                  onClick={() =>
+                  onClick={(e) => {
+                    e.stopPropagation();
                     updateStatus(
                       item.id,
                       "deleted"
-                    )
-                  }
+                    );
+                  }}
 
                   className="
                     flex-1
@@ -419,8 +428,9 @@ export default function ContactMessages() {
                   <tr
 
                     key={item.id}
+                    onClick={() => setSelectedMessage(item)}
 
-                    className="border-b border-[#edf1e8]"
+                    className="border-b border-[#edf1e8] hover:bg-[#fcfdfc] cursor-pointer transition-colors"
 
                   >
 
@@ -442,7 +452,7 @@ export default function ContactMessages() {
 
                     </td>
 
-                    <td className="px-6 py-5 max-w-sm text-sm text-[#4b5563] break-words whitespace-pre-wrap">
+                    <td className="px-6 py-5 max-w-sm text-sm text-[#4b5563] truncate">
 
                       {item.message}
 
@@ -485,12 +495,13 @@ export default function ContactMessages() {
 
                         <button
 
-                          onClick={() =>
+                          onClick={(e) => {
+                            e.stopPropagation();
                             updateStatus(
                               item.id,
                               "resolved"
-                            )
-                          }
+                            );
+                          }}
 
                           className="
                             bg-[#2d5a2d]
@@ -515,12 +526,13 @@ export default function ContactMessages() {
 
                         <button
 
-                          onClick={() =>
+                          onClick={(e) => {
+                            e.stopPropagation();
                             updateStatus(
                               item.id,
                               "deleted"
-                            )
-                          }
+                            );
+                          }}
 
                           className="
                             bg-red-500
@@ -559,6 +571,101 @@ export default function ContactMessages() {
 
         </div>
 
+      )}
+
+      {/* MODAL DIALOG */}
+      {selectedMessage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-[28px] border border-[#edf1e8] w-full max-w-2xl overflow-hidden shadow-2xl">
+            {/* Modal Header */}
+            <div className="px-6 py-5 bg-[#f8faf8] border-b border-[#edf1e8] flex items-center justify-between">
+              <h2 className="text-xl font-bold text-[#183818]">Contact Details</h2>
+              <button
+                onClick={() => setSelectedMessage(null)}
+                className="text-[#7d877d] hover:text-[#183818] transition font-semibold text-lg"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <span className="text-xs uppercase tracking-wider text-[#7d877d] font-semibold block">Client Name</span>
+                  <span className="text-base text-[#111827] font-medium mt-1 block">{selectedMessage.name}</span>
+                </div>
+                <div>
+                  <span className="text-xs uppercase tracking-wider text-[#7d877d] font-semibold block">Email Address</span>
+                  <a href={`mailto:${selectedMessage.email}`} className="text-base text-[#2d5a2d] hover:underline font-medium mt-1 block break-all">
+                    {selectedMessage.email}
+                  </a>
+                </div>
+                <div>
+                  <span className="text-xs uppercase tracking-wider text-[#7d877d] font-semibold block">Contact Number</span>
+                  <span className="text-base text-[#111827] font-medium mt-1 block">{selectedMessage.phone || "Not provided"}</span>
+                </div>
+                <div>
+                  <span className="text-xs uppercase tracking-wider text-[#7d877d] font-semibold block">Submission Date</span>
+                  <span className="text-base text-[#111827] font-medium mt-1 block">
+                    {new Date(selectedMessage.created_at).toLocaleString()}
+                  </span>
+                </div>
+              </div>
+
+              <div className="border-t border-[#edf1e8] pt-4">
+                <span className="text-xs uppercase tracking-wider text-[#7d877d] font-semibold block">Subject</span>
+                <span className="text-base text-[#111827] font-semibold mt-1 block">{selectedMessage.subject}</span>
+              </div>
+
+              <div className="border-t border-[#edf1e8] pt-4">
+                <span className="text-xs uppercase tracking-wider text-[#7d877d] font-semibold block">Message</span>
+                <p className="text-sm text-[#374151] mt-2 leading-relaxed bg-[#f9faf9] p-4 rounded-2xl border border-[#edf1e8] whitespace-pre-wrap break-words">
+                  {selectedMessage.message || "No message content."}
+                </p>
+              </div>
+
+              <div className="border-t border-[#edf1e8] pt-4 flex items-center justify-between">
+                <div>
+                  <span className="text-xs uppercase tracking-wider text-[#7d877d] font-semibold block">Status</span>
+                  <span className={`inline-block px-3 py-1 mt-1 rounded-full text-xs font-semibold ${selectedMessage.status === 'pending' ? 'bg-[#fff4e8] text-[#ff7a00]' : 'bg-[#e8f7e8] text-[#1e7a1e]'}`}>
+                    {selectedMessage.status}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 bg-[#f8faf8] border-t border-[#edf1e8] flex items-center justify-end gap-3">
+              {selectedMessage.status === "pending" && (
+                <button
+                  onClick={() => {
+                    updateStatus(selectedMessage.id, "resolved");
+                    setSelectedMessage(prev => prev ? { ...prev, status: "resolved" } : null);
+                  }}
+                  className="bg-[#2d5a2d] hover:bg-[#1f431f] text-white px-5 py-2.5 rounded-xl font-medium transition text-sm shadow-sm"
+                >
+                  Mark as Resolved
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  updateStatus(selectedMessage.id, "deleted");
+                  setSelectedMessage(null);
+                }}
+                className="bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium transition text-sm shadow-sm"
+              >
+                Delete Message
+              </button>
+              <button
+                onClick={() => setSelectedMessage(null)}
+                className="bg-[#e2e8f0] hover:bg-[#cbd5e1] text-[#334155] px-5 py-2.5 rounded-xl font-medium transition text-sm"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
     </div>

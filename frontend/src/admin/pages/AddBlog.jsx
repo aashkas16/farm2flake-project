@@ -1,7 +1,7 @@
 import API_BASE_URL from "../../services/api"
 import { Save } from "lucide-react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import axios from "axios"
 
@@ -14,6 +14,7 @@ export default function AddBlog() {
   const [title, setTitle] = useState("")
 
   const [category, setCategory] = useState("")
+  const [productCategories, setProductCategories] = useState([])
 
   const [shortDescription, setShortDescription] = useState("")
 
@@ -27,16 +28,32 @@ export default function AddBlog() {
 
   const [loading, setLoading] = useState(false)
 
+  useEffect(() => {
+    const fetchProductCategories = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/products`);
+        const categories = response.data
+          .map((p) => p.category)
+          .filter((cat) => cat && typeof cat === "string" && cat.trim() !== "")
+          .map((cat) => cat.trim());
+        const uniqueCategories = Array.from(new Set(categories)).sort();
+        setProductCategories(uniqueCategories);
+      } catch (error) {
+        console.error("Error fetching product categories:", error);
+      }
+    };
+    fetchProductCategories();
+  }, []);
+
 
   // SAVE BLOG
   const saveBlog = async (status) => {
-    const finalCategory = category === "Other" ? customCategory : category;
 
     if (
       status === "published" &&
       (
         !title ||
-        !finalCategory ||
+        !category ||
         !shortDescription ||
         !content ||
         !image
@@ -59,7 +76,7 @@ export default function AddBlog() {
 
         {
           title,
-          category: finalCategory,
+          category,
           short_description: shortDescription,
           content,
           image,
@@ -82,7 +99,6 @@ export default function AddBlog() {
       // RESET FORM
       setTitle("")
       setCategory("")
-      setCustomCategory("")
       setShortDescription("")
       setContent("")
       setImage("")
@@ -199,67 +215,13 @@ export default function AddBlog() {
 
               </option>
 
-              <option>
-
-                Fruit Powders
-
-              </option>
-
-              <option>
-
-                Vegetable Powders
-
-              </option>
-
-              <option>
-
-                Herbs Powders
-
-              </option>
-
-              <option>
-
-                Smoothie Mixes
-
-              </option>
-
-              <option>
-
-                Cooking Ingredients
-
-              </option>
-
-              <option value="Other">
-
-                Other
-
-              </option>
+              {productCategories.map((cat, index) => (
+                <option key={index} value={cat}>
+                  {cat}
+                </option>
+              ))}
 
             </select>
-
-            {category === "Other" && (
-              <div className="mt-4">
-                <label className="text-[15px] font-semibold text-[#111827]">
-                  Custom Category Name *
-                </label>
-                <input
-                  type="text"
-                  value={customCategory}
-                  onChange={(e) => setCustomCategory(e.target.value)}
-                  placeholder="Enter custom category name"
-                  className="
-                    mt-3
-                    w-full
-                    h-[52px]
-                    rounded-xl
-                    border border-[#dbe3ea]
-                    px-4
-                    outline-none
-                    focus:border-[#ff7a00]
-                  "
-                />
-              </div>
-            )}
 
           </div>
 
