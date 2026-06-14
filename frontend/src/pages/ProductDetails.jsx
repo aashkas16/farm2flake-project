@@ -207,6 +207,15 @@ export default function ProductDetails() {
   // DYNAMIC PRICING
   const finalPrice = getProductPriceAndSize(product, selectedSize)
 
+  const getProductMRP = (prod, size) => {
+    if (!prod) return 0;
+    if (size === "100g" && prod.mrp_100g) return Math.round(parseFloat(prod.mrp_100g));
+    if (size === "250g" && prod.mrp_250g) return Math.round(parseFloat(prod.mrp_250g));
+    if (size === "500g" && prod.mrp_500g) return Math.round(parseFloat(prod.mrp_500g));
+    return 0;
+  };
+  const currentMRP = getProductMRP(product, selectedSize);
+
   // BUNDLE MATHS
   const currentPrice = finalPrice
 
@@ -493,11 +502,21 @@ export default function ProductDetails() {
 
             {/* PRICE */}
             <div className="mt-5 py-4 border-y border-gray-100 flex flex-col sm:flex-row sm:items-center gap-2">
-              <div className="flex items-baseline gap-2">
+              <div className="flex items-baseline gap-2 flex-wrap">
                 <span className="text-3xl sm:text-4xl font-extrabold text-[#1c2b1d]">
                   ₹{finalPrice}
                 </span>
-                <span className="text-gray-400 text-xs sm:text-sm">(Inclusive of all taxes)</span>
+                {currentMRP > finalPrice && (
+                  <>
+                    <span className="text-gray-400 line-through text-lg">
+                      ₹{currentMRP}
+                    </span>
+                    <span className="text-green-600 font-bold text-xs bg-green-50 px-2 py-0.5 rounded-md">
+                      {Math.round(((currentMRP - finalPrice) / currentMRP) * 100)}% OFF
+                    </span>
+                  </>
+                )}
+                <span className="text-gray-400 text-xs sm:text-sm ml-1">(Inclusive of all taxes)</span>
               </div>
             </div>
 
@@ -667,52 +686,64 @@ export default function ProductDetails() {
             {activeTab === "howToUse" && (
               <div className="space-y-6">
                 <h3 className="text-xl sm:text-2xl font-extrabold text-[#1c2b1d]">Simple Steps to Add Superfoods Daily</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                  {[
-                    { step: "01", title: "Scoop", text: "Take 1-2 teaspoons (around 5g to 10g) of our natural powder using a clean spoon." },
-                    { step: "02", title: "Blend / Stir", text: "Mix into fresh water, juices, dynamic smoothies, dynamic oatmeals, baking batters or curries." },
-                    { step: "03", title: "Enjoy", text: "Stir thoroughly to dissolve completely and consume daily to enhance standard stamina & health." }
-                  ].map((s, i) => (
-                    <div key={i} className="bg-[#fafaf7] rounded-2xl p-6 border border-gray-100">
-                      <span className="text-3xl font-black text-[#2f7c1f]/25 block mb-2">{s.step}</span>
-                      <h4 className="font-bold text-[#1c2b1d] text-base sm:text-lg mb-2">{s.title}</h4>
-                      <p className="text-gray-500 text-sm leading-relaxed">{s.text}</p>
-                    </div>
-                  ))}
-                </div>
+                {product.how_to_use ? (
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base whitespace-pre-wrap bg-[#fafaf7] p-6 rounded-2xl border border-gray-100">
+                    {product.how_to_use}
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    {[
+                      { step: "01", title: "Scoop", text: "Take 1-2 teaspoons (around 5g to 10g) of our natural powder using a clean spoon." },
+                      { step: "02", title: "Blend / Stir", text: "Mix into fresh water, juices, dynamic smoothies, dynamic oatmeals, baking batters or curries." },
+                      { step: "03", title: "Enjoy", text: "Stir thoroughly to dissolve completely and consume daily to enhance standard stamina & health." }
+                    ].map((s, i) => (
+                      <div key={i} className="bg-[#fafaf7] rounded-2xl p-6 border border-gray-100">
+                        <span className="text-3xl font-black text-[#2f7c1f]/25 block mb-2">{s.step}</span>
+                        <h4 className="font-bold text-[#1c2b1d] text-base sm:text-lg mb-2">{s.title}</h4>
+                        <p className="text-gray-500 text-sm leading-relaxed">{s.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
             {activeTab === "nutrition" && (
               <div className="max-w-xl">
-                <h3 className="text-xl sm:text-2xl font-extrabold text-[#1c2b1d] mb-4">Nutrition Facts (Per 100g)</h3>
-                <div className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-gray-50 border-b border-gray-200">
-                        <th className="px-5 py-3 text-left font-bold text-[#1c2b1d]">Nutrient Parameter</th>
-                        <th className="px-5 py-3 text-right font-bold text-[#1c2b1d]">Average Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {[
-                        { name: "Energy (Kcal)", val: "348" },
-                        { name: "Carbohydrates (g)", val: "78.4" },
-                        { name: "Dietary Fiber (g)", val: "9.2" },
-                        { name: "Natural Sugar (g)", val: "42.0" },
-                        { name: "Proteins (g)", val: "4.8" },
-                        { name: "Fat (g)", val: "0.6" },
-                        { name: "Vitamin C (mg)", val: "88.0" },
-                        { name: "Iron (mg)", val: "1.4" }
-                      ].map((item, idx) => (
-                        <tr key={idx} className="border-b border-gray-100 last:border-0 hover:bg-gray-50/50">
-                          <td className="px-5 py-3.5 text-gray-700 font-medium">{item.name}</td>
-                          <td className="px-5 py-3.5 text-right font-bold text-[#1c2b1d]">{item.val}</td>
+                <h3 className="text-xl sm:text-2xl font-extrabold text-[#1c2b1d] mb-4">Nutrition Facts</h3>
+                {product.nutrition_facts ? (
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base whitespace-pre-wrap bg-[#fafaf7] p-6 rounded-2xl border border-gray-100">
+                    {product.nutrition_facts}
+                  </p>
+                ) : (
+                  <div className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="bg-gray-50 border-b border-gray-200">
+                          <th className="px-5 py-3 text-left font-bold text-[#1c2b1d]">Nutrient Parameter (Per 100g)</th>
+                          <th className="px-5 py-3 text-right font-bold text-[#1c2b1d]">Average Value</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {[
+                          { name: "Energy (Kcal)", val: "348" },
+                          { name: "Carbohydrates (g)", val: "78.4" },
+                          { name: "Dietary Fiber (g)", val: "9.2" },
+                          { name: "Natural Sugar (g)", val: "42.0" },
+                          { name: "Proteins (g)", val: "4.8" },
+                          { name: "Fat (g)", val: "0.6" },
+                          { name: "Vitamin C (mg)", val: "88.0" },
+                          { name: "Iron (mg)", val: "1.4" }
+                        ].map((item, idx) => (
+                          <tr key={idx} className="border-b border-gray-100 last:border-0 hover:bg-gray-50/50">
+                            <td className="px-5 py-3.5 text-gray-700 font-medium">{item.name}</td>
+                            <td className="px-5 py-3.5 text-right font-bold text-[#1c2b1d]">{item.val}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             )}
 
@@ -722,8 +753,8 @@ export default function ProductDetails() {
                 <p className="text-gray-600 leading-relaxed text-sm sm:text-base max-w-2xl">
                   We believe in 100% transparency. This product contains absolutely zero fillers, zero starch, zero sugars, zero anti-caking agents, and zero synthetic ingredients.
                 </p>
-                <div className="inline-block bg-[#eef7ec] text-[#2f7c1f] rounded-2xl px-6 py-4 border border-[#d2f3c7] font-extrabold text-base sm:text-lg">
-                  🌿 Ingredient: 100% Dehydrated Pure {product.name}
+                <div className="inline-block bg-[#eef7ec] text-[#2f7c1f] rounded-2xl px-6 py-4 border border-[#d2f3c7] font-extrabold text-base sm:text-lg whitespace-pre-wrap">
+                  🌿 {product.ingredients ? `Ingredients: ${product.ingredients}` : `Ingredient: 100% Dehydrated Pure ${product.name}`}
                 </div>
               </div>
             )}

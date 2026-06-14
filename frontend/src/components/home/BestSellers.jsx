@@ -132,8 +132,18 @@ export default function BestSellers() {
 
                   {/* PRICE & BUTTON */}
                   <div className="mt-4">
-                    <div className="flex items-baseline gap-1">
+                    <div className="flex flex-wrap items-center gap-1.5 font-bold">
                       <span className="text-xl font-extrabold text-[#111827]">₹{price250g}</span>
+                      {product.mrp_250g && Math.round(parseFloat(product.mrp_250g)) > price250g && (
+                        <>
+                          <span className="text-gray-400 line-through text-xs font-normal">
+                            ₹{Math.round(parseFloat(product.mrp_250g))}
+                          </span>
+                          <span className="text-green-600 font-bold text-[10px] bg-green-50 px-1.5 py-0.5 rounded">
+                            {Math.round(((Math.round(parseFloat(product.mrp_250g)) - price250g) / Math.round(parseFloat(product.mrp_250g))) * 100)}% OFF
+                          </span>
+                        </>
+                      )}
                       <span className="text-gray-400 text-xs">(250g)</span>
                     </div>
 

@@ -267,7 +267,7 @@ export default function Contact() {
 
                     <p className="text-[#667166] mt-2 text-sm sm:text-base">
 
-                      Vadodara, Gujarat, India
+                      Shop No. 4/23 Fateh Sagar Complex, Opp. MGVCL Office, Fatehgunj, Vadodara - 390002, Gujarat, India
 
                     </p>
 

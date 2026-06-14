@@ -206,20 +206,21 @@ export default function Wishlist() {
 
                     </p>
 
-                    <div className="mt-4 flex items-end gap-1 flex-wrap">
-
+                    <div className="mt-4 flex flex-wrap items-baseline gap-1.5 font-bold">
                       <span className="text-[28px] sm:text-3xl font-bold text-[#183818]">
-
                         ₹{getProductPriceAndSize(product, "250g")}
-
                       </span>
-
-                      <span className="text-[#9ca3af] text-sm mb-1">
-
-                        (250g)
-
-                      </span>
-
+                      {product.mrp_250g && Math.round(parseFloat(product.mrp_250g)) > getProductPriceAndSize(product, "250g") && (
+                        <>
+                          <span className="text-gray-400 line-through text-base font-normal">
+                            ₹{Math.round(parseFloat(product.mrp_250g))}
+                          </span>
+                          <span className="text-green-600 font-bold text-xs bg-green-50 px-1.5 py-0.5 rounded">
+                            {Math.round(((Math.round(parseFloat(product.mrp_250g)) - getProductPriceAndSize(product, "250g")) / Math.round(parseFloat(product.mrp_250g))) * 100)}% OFF
+                          </span>
+                        </>
+                      )}
+                      <span className="text-[#9ca3af] text-sm mb-1 font-normal">(250g)</span>
                     </div>
 
                     {/* ADD TO CART */}

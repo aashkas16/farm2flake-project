@@ -543,18 +543,25 @@ export default function Shop() {
                       <span className="text-gray-400 text-[10px] sm:text-xs ml-1 font-semibold">
 
                         ({product.reviews})
-
                       </span>
 
                     </div>
 
                     {/* PRICE */}
-                    <p className="mt-2 text-sm sm:text-base font-black text-[#1c2b1d]">
-
-                      ₹{getProductPriceAndSize(product, "250g")}
-                      <span className="text-gray-400 text-[10px] sm:text-xs font-bold ml-1 uppercase">(250g)</span>
-
-                    </p>
+                    <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5 text-sm sm:text-base font-black text-[#1c2b1d]">
+                      <span>₹{getProductPriceAndSize(product, "250g")}</span>
+                      {product.mrp_250g && Math.round(parseFloat(product.mrp_250g)) > getProductPriceAndSize(product, "250g") && (
+                        <>
+                          <span className="text-gray-400 line-through text-xs font-normal">
+                            ₹{Math.round(parseFloat(product.mrp_250g))}
+                          </span>
+                          <span className="text-green-600 font-bold text-[10px] bg-green-50 px-1.5 py-0.5 rounded">
+                            {Math.round(((Math.round(parseFloat(product.mrp_250g)) - getProductPriceAndSize(product, "250g")) / Math.round(parseFloat(product.mrp_250g))) * 100)}% OFF
+                          </span>
+                        </>
+                      )}
+                      <span className="text-gray-400 text-[10px] sm:text-xs font-bold uppercase">(250g)</span>
+                    </div>
 
                     {cartItems.some(
                       (item) =>

@@ -394,7 +394,16 @@ app.post('/api/products', async (req, res) => {
       benefits,
       image,
       is_best_seller,
-      status
+      status,
+      price_100g,
+      mrp_100g,
+      price_250g,
+      mrp_250g,
+      price_500g,
+      mrp_500g,
+      nutrition_facts,
+      ingredients,
+      how_to_use
 
     } = req.body
 
@@ -420,11 +429,20 @@ app.post('/api/products', async (req, res) => {
         benefits,
         image,
         is_best_seller,
-        status
+        status,
+        price_100g,
+        mrp_100g,
+        price_250g,
+        mrp_250g,
+        price_500g,
+        mrp_500g,
+        nutrition_facts,
+        ingredients,
+        how_to_use
 
       )
 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 
       `,
 
@@ -432,15 +450,24 @@ app.post('/api/products', async (req, res) => {
 
         name,
         category,
-        price,
-        size,
+        price || price_250g || price_100g || price_500g || 0,
+        size || "250g",
         stock,
         short_description,
         full_description,
         benefits,
         image,
         is_best_seller,
-        status
+        status,
+        price_100g || null,
+        mrp_100g || null,
+        price_250g || null,
+        mrp_250g || null,
+        price_500g || null,
+        mrp_500g || null,
+        nutrition_facts || null,
+        ingredients || null,
+        how_to_use || null
 
       ]
 
@@ -1752,6 +1779,28 @@ async function upgradeDatabaseSchema() {
       console.log("Database Schema Upgrade: meta_description added to blogs.");
     } catch (err) {
       // Ignore if already exists
+    }
+
+    // 6. Add manual price/mrp and dynamic tabs to products if missing
+    const fieldsToAdd = [
+      { name: "price_100g", type: "DECIMAL(10,2) NULL" },
+      { name: "mrp_100g", type: "DECIMAL(10,2) NULL" },
+      { name: "price_250g", type: "DECIMAL(10,2) NULL" },
+      { name: "mrp_250g", type: "DECIMAL(10,2) NULL" },
+      { name: "price_500g", type: "DECIMAL(10,2) NULL" },
+      { name: "mrp_500g", type: "DECIMAL(10,2) NULL" },
+      { name: "nutrition_facts", type: "TEXT NULL" },
+      { name: "ingredients", type: "TEXT NULL" },
+      { name: "how_to_use", type: "TEXT NULL" }
+    ];
+
+    for (const field of fieldsToAdd) {
+      try {
+        await connection.query(`ALTER TABLE products ADD COLUMN ${field.name} ${field.type}`);
+        console.log(`Database Schema Upgrade: ${field.name} added to products.`);
+      } catch (err) {
+        // Ignore if already exists
+      }
     }
 
     console.log("Database schema checks completed successfully.");
