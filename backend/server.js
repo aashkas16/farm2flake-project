@@ -1042,7 +1042,11 @@ const emailProducts = products.map(
 
     quantity: item.quantity,
 
-    price: item.price * item.quantity
+    price: item.price * item.quantity,
+
+    size: item.selectedSize || item.size || "100g",
+
+    image: item.image || null
 
   })
 

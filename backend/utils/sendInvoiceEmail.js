@@ -1,6 +1,55 @@
 /* eslint-disable no-undef */
 const nodemailer = require("nodemailer")
 const PDFDocument = require("pdfkit")
+const fs = require("fs")
+const path = require("path")
+const https = require("https")
+const http = require("http")
+
+// Helper function to fetch remote URLs as a Buffer
+const fetchUrlBuffer = (url) => {
+  return new Promise((resolve, reject) => {
+    const client = url.startsWith("https") ? https : http
+    client.get(url, (res) => {
+      if (res.statusCode !== 200) {
+        reject(new Error(`Failed to load image, status code: ${res.statusCode}`))
+        return
+      }
+      const data = []
+      res.on("data", (chunk) => data.push(chunk))
+      res.on("end", () => resolve(Buffer.concat(data)))
+    }).on("error", (err) => reject(err))
+  })
+}
+
+// Helper function to load local file or fetch remote image
+const getLocalOrRemoteImage = async (imgUrl) => {
+  if (!imgUrl) return null
+  
+  // 1. Try local filesystem if it contains uploads path
+  try {
+    const uploadIndex = imgUrl.indexOf("uploads/")
+    if (uploadIndex !== -1) {
+      const relativePath = imgUrl.substring(uploadIndex)
+      const localPath = path.join(__dirname, "..", relativePath)
+      if (fs.existsSync(localPath)) {
+        return fs.readFileSync(localPath)
+      }
+    }
+  } catch (err) {
+    console.log("Local image read error:", err.message)
+  }
+
+  // 2. Fetch remote if it is a valid HTTP URL
+  if (imgUrl.startsWith("http://") || imgUrl.startsWith("https://")) {
+    try {
+      return await fetchUrlBuffer(imgUrl)
+    } catch (err) {
+      console.log(`Failed to fetch remote image (${imgUrl}):`, err.message)
+    }
+  }
+  return null
+}
 
 const sendInvoiceEmail = async (order, products) => {
   try {
@@ -13,7 +62,7 @@ const sendInvoiceEmail = async (order, products) => {
       }
     })
 
-    // PDF
+    // PDF SETUP (A4 Dimensions: 595.28 x 841.89 points)
     const doc = new PDFDocument({ margin: 40, size: "A4" })
     const buffers = []
 
@@ -25,21 +74,30 @@ const sendInvoiceEmail = async (order, products) => {
       })
     })
 
-    // 1. TOP GREEN BARS (Brand Identity Accent)
+    // 1. HEADER BRANDING BAND (Natural Green Color Palette)
     doc.rect(40, 40, 515, 6).fill("#2D5A2D")
 
-    // 2. COMPANY / LOGO HEADER (Left)
-    doc.fillColor("#1D3B1D")
-       .font("Helvetica-Bold")
-       .fontSize(28)
-       .text("Farm2Flake", 40, 55)
+    // 2. LOGO IMAGE & COMPANY TITLE (Left Column)
+    const logoPath = path.join(__dirname, "../logo.jpeg")
+    if (fs.existsSync(logoPath)) {
+      doc.image(logoPath, 40, 55, { width: 50, height: 50 })
+      doc.fillColor("#1D3B1D")
+         .font("Helvetica-Bold")
+         .fontSize(22)
+         .text("Farm2Flake", 100, 60)
+    } else {
+      doc.fillColor("#1D3B1D")
+         .font("Helvetica-Bold")
+         .fontSize(22)
+         .text("Farm2Flake", 40, 60)
+    }
 
     doc.fillColor("#6B7280")
        .font("Helvetica-Oblique")
-       .fontSize(9.5)
-       .text("Crafted by Nature, Perfected by Process", 40, 88)
+       .fontSize(8.5)
+       .text("Crafted by Nature, Perfected by Process", logoPath ? 100 : 40, 85)
 
-    // 3. COMPANY DETAILS (Right-aligned)
+    // 3. COMPANY CONTACT DETAILS (Right Column)
     doc.fillColor("#111827")
        .font("Helvetica-Bold")
        .fontSize(9)
@@ -54,93 +112,192 @@ const sendInvoiceEmail = async (order, products) => {
     doc.text("Web: www.farm2flake.com", 320, 118, { align: "right", width: 235 })
 
     // 4. DIVIDER
-    doc.moveTo(40, 135)
-       .lineTo(555, 135)
+    doc.moveTo(40, 134)
+       .lineTo(555, 134)
        .strokeColor("#E5E7EB")
        .lineWidth(1)
        .stroke()
 
-    // 5. INVOICE INFO & BILL TO
-    // Left: Customer details (Bill To)
-    doc.font("Helvetica-Bold").fontSize(9.5).fillColor("#9CA3AF").text("BILL TO:", 40, 150)
-    doc.font("Helvetica-Bold").fontSize(11.5).fillColor("#111827").text(order.customer_name || "Valued Customer", 40, 163)
-    
-    doc.font("Helvetica").fontSize(9).fillColor("#4B5563")
-    doc.text(`Phone: ${order.phone || "N/A"}`, 40, 178)
-    doc.text(`Email: ${order.email || "N/A"}`, 40, 190)
+    // 5. CUSTOMER INFORMATION & ADDRESS CARDS (Parallel layouts with soft gray borders)
+    const cardY = 145
+    const cardHeight = 90
+
+    // Card 1: Bill & Invoice To
+    doc.rect(40, cardY, 250, cardHeight).fillAndStroke("#FAF7F2", "#E5E7EB")
+    doc.fillColor("#2D5A2D").font("Helvetica-Bold").fontSize(8.5).text("BILL & INVOICE TO:", 50, cardY + 10)
+    doc.fillColor("#111827").font("Helvetica-Bold").fontSize(10.5).text(order.customer_name || "Valued Customer", 50, cardY + 23)
+    doc.font("Helvetica").fontSize(8.5).fillColor("#4B5563")
+    doc.text(`Phone: ${order.phone || "N/A"}`, 50, cardY + 39)
+    doc.text(`Email: ${order.email || "N/A"}`, 50, cardY + 51)
+    doc.text(`City: ${order.city || "Gujarat, India"}`, 50, cardY + 63)
+
+    // Card 2: Shipping Destination
+    doc.rect(305, cardY, 250, cardHeight).fillAndStroke("#FAF7F2", "#E5E7EB")
+    doc.fillColor("#2D5A2D").font("Helvetica-Bold").fontSize(8.5).text("SHIPPING DESTINATION:", 315, cardY + 10)
     
     const addressPieces = [order.address, order.landmark, `${order.city || ""}` + (order.pincode ? ` - ${order.pincode}` : "")].filter(Boolean)
     const fullAddress = addressPieces.join(", ")
-    doc.text(`Address: ${fullAddress || "Gujarat, India"}`, 40, 202, { width: 250 })
-
-    // Right: Invoice Metadata
-    doc.font("Helvetica-Bold").fontSize(9.5).fillColor("#9CA3AF").text("INVOICE DETAILS:", 320, 150, { align: "right", width: 235 })
-    doc.font("Helvetica-Bold").fontSize(10.5).fillColor("#1D3B1D").text(`Invoice No: ${order.order_id}`, 320, 163, { align: "right", width: 235 })
     
+    doc.fillColor("#111827").font("Helvetica").fontSize(8.5)
+    doc.text(order.customer_name || "Valued Customer", 315, cardY + 23)
+    doc.fillColor("#4B5563")
+    doc.text(fullAddress || "Gujarat, India", 315, cardY + 39, { width: 230, height: 40 })
+
+    // 6. INVOICE META BAR (Card styled layout with background fill)
+    const metaY = 243
+    doc.rect(40, metaY, 515, 38).fillAndStroke("#F4F8F4", "#E5E7EB")
+
+    // Invoice ID
+    doc.fillColor("#4B5563").font("Helvetica").fontSize(8.5).text("Invoice Number", 50, metaY + 8)
+    doc.fillColor("#1D3B1D").font("Helvetica-Bold").fontSize(9.5).text(order.order_id, 50, metaY + 20)
+
+    // Date
     const orderDateStr = order.created_at ? new Date(order.created_at).toLocaleDateString("en-IN", { day: 'numeric', month: 'short', year: 'numeric' }) : new Date().toLocaleDateString("en-IN", { day: 'numeric', month: 'short', year: 'numeric' })
-    doc.font("Helvetica").fontSize(9).fillColor("#4B5563").text(`Date: ${orderDateStr}`, 320, 178, { align: "right", width: 235 })
-    doc.text("Payment Mode: Cash on Delivery", 320, 190, { align: "right", width: 235 })
-    doc.font("Helvetica-Bold").fillColor("#D97706").text("Status: Pending Delivery", 320, 202, { align: "right", width: 235 })
+    doc.fillColor("#4B5563").font("Helvetica").fontSize(8.5).text("Invoice Date", 210, metaY + 8)
+    doc.fillColor("#111827").font("Helvetica-Bold").fontSize(9.5).text(orderDateStr, 210, metaY + 20)
 
-    // 6. PRODUCTS TABLE HEADER
-    doc.rect(40, 235, 515, 20).fill("#2D5A2D")
-    doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(9)
-    doc.text("Product Description", 45, 241)
-    doc.text("Qty", 320, 241, { width: 50, align: "center" })
-    doc.text("Unit Price", 370, 241, { width: 90, align: "right" })
-    doc.text("Total", 460, 241, { width: 95, align: "right" })
+    // Order Status (Styled Badge)
+    doc.fillColor("#4B5563").font("Helvetica").fontSize(8.5).text("Order Status", 350, metaY + 8)
+    doc.fillColor("#2D5A2D").font("Helvetica-Bold").fontSize(9.5).text("Confirmed", 350, metaY + 20)
 
-    // 7. PRODUCTS TABLE ROWS
-    let yVal = 255
-    products.forEach((item, idx) => {
-      // Row Background
-      if (idx % 2 === 0) {
-        doc.rect(40, yVal, 515, 22).fill("#F4F8F4")
+    // Payment Info
+    doc.fillColor("#4B5563").font("Helvetica").fontSize(8.5).text("Payment Method", 460, metaY + 8)
+    doc.fillColor("#D97706").font("Helvetica-Bold").fontSize(9.5).text("COD / Cash", 460, metaY + 20)
+
+    // 7. PRODUCT CATALOG TABLE HEADER
+    doc.rect(40, 292, 515, 20).fill("#2D5A2D")
+    doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(8.5)
+    doc.text("Product", 45, 298)
+    doc.text("Variant", 320, 298, { width: 60, align: "center" })
+    doc.text("Qty", 380, 298, { width: 40, align: "center" })
+    doc.text("Unit Price", 420, 298, { width: 65, align: "right" })
+    doc.text("Total", 490, 298, { width: 60, align: "right" })
+
+    // 8. PRODUCT ROWS WITH DYNAMIC THUMBNAILS
+    let yVal = 312
+    for (let i = 0; i < products.length; i++) {
+      const item = products[i]
+
+      // Alternating row color
+      if (i % 2 === 0) {
+        doc.rect(40, yVal, 515, 30).fill("#F4F8F4")
       }
 
-      const qty = parseFloat(item.quantity) || 1
-      const totalPrice = parseFloat(item.price) || 0
-      const unitPrice = totalPrice / qty
+      // Load Product Thumbnail Buffer (local/remote)
+      let imgBuffer = null
+      try {
+        imgBuffer = await getLocalOrRemoteImage(item.image)
+      } catch (err) {
+        console.log("Image load error:", err.message)
+      }
 
+      // Render Image Thumbnail
+      if (imgBuffer) {
+        try {
+          doc.image(imgBuffer, 45, yVal + 3, { width: 24, height: 24 })
+        } catch (err) {
+          // Draw a natural placeholder leaf box on image parsing error
+          doc.roundedRect(45, yVal + 3, 24, 24, 4).fill("#FAF7F2")
+          doc.roundedRect(45, yVal + 3, 24, 24, 4).strokeColor("#2D5A2D").lineWidth(0.5).stroke()
+          doc.fillColor("#2D5A2D").font("Helvetica-Bold").fontSize(7).text("🌿", 52, yVal + 9)
+        }
+      } else {
+        // Draw leaf placeholder
+        doc.roundedRect(45, yVal + 3, 24, 24, 4).fill("#FAF7F2")
+        doc.roundedRect(45, yVal + 3, 24, 24, 4).strokeColor("#2D5A2D").lineWidth(0.5).stroke()
+        doc.fillColor("#2D5A2D").font("Helvetica-Bold").fontSize(7).text("🌿", 52, yVal + 9)
+      }
+
+      // Product Details Text
       doc.fillColor("#111827").font("Helvetica-Bold").fontSize(8.5)
-      doc.text(item.product_name, 45, yVal + 6, { width: 270, height: 12, ellipsis: true })
+      doc.text(item.product_name, 75, yVal + 10, { width: 240, height: 15, ellipsis: true })
 
-      doc.font("Helvetica").fontSize(8.5).fillColor("#374151")
-      doc.text(qty.toString(), 320, yVal + 6, { width: 50, align: "center" })
-      doc.text(`₹${unitPrice.toFixed(2)}`, 370, yVal + 6, { width: 90, align: "right" })
+      doc.font("Helvetica").fontSize(8.5).fillColor("#4B5563")
+      doc.text(item.size || "100g", 320, yVal + 10, { width: 60, align: "center" })
+      doc.text(item.quantity.toString(), 380, yVal + 10, { width: 40, align: "center" })
 
+      const qty = parseFloat(item.quantity) || 1
+      const totalVal = parseFloat(item.price) || 0
+      const unitVal = totalVal / qty
+
+      doc.text(`₹${unitVal.toFixed(2)}`, 420, yVal + 10, { width: 65, align: "right" })
+      
       doc.font("Helvetica-Bold").fillColor("#111827")
-      doc.text(`₹${totalPrice.toFixed(2)}`, 460, yVal + 6, { width: 95, align: "right" })
+      doc.text(`₹${totalVal.toFixed(2)}`, 490, yVal + 10, { width: 60, align: "right" })
 
       // Bottom Row Border
-      doc.moveTo(40, yVal + 22).lineTo(555, yVal + 22).strokeColor("#E5E7EB").lineWidth(0.5).stroke()
-      yVal += 22
-    })
+      doc.moveTo(40, yVal + 30).lineTo(555, yVal + 30).strokeColor("#E5E7EB").lineWidth(0.5).stroke()
+      yVal += 30
+    }
 
-    // 8. GRAND TOTAL BOX
-    yVal += 12
-    doc.rect(320, yVal, 235, 26).fill("#FAF7F2")
-    doc.strokeColor("#2D5A2D").lineWidth(1.2).rect(320, yVal, 235, 26).stroke()
+    // 9. SUMMARY AREA & QR CODE VERIFICATION
+    const bottomSectionY = yVal + 15
 
-    doc.fillColor("#111827").font("Helvetica-Bold").fontSize(10.5).text("Grand Total:", 330, yVal + 8)
+    // Fetch Authenticity QR Code
+    let qrBuffer = null
+    try {
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent("Order ID: " + order.order_id + "\nVerification: Authentic Farm2Flake Order")}`
+      qrBuffer = await fetchUrlBuffer(qrUrl)
+    } catch (err) {
+      console.log("QR Code load error:", err.message)
+    }
+
+    // Left Column: QR Code
+    if (qrBuffer) {
+      try {
+        doc.image(qrBuffer, 40, bottomSectionY, { width: 75, height: 75 })
+        doc.fillColor("#9CA3AF").font("Helvetica").fontSize(6.5)
+        doc.text("Scan to verify invoice authenticity", 40, bottomSectionY + 80, { width: 120 })
+      } catch (err) {
+        console.log("QR draw failed:", err.message)
+      }
+    }
+
+    // Center Column: Payment Details Card
+    doc.roundedRect(130, bottomSectionY, 175, 75, 4).fillAndStroke("#F4F8F4", "#E5E7EB")
+    doc.fillColor("#1D3B1D").font("Helvetica-Bold").fontSize(8.5).text("PAYMENT INFORMATION", 140, bottomSectionY + 8)
+    doc.font("Helvetica").fontSize(7.5).fillColor("#4B5563")
+    doc.text("Method:", 140, bottomSectionY + 22)
+    doc.font("Helvetica-Bold").fillColor("#111827").text("Cash on Delivery (COD)", 140, bottomSectionY + 31)
+    doc.font("Helvetica").fillColor("#4B5563").text("Status:", 140, bottomSectionY + 45)
+    doc.font("Helvetica-Bold").fillColor("#2D5A2D").text("Pending Delivery verification", 140, bottomSectionY + 54)
+
+    // Right Column: Summary Calculation Card
+    doc.roundedRect(320, bottomSectionY, 235, 75, 4).fillAndStroke("#FAF7F2", "#2D5A2D")
+    doc.fillColor("#1D3B1D").font("Helvetica-Bold").fontSize(8.5).text("ORDER SUMMARY", 330, bottomSectionY + 8)
+
+    doc.font("Helvetica").fontSize(7.5).fillColor("#4B5563")
+    doc.text("Subtotal:", 330, bottomSectionY + 22)
     
     const formattedTotal = parseFloat(order.total_amount) || 0
-    doc.fillColor("#2D5A2D").font("Helvetica-Bold").fontSize(12).text(`₹${formattedTotal.toFixed(2)}`, 330, yVal + 7, { width: 215, align: "right" })
+    doc.text(`₹${formattedTotal.toFixed(2)}`, 330, bottomSectionY + 22, { width: 215, align: "right" })
 
-    // 9. BOTTOM TERMS & SIGN-OFF (Positioned fixed near page bottom)
+    doc.text("Shipping & Handling:", 330, bottomSectionY + 32)
+    doc.fillColor("#2D5A2D").font("Helvetica-Bold").text("FREE", 330, bottomSectionY + 32, { width: 215, align: "right" })
+
+    doc.font("Helvetica").fillColor("#4B5563").text("Estimated GST:", 330, bottomSectionY + 42)
+    doc.text("₹0.00", 330, bottomSectionY + 42, { width: 215, align: "right" })
+
+    // Total divider
+    doc.moveTo(330, bottomSectionY + 52).lineTo(545, bottomSectionY + 52).strokeColor("#2D5A2D").lineWidth(0.5).stroke()
+
+    doc.fillColor("#111827").font("Helvetica-Bold").fontSize(9.5).text("Grand Total:", 330, bottomSectionY + 58)
+    doc.fillColor("#2D5A2D").font("Helvetica-Bold").fontSize(11).text(`₹${formattedTotal.toFixed(2)}`, 330, bottomSectionY + 57, { width: 215, align: "right" })
+
+    // 10. BRAND FOOTER SIGN-OFF (Positioned fixed near page bottom)
     doc.moveTo(40, 730).lineTo(555, 730).strokeColor("#2D5A2D").lineWidth(0.7).stroke()
     
-    doc.fillColor("#2D5A2D").font("Helvetica-Bold").fontSize(10.5).text("Thank you for shopping with us! Pure • Clean • Honest", 40, 742, { align: "center" })
+    doc.fillColor("#2D5A2D").font("Helvetica-Bold").fontSize(10).text("Thank you for supporting organic agriculture! Pure • Clean • Honest", 40, 742, { align: "center" })
     
     doc.fillColor("#6B7280").font("Helvetica").fontSize(8)
     doc.text("If you have any questions about this invoice, please contact us at farm2flake@gmail.com", 40, 757, { align: "center" })
-    doc.text("Visit us at www.farm2flake.com | Follow on Instagram: @farm2flake_official", 40, 769, { align: "center" })
+    doc.text("Visit us at www.farm2flake.com | Instagram: @farm2flake_official", 40, 769, { align: "center" })
 
     doc.end()
 
     const pdfBuffer = await pdfPromise
 
-    // EMAIL
+    // EMAIL SEND
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: order.email,
