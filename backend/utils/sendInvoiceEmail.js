@@ -220,47 +220,27 @@ const sendInvoiceEmail = async (order, products) => {
       const totalVal = parseFloat(item.price) || 0
       const unitVal = totalVal / qty
 
-      doc.text(`₹${unitVal.toFixed(2)}`, 420, yVal + 10, { width: 65, align: "right" })
+      doc.text(`Rs. ${unitVal.toFixed(2)}`, 420, yVal + 10, { width: 65, align: "right" })
       
       doc.font("Helvetica-Bold").fillColor("#111827")
-      doc.text(`₹${totalVal.toFixed(2)}`, 490, yVal + 10, { width: 60, align: "right" })
+      doc.text(`Rs. ${totalVal.toFixed(2)}`, 490, yVal + 10, { width: 60, align: "right" })
 
       // Bottom Row Border
       doc.moveTo(40, yVal + 30).lineTo(555, yVal + 30).strokeColor("#E5E7EB").lineWidth(0.5).stroke()
       yVal += 30
     }
 
-    // 9. SUMMARY AREA & QR CODE VERIFICATION
+    // 9. SUMMARY & PAYMENT AREA (Without QR Code)
     const bottomSectionY = yVal + 15
 
-    // Fetch Authenticity QR Code
-    let qrBuffer = null
-    try {
-      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent("Order ID: " + order.order_id + "\nVerification: Authentic Farm2Flake Order")}`
-      qrBuffer = await fetchUrlBuffer(qrUrl)
-    } catch (err) {
-      console.log("QR Code load error:", err.message)
-    }
-
-    // Left Column: QR Code
-    if (qrBuffer) {
-      try {
-        doc.image(qrBuffer, 40, bottomSectionY, { width: 75, height: 75 })
-        doc.fillColor("#9CA3AF").font("Helvetica").fontSize(6.5)
-        doc.text("Scan to verify invoice authenticity", 40, bottomSectionY + 80, { width: 120 })
-      } catch (err) {
-        console.log("QR draw failed:", err.message)
-      }
-    }
-
-    // Center Column: Payment Details Card
-    doc.roundedRect(130, bottomSectionY, 175, 75, 4).fillAndStroke("#F4F8F4", "#E5E7EB")
-    doc.fillColor("#1D3B1D").font("Helvetica-Bold").fontSize(8.5).text("PAYMENT INFORMATION", 140, bottomSectionY + 8)
+    // Left Column: Payment Details Card (takes up the left half)
+    doc.roundedRect(40, bottomSectionY, 265, 75, 4).fillAndStroke("#F4F8F4", "#E5E7EB")
+    doc.fillColor("#1D3B1D").font("Helvetica-Bold").fontSize(8.5).text("PAYMENT INFORMATION", 50, bottomSectionY + 8)
     doc.font("Helvetica").fontSize(7.5).fillColor("#4B5563")
-    doc.text("Method:", 140, bottomSectionY + 22)
-    doc.font("Helvetica-Bold").fillColor("#111827").text("Cash on Delivery (COD)", 140, bottomSectionY + 31)
-    doc.font("Helvetica").fillColor("#4B5563").text("Status:", 140, bottomSectionY + 45)
-    doc.font("Helvetica-Bold").fillColor("#2D5A2D").text("Pending Delivery verification", 140, bottomSectionY + 54)
+    doc.text("Method:", 50, bottomSectionY + 22)
+    doc.font("Helvetica-Bold").fillColor("#111827").text("Cash on Delivery (COD)", 50, bottomSectionY + 31)
+    doc.font("Helvetica").fillColor("#4B5563").text("Status:", 50, bottomSectionY + 45)
+    doc.font("Helvetica-Bold").fillColor("#2D5A2D").text("Pending Delivery verification", 50, bottomSectionY + 54)
 
     // Right Column: Summary Calculation Card
     doc.roundedRect(320, bottomSectionY, 235, 75, 4).fillAndStroke("#FAF7F2", "#2D5A2D")
@@ -270,19 +250,19 @@ const sendInvoiceEmail = async (order, products) => {
     doc.text("Subtotal:", 330, bottomSectionY + 22)
     
     const formattedTotal = parseFloat(order.total_amount) || 0
-    doc.text(`₹${formattedTotal.toFixed(2)}`, 330, bottomSectionY + 22, { width: 215, align: "right" })
+    doc.text(`Rs. ${formattedTotal.toFixed(2)}`, 330, bottomSectionY + 22, { width: 215, align: "right" })
 
     doc.text("Shipping & Handling:", 330, bottomSectionY + 32)
     doc.fillColor("#2D5A2D").font("Helvetica-Bold").text("FREE", 330, bottomSectionY + 32, { width: 215, align: "right" })
 
     doc.font("Helvetica").fillColor("#4B5563").text("Estimated GST:", 330, bottomSectionY + 42)
-    doc.text("₹0.00", 330, bottomSectionY + 42, { width: 215, align: "right" })
+    doc.text("Rs. 0.00", 330, bottomSectionY + 42, { width: 215, align: "right" })
 
     // Total divider
     doc.moveTo(330, bottomSectionY + 52).lineTo(545, bottomSectionY + 52).strokeColor("#2D5A2D").lineWidth(0.5).stroke()
 
     doc.fillColor("#111827").font("Helvetica-Bold").fontSize(9.5).text("Grand Total:", 330, bottomSectionY + 58)
-    doc.fillColor("#2D5A2D").font("Helvetica-Bold").fontSize(11).text(`₹${formattedTotal.toFixed(2)}`, 330, bottomSectionY + 57, { width: 215, align: "right" })
+    doc.fillColor("#2D5A2D").font("Helvetica-Bold").fontSize(11).text(`Rs. ${formattedTotal.toFixed(2)}`, 330, bottomSectionY + 57, { width: 215, align: "right" })
 
     // 10. BRAND FOOTER SIGN-OFF (Positioned fixed near page bottom)
     doc.moveTo(40, 730).lineTo(555, 730).strokeColor("#2D5A2D").lineWidth(0.7).stroke()
@@ -315,7 +295,7 @@ const sendInvoiceEmail = async (order, products) => {
         </p>
         <div style="background-color: #F4F8F4; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px dashed #2D5A2D;">
           <p style="margin: 5px 0; font-size: 14px; color: #111;"><strong>Order ID:</strong> ${order.order_id}</p>
-          <p style="margin: 5px 0; font-size: 14px; color: #111;"><strong>Total Amount:</strong> ₹${formattedTotal.toFixed(2)}</p>
+          <p style="margin: 5px 0; font-size: 14px; color: #111;"><strong>Total Amount:</strong> Rs. ${formattedTotal.toFixed(2)}</p>
         </div>
         <p style="font-size: 14px; color: #555; line-height: 1.6;">
           We have attached a beautifully formatted PDF invoice to this email for your records.
