@@ -1734,6 +1734,188 @@ app.delete('/api/admins/:id', async (req, res) => {
 
 })
 
+
+
+// UPDATE PRODUCT
+app.put('/api/products/:id', async (req, res) => {
+  try {
+    const {
+      name,
+      category,
+      price,
+      size,
+      stock,
+      short_description,
+      full_description,
+      benefits,
+      image,
+      is_best_seller,
+      status,
+      price_100g,
+      mrp_100g,
+      price_250g,
+      mrp_250g,
+      price_500g,
+      mrp_500g,
+      nutrition_facts,
+      ingredients,
+      how_to_use
+    } = req.body
+
+    const connection = await pool.getConnection()
+    await connection.query(
+      `
+      UPDATE products SET
+        name = ?,
+        category = ?,
+        price = ?,
+        size = ?,
+        stock = ?,
+        short_description = ?,
+        full_description = ?,
+        benefits = ?,
+        image = ?,
+        is_best_seller = ?,
+        status = ?,
+        price_100g = ?,
+        mrp_100g = ?,
+        price_250g = ?,
+        mrp_250g = ?,
+        price_500g = ?,
+        mrp_500g = ?,
+        nutrition_facts = ?,
+        ingredients = ?,
+        how_to_use = ?
+      WHERE id = ?
+      `,
+      [
+        name,
+        category,
+        price || price_250g || price_100g || price_500g || 0,
+        size || "250g",
+        stock,
+        short_description,
+        full_description,
+        benefits,
+        image,
+        is_best_seller,
+        status,
+        price_100g || null,
+        mrp_100g || null,
+        price_250g || null,
+        mrp_250g || null,
+        price_500g || null,
+        mrp_500g || null,
+        nutrition_facts || null,
+        ingredients || null,
+        how_to_use || null,
+        req.params.id
+      ]
+    )
+    connection.release()
+    res.json({ success: true })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Failed to update product' })
+  }
+})
+
+// UPDATE BLOG
+app.put('/api/blogs/:id', async (req, res) => {
+  try {
+    const {
+      title,
+      category,
+      short_description,
+      content,
+      image,
+      status,
+      meta_title,
+      meta_description
+    } = req.body
+
+    const connection = await pool.getConnection()
+    await connection.query(
+      `
+      UPDATE blogs SET
+        title = ?,
+        category = ?,
+        short_description = ?,
+        content = ?,
+        image = ?,
+        status = ?,
+        meta_title = ?,
+        meta_description = ?
+      WHERE id = ?
+      `,
+      [
+        title,
+        category,
+        short_description,
+        content,
+        image,
+        status,
+        meta_title || null,
+        meta_description || null,
+        req.params.id
+      ]
+    )
+    connection.release()
+    res.json({ success: true })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Failed to update blog' })
+  }
+})
+
+// VERIFY ADMIN PASSWORD
+app.post('/api/admins/:id/verify-password', async (req, res) => {
+  try {
+    const { password } = req.body
+    const connection = await pool.getConnection()
+    const [admins] = await connection.query(
+      'SELECT password FROM admins WHERE id = ?',
+      [req.params.id]
+    )
+    connection.release()
+
+    if (admins.length === 0) {
+      return res.status(404).json({ error: "Admin not found" })
+    }
+
+    const isMatch = await bcrypt.compare(password, admins[0].password)
+    if (isMatch) {
+      res.json({ success: true })
+    } else {
+      res.status(400).json({ success: false, error: "Incorrect old password" })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Failed to verify password' })
+  }
+})
+
+// RESET ADMIN PASSWORD
+app.put('/api/admins/:id/reset-password', async (req, res) => {
+  try {
+    const { password } = req.body
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const connection = await pool.getConnection()
+    await connection.query(
+      'UPDATE admins SET password = ? WHERE id = ?',
+      [hashedPassword, req.params.id]
+    )
+    connection.release()
+
+    res.json({ success: true })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Failed to reset password' })
+  }
+})
+
+
 // Self-healing database schema upgrade function
 async function upgradeDatabaseSchema() {
   let connection;

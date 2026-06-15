@@ -13,6 +13,74 @@ export default function AdminManagement() {
 
   const [role, setRole] = useState("staff")
 
+  // PASSWORD RESET STATE
+  const [resetAdmin, setResetAdmin] = useState(null)
+  const [showVerifyModal, setShowVerifyModal] = useState(false)
+  const [showResetModal, setShowResetModal] = useState(false)
+  const [oldPassword, setOldPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [modalError, setModalError] = useState("")
+  const [modalLoading, setModalLoading] = useState(false)
+
+  const handleOpenResetFlow = (admin) => {
+    setResetAdmin(admin)
+    setShowVerifyModal(true)
+    setOldPassword("")
+    setNewPassword("")
+    setConfirmPassword("")
+    setModalError("")
+  }
+
+  const handleVerifyOldPassword = async (e) => {
+    e.preventDefault()
+    setModalLoading(true)
+    setModalError("")
+    try {
+      const response = await axios.post(`${API_BASE_URL}/api/admins/${resetAdmin.id}/verify-password`, {
+        password: oldPassword
+      })
+      if (response.data.success) {
+        setShowVerifyModal(false)
+        setShowResetModal(true)
+      }
+    } catch (error) {
+      console.log(error)
+      setModalError(error.response?.data?.error || "Incorrect old password")
+    } finally {
+      setModalLoading(false)
+    }
+  }
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault()
+    if (newPassword.length < 6) {
+      setModalError("Password must be at least 6 characters long")
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setModalError("New passwords do not match")
+      return
+    }
+    setModalLoading(true)
+    setModalError("")
+    try {
+      const response = await axios.put(`${API_BASE_URL}/api/admins/${resetAdmin.id}/reset-password`, {
+        password: newPassword
+      })
+      if (response.data.success) {
+        alert("Password reset successfully!")
+        setShowResetModal(false)
+        setResetAdmin(null)
+      }
+    } catch (error) {
+      console.log(error)
+      setModalError("Failed to reset password")
+    } finally {
+      setModalLoading(false)
+    }
+  }
+
 
 
   const currentAdmin =
@@ -351,24 +419,22 @@ export default function AdminManagement() {
 
 
                   <td className="px-6 py-5">
-
-                    {admin.id !== 1 && (
-
+                    <div className="flex items-center gap-3">
                       <button
-                        onClick={() =>
-                          deleteAdmin(
-                            admin.id
-                          )
-                        }
-                        className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm"
+                        onClick={() => handleOpenResetFlow(admin)}
+                        className="bg-[#2d5a2d] hover:bg-[#1f431f] text-white px-4 py-2 rounded-lg text-sm transition"
                       >
-
-                        Delete
-
+                        Reset Password
                       </button>
-
-                    )}
-
+                      {admin.id !== 1 && (
+                        <button
+                          onClick={() => deleteAdmin(admin.id)}
+                          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition"
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </div>
                   </td>
 
                 </tr>
@@ -385,9 +451,147 @@ export default function AdminManagement() {
 
       </div>
 
+      {/* VERIFY PASSWORD MODAL */}
+      {showVerifyModal && resetAdmin && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-[24px] w-full max-w-md overflow-hidden shadow-2xl border border-[#edf1e8] animate-in fade-in zoom-in duration-200">
+            <div className="px-6 py-4 bg-[#f8faf8] border-b border-[#edf1e8] flex items-center justify-between">
+              <h2 className="text-lg font-bold text-[#183818]">Verify Identity</h2>
+              <button
+                onClick={() => {
+                  setShowVerifyModal(false)
+                  setResetAdmin(null)
+                }}
+                className="text-[#7d877d] hover:text-[#183818] transition font-semibold text-lg"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleVerifyOldPassword} className="p-6 space-y-4">
+              <p className="text-sm text-[#6b7280]">
+                To change password of admin <strong>{resetAdmin.email}</strong>, please enter their current old password.
+              </p>
+
+              <div>
+                <label className="font-semibold text-xs text-[#111827] uppercase tracking-wider block">Current Password</label>
+                <input
+                  type="password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  required
+                  placeholder="Enter current password"
+                  className="mt-2 w-full h-[46px] rounded-xl border border-[#dbe3ea] px-4 outline-none focus:border-[#ff7a00] text-sm"
+                />
+              </div>
+
+              {modalError && (
+                <div className="text-red-500 text-xs font-semibold bg-red-50 p-2.5 rounded-xl border border-red-100">
+                  {modalError}
+                </div>
+              )}
+
+              <div className="pt-2 flex justify-end gap-3 border-t border-[#edf1e8]">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowVerifyModal(false)
+                    setResetAdmin(null)
+                  }}
+                  className="bg-[#e2e8f0] hover:bg-[#cbd5e1] text-[#334155] px-4 py-2.5 rounded-xl font-medium text-sm transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={modalLoading}
+                  className="bg-[#2d5a2d] hover:bg-[#1f431f] text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition shadow-sm disabled:bg-gray-300"
+                >
+                  {modalLoading ? "Verifying..." : "Verify & Proceed"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* RESET PASSWORD MODAL */}
+      {showResetModal && resetAdmin && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-[24px] w-full max-w-md overflow-hidden shadow-2xl border border-[#edf1e8] animate-in fade-in zoom-in duration-200">
+            <div className="px-6 py-4 bg-[#f8faf8] border-b border-[#edf1e8] flex items-center justify-between">
+              <h2 className="text-lg font-bold text-[#183818]">Set New Password</h2>
+              <button
+                onClick={() => {
+                  setShowResetModal(false)
+                  setResetAdmin(null)
+                }}
+                className="text-[#7d877d] hover:text-[#183818] transition font-semibold text-lg"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleResetPassword} className="p-6 space-y-4">
+              <p className="text-sm text-[#6b7280]">
+                Enter new credentials for <strong>{resetAdmin.email}</strong>.
+              </p>
+
+              <div>
+                <label className="font-semibold text-xs text-[#111827] uppercase tracking-wider block">New Password</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                  placeholder="Enter new password (min. 6 chars)"
+                  className="mt-2 w-full h-[46px] rounded-xl border border-[#dbe3ea] px-4 outline-none focus:border-[#ff7a00] text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-xs text-[#111827] uppercase tracking-wider block">Confirm New Password</label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  placeholder="Confirm new password"
+                  className="mt-2 w-full h-[46px] rounded-xl border border-[#dbe3ea] px-4 outline-none focus:border-[#ff7a00] text-sm"
+                />
+              </div>
+
+              {modalError && (
+                <div className="text-red-500 text-xs font-semibold bg-red-50 p-2.5 rounded-xl border border-red-100">
+                  {modalError}
+                </div>
+              )}
+
+              <div className="pt-2 flex justify-end gap-3 border-t border-[#edf1e8]">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowResetModal(false)
+                    setResetAdmin(null)
+                  }}
+                  className="bg-[#e2e8f0] hover:bg-[#cbd5e1] text-[#334155] px-4 py-2.5 rounded-xl font-medium text-sm transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={modalLoading}
+                  className="bg-[#2d5a2d] hover:bg-[#1f431f] text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition shadow-sm disabled:bg-gray-300"
+                >
+                  {modalLoading ? "Saving..." : "Save Password"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
 
   )
 
 }
-
