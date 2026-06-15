@@ -13,15 +13,15 @@ export default function BestSellers() {
   const { cartItems, addToCart, increaseQuantity, decreaseQuantity, removeFromCart } = useCart()
 
   const handleIncrease = (productId) => {
-    increaseQuantity(productId, "250g")
+    increaseQuantity(productId, "100g")
   }
 
   const handleDecrease = (productId) => {
-    const cartItem = cartItems.find(item => item.id === productId && (item.selectedSize === "250g" || !item.selectedSize))
+    const cartItem = cartItems.find(item => item.id === productId && (item.selectedSize === "100g" || !item.selectedSize))
     if (cartItem && cartItem.quantity > 1) {
-      decreaseQuantity(productId, "250g")
+      decreaseQuantity(productId, "100g")
     } else {
-      removeFromCart(productId, "250g")
+      removeFromCart(productId, "100g")
     }
   }
 
@@ -67,9 +67,9 @@ export default function BestSellers() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {products.map((product) => {
             const isWishlisted = wishlistItems.some((item) => item.id === product.id)
-            const price250g = getProductPriceAndSize(product, "250g")
+            const price100g = getProductPriceAndSize(product, "100g")
             const isAddedToCart = cartItems.some(
-              (item) => item.id === product.id && (item.selectedSize === "250g" || !item.selectedSize)
+              (item) => item.id === product.id && (item.selectedSize === "100g" || !item.selectedSize)
             )
 
             return (
@@ -133,18 +133,18 @@ export default function BestSellers() {
                   {/* PRICE & BUTTON */}
                   <div className="mt-4">
                     <div className="flex flex-wrap items-center gap-1.5 font-bold">
-                      <span className="text-xl font-extrabold text-[#111827]">₹{price250g}</span>
-                      {product.mrp_250g && Math.round(parseFloat(product.mrp_250g)) > price250g && (
+                      <span className="text-xl font-extrabold text-[#111827]">₹{price100g}</span>
+                      {product.mrp_100g && Math.round(parseFloat(product.mrp_100g)) > price100g && (
                         <>
                           <span className="text-gray-400 line-through text-xs font-normal">
-                            ₹{Math.round(parseFloat(product.mrp_250g))}
+                            ₹{Math.round(parseFloat(product.mrp_100g))}
                           </span>
                           <span className="text-green-600 font-bold text-[10px] bg-green-50 px-1.5 py-0.5 rounded">
-                            {Math.round(((Math.round(parseFloat(product.mrp_250g)) - price250g) / Math.round(parseFloat(product.mrp_250g))) * 100)}% OFF
+                            {Math.round(((Math.round(parseFloat(product.mrp_100g)) - price100g) / Math.round(parseFloat(product.mrp_100g))) * 100)}% OFF
                           </span>
                         </>
                       )}
-                      <span className="text-gray-400 text-xs">(250g)</span>
+                      <span className="text-gray-400 text-xs">(100g)</span>
                     </div>
 
                     {isAddedToCart ? (
@@ -156,7 +156,7 @@ export default function BestSellers() {
                           -
                         </button>
                         <span className="font-extrabold text-xs sm:text-sm text-[#1D3B1D]">
-                          {cartItems.find(item => item.id === product.id && (item.selectedSize === "250g" || !item.selectedSize))?.quantity || 1} Qty
+                          {cartItems.find(item => item.id === product.id && (item.selectedSize === "100g" || !item.selectedSize))?.quantity || 1} Qty
                         </span>
                         <button
                           onClick={() => handleIncrease(product.id)}
@@ -167,7 +167,7 @@ export default function BestSellers() {
                       </div>
                     ) : (
                       <button
-                        onClick={() => addToCart(product, 1, "250g", price250g)}
+                        onClick={() => addToCart(product, 1, "100g", price100g)}
                         className="mt-4 w-full h-[44px] rounded-xl font-bold bg-[#2F7C1F] hover:bg-[#1D3B1D] text-white transition-all duration-300 flex items-center justify-center gap-2 text-xs uppercase tracking-wider shadow-sm shadow-[#2F7C1F]/10 hover:scale-[1.02] active:scale-[0.98]"
                       >
                         <ShoppingBag size={14} />

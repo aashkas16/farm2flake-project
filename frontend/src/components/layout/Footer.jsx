@@ -1,7 +1,7 @@
 import API_BASE_URL from "../../services/api"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { Send, Mail, Phone, MapPin, ChevronDown } from "lucide-react"
+import { Send, Mail, Phone, MapPin, ChevronDown, FileText } from "lucide-react"
 import axios from "axios"
 
 export default function Footer() {
@@ -160,13 +160,17 @@ export default function Footer() {
             </button>
             <div className={`mt-2 md:mt-0 transition-all duration-300 overflow-hidden md:max-h-none ${openSections.contact ? "max-h-[160px] opacity-100" : "max-h-0 opacity-0 md:opacity-100"}`}>
               <ul className="space-y-2.5 md:space-y-3 text-xs sm:text-sm text-gray-500 pt-1 md:pt-0">
+                <li className="flex gap-2.5 items-center py-0.5">
+                  <FileText size={16} className="text-[#2F7C1F] shrink-0" />
+                  <span className="font-bold text-gray-700">GSTIN: 24AALFF3107A1Z4</span>
+                </li>
                 <li className="flex gap-2.5 items-start py-0.5">
                   <MapPin size={16} className="text-[#2F7C1F] shrink-0 mt-0.5" />
-                  <span>Gujarat, India</span>
+                  <span className="leading-snug">Shop No. 4/23, Fateh Sagar Complex, Opp. MGVCL Office, Fatehgunj, Vadodara - 390002, Gujarat, India</span>
                 </li>
                 <li className="flex gap-2.5 items-center py-0.5">
                   <Phone size={16} className="text-[#2F7C1F] shrink-0" />
-                  <span>+91 88661 77703</span>
+                  <span>+91 88661 77704, +91 88661 77703</span>
                 </li>
                 <li className="flex gap-2.5 items-center py-0.5">
                   <Mail size={16} className="text-[#2F7C1F] shrink-0" />

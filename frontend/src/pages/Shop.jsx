@@ -74,19 +74,19 @@ export default function Shop() {
   } = useCart()
 
   const handleIncrease = (productId) => {
-    increaseQuantity(productId, "250g")
+    increaseQuantity(productId, "100g")
   }
 
   const handleDecrease = (productId) => {
     const cartItem = cartItems.find(
       (item) =>
         item.id === productId &&
-        (item.selectedSize === "250g" || !item.selectedSize)
+        (item.selectedSize === "100g" || !item.selectedSize)
     )
     if (cartItem && cartItem.quantity > 1) {
-      decreaseQuantity(productId, "250g")
+      decreaseQuantity(productId, "100g")
     } else {
-      removeFromCart(productId, "250g")
+      removeFromCart(productId, "100g")
     }
   }
 
@@ -549,24 +549,24 @@ export default function Shop() {
 
                     {/* PRICE */}
                     <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5 text-sm sm:text-base font-black text-[#1c2b1d]">
-                      <span>₹{getProductPriceAndSize(product, "250g")}</span>
-                      {product.mrp_250g && Math.round(parseFloat(product.mrp_250g)) > getProductPriceAndSize(product, "250g") && (
+                      <span>₹{getProductPriceAndSize(product, "100g")}</span>
+                      {product.mrp_100g && Math.round(parseFloat(product.mrp_100g)) > getProductPriceAndSize(product, "100g") && (
                         <>
                           <span className="text-gray-400 line-through text-xs font-normal">
-                            ₹{Math.round(parseFloat(product.mrp_250g))}
+                            ₹{Math.round(parseFloat(product.mrp_100g))}
                           </span>
                           <span className="text-green-600 font-bold text-[10px] bg-green-50 px-1.5 py-0.5 rounded">
-                            {Math.round(((Math.round(parseFloat(product.mrp_250g)) - getProductPriceAndSize(product, "250g")) / Math.round(parseFloat(product.mrp_250g))) * 100)}% OFF
+                            {Math.round(((Math.round(parseFloat(product.mrp_100g)) - getProductPriceAndSize(product, "100g")) / Math.round(parseFloat(product.mrp_100g))) * 100)}% OFF
                           </span>
                         </>
                       )}
-                      <span className="text-gray-400 text-[10px] sm:text-xs font-bold uppercase">(250g)</span>
+                      <span className="text-gray-400 text-[10px] sm:text-xs font-bold uppercase">(100g)</span>
                     </div>
 
                     {cartItems.some(
                       (item) =>
                         item.id === product.id &&
-                        (item.selectedSize === "250g" || !item.selectedSize)
+                        (item.selectedSize === "100g" || !item.selectedSize)
                     ) ? (
                       <div className="mt-auto flex items-center justify-between border-2 border-[#1D3B1D]/10 bg-[#FAF7F2] rounded-xl h-[40px] sm:h-[44px] overflow-hidden w-full px-2">
                         <button
@@ -579,7 +579,7 @@ export default function Shop() {
                           {cartItems.find(
                             (item) =>
                               item.id === product.id &&
-                              (item.selectedSize === "250g" || !item.selectedSize)
+                              (item.selectedSize === "100g" || !item.selectedSize)
                           )?.quantity || 1}{" "}
                           Qty
                         </span>
@@ -596,8 +596,8 @@ export default function Shop() {
                           addToCart(
                             product,
                             1,
-                            "250g",
-                            getProductPriceAndSize(product, "250g")
+                            "100g",
+                            getProductPriceAndSize(product, "100g")
                           )
                         }
                         className="mt-auto w-full py-2.5 sm:py-3 rounded-xl font-bold bg-[#2f7c1f] hover:bg-[#256718] text-white shadow-sm shadow-[#2f7c1f]/10 transition duration-300 flex items-center justify-center gap-2 text-xs sm:text-sm hover:scale-[1.02] active:scale-[0.98]"

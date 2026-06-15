@@ -28,19 +28,19 @@ export default function Wishlist() {
   } = useCart()
 
   const handleIncrease = (productId) => {
-    increaseQuantity(productId, "250g")
+    increaseQuantity(productId, "100g")
   }
 
   const handleDecrease = (productId) => {
     const cartItem = cartItems.find(
       (item) =>
         item.id === productId &&
-        (item.selectedSize === "250g" || !item.selectedSize)
+        (item.selectedSize === "100g" || !item.selectedSize)
     )
     if (cartItem && cartItem.quantity > 1) {
-      decreaseQuantity(productId, "250g")
+      decreaseQuantity(productId, "100g")
     } else {
-      removeFromCart(productId, "250g")
+      removeFromCart(productId, "100g")
     }
   }
 
@@ -208,26 +208,26 @@ export default function Wishlist() {
 
                     <div className="mt-4 flex flex-wrap items-baseline gap-1.5 font-bold">
                       <span className="text-[28px] sm:text-3xl font-bold text-[#183818]">
-                        ₹{getProductPriceAndSize(product, "250g")}
+                        ₹{getProductPriceAndSize(product, "100g")}
                       </span>
-                      {product.mrp_250g && Math.round(parseFloat(product.mrp_250g)) > getProductPriceAndSize(product, "250g") && (
+                      {product.mrp_100g && Math.round(parseFloat(product.mrp_100g)) > getProductPriceAndSize(product, "100g") && (
                         <>
                           <span className="text-gray-400 line-through text-base font-normal">
-                            ₹{Math.round(parseFloat(product.mrp_250g))}
+                            ₹{Math.round(parseFloat(product.mrp_100g))}
                           </span>
                           <span className="text-green-600 font-bold text-xs bg-green-50 px-1.5 py-0.5 rounded">
-                            {Math.round(((Math.round(parseFloat(product.mrp_250g)) - getProductPriceAndSize(product, "250g")) / Math.round(parseFloat(product.mrp_250g))) * 100)}% OFF
+                            {Math.round(((Math.round(parseFloat(product.mrp_100g)) - getProductPriceAndSize(product, "100g")) / Math.round(parseFloat(product.mrp_100g))) * 100)}% OFF
                           </span>
                         </>
                       )}
-                      <span className="text-[#9ca3af] text-sm mb-1 font-normal">(250g)</span>
+                      <span className="text-[#9ca3af] text-sm mb-1 font-normal">(100g)</span>
                     </div>
 
                     {/* ADD TO CART */}
                     {cartItems.some(
                       (item) =>
                         item.id === product.id &&
-                        (item.selectedSize === "250g" || !item.selectedSize)
+                        (item.selectedSize === "100g" || !item.selectedSize)
                     ) ? (
                       <div className="mt-6 flex items-center justify-between border-2 border-[#1D3B1D]/10 bg-[#FAF7F2] rounded-xl h-[48px] overflow-hidden w-full px-2">
                         <button
@@ -240,7 +240,7 @@ export default function Wishlist() {
                           {cartItems.find(
                             (item) =>
                               item.id === product.id &&
-                              (item.selectedSize === "250g" || !item.selectedSize)
+                              (item.selectedSize === "100g" || !item.selectedSize)
                           )?.quantity || 1}{" "}
                           Qty
                         </span>
@@ -257,8 +257,8 @@ export default function Wishlist() {
                           addToCart(
                             product,
                             1,
-                            "250g",
-                            getProductPriceAndSize(product, "250g")
+                            "100g",
+                            getProductPriceAndSize(product, "100g")
                           )
                         }
                         className="mt-6 w-full py-3 rounded-xl font-semibold bg-[#2d5a2d] hover:bg-[#1f431f] text-white transition flex items-center justify-center gap-2 text-sm sm:text-base hover:scale-[1.02] active:scale-[0.98]"

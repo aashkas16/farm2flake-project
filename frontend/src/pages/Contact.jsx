@@ -10,7 +10,8 @@ import {
   Mail,
   Phone,
   MapPin,
-  Clock
+  Clock,
+  FileText
 
 } from "lucide-react"
 
@@ -211,6 +212,33 @@ export default function Contact() {
 
 
 
+                {/* GSTIN */}
+                <div className="flex items-start gap-4 sm:gap-5">
+
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#edf7df] flex items-center justify-center text-[#2d5a2d] shrink-0">
+
+                    <FileText size={22} />
+
+                  </div>
+
+                  <div>
+
+                    <h3 className="font-bold text-[#1d1d1d] text-base sm:text-lg">
+
+                      GSTIN
+
+                    </h3>
+
+                    <p className="text-[#667166] mt-2 text-sm sm:text-base">
+
+                      24AALFF3107A1Z4
+
+                    </p>
+
+                  </div>
+
+                </div>
+
                 {/* PHONE */}
                 <div className="flex items-start gap-4 sm:gap-5">
 
@@ -232,8 +260,9 @@ export default function Contact() {
 
 
 
-                    <p className="text-[#667166] mt-2 text-sm sm:text-base">
+                    <p className="text-[#667166] mt-2 text-sm sm:text-base leading-relaxed">
 
+                      +91 88661 77704<br />
                       +91 88661 77703
 
                     </p>

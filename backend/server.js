@@ -1017,9 +1017,17 @@ const orderData = {
 
   email,
 
+  address,
+
+  landmark,
+
   city,
 
-  total_amount
+  pincode,
+
+  total_amount,
+
+  created_at: new Date()
 
 }
 
