@@ -36,7 +36,7 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true)
   const [activeImage, setActiveImage] = useState("")
   const [quantity, setQuantity] = useState(1)
-  const [selectedSize, setSelectedSize] = useState("250g")
+  const [selectedSize, setSelectedSize] = useState("100g")
   const [activeTab, setActiveTab] = useState("description")
   const [showStickyCTA, setShowStickyCTA] = useState(false)
 
@@ -72,7 +72,7 @@ export default function ProductDetails() {
       const imgs = res.data.images && res.data.images.length > 0 ? res.data.images : [res.data.image]
       setActiveImage(imgs[0] || "")
 
-      setSelectedSize("250g")
+      setSelectedSize("100g")
 
       // REVIEWS
       const reviewsRes = await axios.get(
@@ -220,11 +220,11 @@ export default function ProductDetails() {
   const currentPrice = finalPrice
 
   const sug0Price = suggestedProducts[0]
-    ? getProductPriceAndSize(suggestedProducts[0], "250g")
+    ? getProductPriceAndSize(suggestedProducts[0], "100g")
     : 0
 
   const sug1Price = suggestedProducts[1]
-    ? getProductPriceAndSize(suggestedProducts[1], "250g")
+    ? getProductPriceAndSize(suggestedProducts[1], "100g")
     : 0
 
   let originalBundleTotal = 0
@@ -263,7 +263,7 @@ export default function ProductDetails() {
 
     if (selectedBundleItems[0] && suggestedProducts[0]) {
 
-      addToCart(suggestedProducts[0], 1, "250g", sug0Price)
+      addToCart(suggestedProducts[0], 1, "100g", sug0Price)
 
       addedCount++
 
@@ -271,7 +271,7 @@ export default function ProductDetails() {
 
     if (selectedBundleItems[1] && suggestedProducts[1]) {
 
-      addToCart(suggestedProducts[1], 1, "250g", sug1Price)
+      addToCart(suggestedProducts[1], 1, "100g", sug1Price)
 
       addedCount++
 
@@ -804,7 +804,7 @@ export default function ProductDetails() {
                   </button>
                   <img src={suggestedProducts[0].image} alt="" className="w-20 h-20 object-contain mb-2" />
                   <span className="font-bold text-xs text-[#1c2b1d] line-clamp-1">{suggestedProducts[0].name}</span>
-                  <span className="text-sm font-bold text-gray-500 mt-1">₹{sug0Price} (250g)</span>
+                  <span className="text-sm font-bold text-gray-500 mt-1">₹{sug0Price} (100g)</span>
                 </div>
               </div>
 
@@ -824,7 +824,7 @@ export default function ProductDetails() {
                   </button>
                   <img src={suggestedProducts[1].image} alt="" className="w-20 h-20 object-contain mb-2" />
                   <span className="font-bold text-xs text-[#1c2b1d] line-clamp-1">{suggestedProducts[1].name}</span>
-                  <span className="text-sm font-bold text-gray-500 mt-1">₹{sug1Price} (250g)</span>
+                  <span className="text-sm font-bold text-gray-500 mt-1">₹{sug1Price} (100g)</span>
                 </div>
               </div>
 
